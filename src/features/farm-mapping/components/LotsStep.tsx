@@ -1,6 +1,7 @@
 import { Check, Columns3, Plus, Undo2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { DrawnShape, Lot } from "../application/farmMappingState";
+import { hasRoomForAnotherLot } from "../domain/freeArea";
 import type { StripOrientation } from "../domain/splitFarm";
 import { LotListItem } from "./LotListItem";
 import { SplitLotsPanel } from "./SplitLotsPanel";
@@ -45,6 +46,10 @@ export function LotsStep({
   const formatArea = useAreaFormatter();
   const lotsArea = lots.reduce((total, lot) => total + lot.areaInHectares, 0);
   const unassignedArea = Math.max(farmBoundary.areaInHectares - lotsArea, 0);
+  const canAddLot = hasRoomForAnotherLot(
+    farmBoundary.areaInHectares,
+    lots.map((lot) => lot.areaInHectares),
+  );
 
   return (
     <div className="step-content">
@@ -90,6 +95,12 @@ export function LotsStep({
         </p>
       )}
 
+      {!canAddLot && !isDrawing && split === null && (
+        <p id="farm-full-notice" className="notice">
+          {translate("farmFull")}
+        </p>
+      )}
+
       <div className="step-actions" hidden={split !== null}>
         {isDrawing ? (
           <>
@@ -113,7 +124,13 @@ export function LotsStep({
           </>
         ) : (
           <>
-            <button type="button" onClick={onStartDrawing} className="button button--primary">
+            <button
+              type="button"
+              onClick={onStartDrawing}
+              disabled={!canAddLot}
+              aria-describedby={canAddLot ? undefined : "farm-full-notice"}
+              className="button button--primary"
+            >
               <Plus aria-hidden size={18} />
               {translate("addLot")}
             </button>

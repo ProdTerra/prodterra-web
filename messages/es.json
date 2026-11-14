@@ -73,7 +73,8 @@
         "overlapsLot": "Este lote ocupa parte de {lotName}. Márcalo en un espacio libre de la finca.",
         "dismiss": "Entendido"
       },
-      "splitEqually": "Dividir en partes iguales"
+      "splitEqually": "Dividir en partes iguales",
+      "farmFull": "Toda la finca ya está en lotes. Borra un lote si quieres marcarlo distinto."
     },
     "area": {
       "squareMeters": "{value} m²",

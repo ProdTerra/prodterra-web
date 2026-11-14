@@ -73,7 +73,8 @@
         "overlapsLot": "This lot covers part of {lotName}. Mark it in a free part of the farm.",
         "dismiss": "Got it"
       },
-      "splitEqually": "Split into equal parts"
+      "splitEqually": "Split into equal parts",
+      "farmFull": "The whole farm is already in lots. Delete a lot if you want to mark it differently."
     },
     "area": {
       "squareMeters": "{value} m²",
