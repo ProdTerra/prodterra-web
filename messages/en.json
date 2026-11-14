@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "title": "ProdTerra",
+    "description": "Plan your farm's plantings with NASA satellite data."
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "es": "Español",
+    "en": "English"
+  }
+}

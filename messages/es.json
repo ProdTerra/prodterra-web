@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "title": "ProdTerra",
+    "description": "Planifica las siembras de tu finca con datos satelitales de la NASA."
+  },
+  "languageSwitcher": {
+    "label": "Idioma",
+    "es": "Español",
+    "en": "English"
+  }
+}
