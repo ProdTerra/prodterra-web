@@ -49,6 +49,13 @@ const mapWorkerUrl = "/vendor/maplibre-gl-worker.mjs";
 setWorkerUrl(mapWorkerUrl);
 const farmZoom = 17;
 
+function collapseAttribution(map: MapLibreMap) {
+  const openAttributionButton = map
+    .getContainer()
+    .querySelector<HTMLButtonElement>(".maplibregl-compact-show .maplibregl-ctrl-attrib-button");
+  openAttributionButton?.click();
+}
+
 function keepDrawingLayers(
   previousStyle: StyleSpecification | undefined,
   nextStyle: StyleSpecification,
@@ -109,6 +116,7 @@ export default function SatelliteMap({
       });
       callbacksRef.current.onReady();
     });
+    map.once("idle", () => collapseAttribution(map));
     map.on("moveend", () => {
       const center = map.getCenter();
       callbacksRef.current.onViewChanged({
@@ -156,5 +164,10 @@ export default function SatelliteMap({
     [],
   );
 
-  return <div ref={containerRef} role="application" aria-label={label} className="h-full w-full" />;
+  return (
+    <>
+      <div ref={containerRef} role="application" aria-label={label} className="h-full w-full" />
+      <span className="map-powered-by">Powered by Esri</span>
+    </>
+  );
 }

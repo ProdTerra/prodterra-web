@@ -508,3 +508,15 @@ body {
     animation: none;
   }
 }
+
+.map-powered-by {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.85);
+  font-size: 0.6875rem;
+  color: var(--color-ink);
+  pointer-events: none;
+}
