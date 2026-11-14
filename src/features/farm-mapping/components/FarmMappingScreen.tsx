@@ -269,7 +269,7 @@ export function FarmMappingScreen() {
 
   return (
     <div className="farm-mapping">
-      <section className="farm-mapping__panel">
+      <section className="farm-mapping__panel" data-step={state.step}>
         <header className="panel-header">
           <span className="brand">ProdTerra</span>
           <LanguageSwitcher />

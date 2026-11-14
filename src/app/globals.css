@@ -661,3 +661,50 @@ body {
     0 2px 6px rgb(22 26 21 / 0.35);
   pointer-events: none;
 }
+
+.farm-mapping__panel[data-step="lots"] {
+  overflow: hidden;
+}
+
+.farm-mapping__panel[data-step="lots"] > .step-content {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.farm-mapping__panel[data-step="lots"] .lot-list {
+  flex: 1 1 auto;
+  min-height: 7.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin-inline: -0.25rem;
+  padding-inline: 0.25rem;
+  mask-image: linear-gradient(to bottom, black calc(100% - 1.5rem), transparent);
+}
+
+.farm-mapping__panel[data-step="lots"] > .step-content > .split-panel,
+.farm-mapping__panel[data-step="lots"] > .step-content > .step-actions,
+.farm-mapping__panel[data-step="lots"] > .step-content > .notice {
+  flex: none;
+}
+
+@media (max-width: 899px) {
+  .farm-mapping__panel[data-step="lots"] {
+    overflow-y: auto;
+  }
+
+  .farm-mapping__panel[data-step="lots"] > .step-content {
+    min-height: auto;
+  }
+
+  .farm-mapping__panel[data-step="lots"] .lot-list {
+    flex: none;
+    max-height: 12rem;
+  }
+
+  .farm-mapping__panel[data-step="lots"] .step-actions {
+    position: sticky;
+    bottom: -1.5rem;
+    padding-bottom: 1.5rem;
+    background: var(--color-mineral);
+  }
+}
