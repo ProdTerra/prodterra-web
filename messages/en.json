@@ -7,5 +7,60 @@
     "label": "Language",
     "es": "Español",
     "en": "English"
+  },
+  "farmMapping": {
+    "mapLabel": "Satellite map of your farm",
+    "steps": {
+      "label": "Steps to register your farm",
+      "locate": "Find your farm",
+      "boundary": "Mark the edge",
+      "lots": "Split into lots"
+    },
+    "locate": {
+      "title": "Where is your farm?",
+      "hint": "Search for your town or use your location. Then move the map until your land is in the center.",
+      "searchLabel": "Search for a place",
+      "searchPlaceholder": "E.g. Tierra Blanca, Cartago",
+      "searchAction": "Search",
+      "searching": "Searching…",
+      "noResults": "We couldn't find that place. Try the name of the town or district.",
+      "searchFailed": "Search didn't work. Check your connection and try again.",
+      "resultsLabel": "Places found",
+      "useMyLocation": "Use my location",
+      "locating": "Finding your location…",
+      "locationDenied": "There's no permission to see your location. Search for it by name.",
+      "locationUnavailable": "We couldn't find your location. Search for it by name.",
+      "confirm": "My farm is here"
+    },
+    "boundary": {
+      "title": "Mark the edge of your farm",
+      "hint": "Tap each corner of the land, one at a time. To close it, tap the first point again.",
+      "start": "Start marking",
+      "drawingHint": "Tap the corners. Close by tapping the first point.",
+      "undo": "Remove last point",
+      "cancel": "Cancel",
+      "changeLocation": "Change location"
+    },
+    "lots": {
+      "title": "Split your farm into lots",
+      "hint": "Mark each part where you grow something different. A lot can't go outside the farm or overlap another lot.",
+      "farmArea": "Your farm measures",
+      "hectares": "{area} ha",
+      "unassigned": "not in a lot: {area} ha",
+      "lotCount": "{count, plural, =0 {No lots} one {# lot} other {# lots}}",
+      "addLot": "Mark a lot",
+      "finishLots": "Done marking",
+      "drawingHint": "Tap the corners of the lot. Close by tapping the first point.",
+      "defaultName": "Lot {number}",
+      "nameLabel": "Name of lot {number}",
+      "removeLot": "Delete {name}",
+      "empty": "No lots yet. Mark the first one on the map.",
+      "redrawFarm": "Mark the farm again",
+      "redrawConfirm": "The edge and every lot will be deleted. Do you want to continue?",
+      "outsideFarm": "That lot goes outside the farm. Mark it inside the yellow line.",
+      "overlapsLot": "That lot overlaps {lotName}. Mark it somewhere else.",
+      "dismiss": "Got it",
+      "undoPoint": "Remove last point"
+    }
   }
 }

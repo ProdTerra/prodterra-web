@@ -7,5 +7,60 @@
     "label": "Idioma",
     "es": "Español",
     "en": "English"
+  },
+  "farmMapping": {
+    "mapLabel": "Mapa satelital de tu finca",
+    "steps": {
+      "label": "Pasos para registrar tu finca",
+      "locate": "Ubica tu finca",
+      "boundary": "Marca el borde",
+      "lots": "Divide en lotes"
+    },
+    "locate": {
+      "title": "¿Dónde está tu finca?",
+      "hint": "Busca tu pueblo o usa tu ubicación. Después mueve el mapa hasta ver tu terreno en el centro.",
+      "searchLabel": "Buscar un lugar",
+      "searchPlaceholder": "Ej.: Tierra Blanca, Cartago",
+      "searchAction": "Buscar",
+      "searching": "Buscando…",
+      "noResults": "No encontramos ese lugar. Prueba con el nombre del pueblo o del distrito.",
+      "searchFailed": "No se pudo buscar. Revisa tu conexión e inténtalo otra vez.",
+      "resultsLabel": "Lugares encontrados",
+      "useMyLocation": "Usar mi ubicación",
+      "locating": "Buscando tu ubicación…",
+      "locationDenied": "No hay permiso para ver tu ubicación. Búscala por nombre.",
+      "locationUnavailable": "No pudimos encontrar tu ubicación. Búscala por nombre.",
+      "confirm": "Mi finca está aquí"
+    },
+    "boundary": {
+      "title": "Marca el borde de tu finca",
+      "hint": "Toca cada esquina del terreno, una por una. Para cerrarlo, toca otra vez el primer punto.",
+      "start": "Empezar a marcar",
+      "drawingHint": "Toca las esquinas. Cierra tocando el primer punto.",
+      "undo": "Quitar último punto",
+      "cancel": "Cancelar",
+      "changeLocation": "Cambiar ubicación"
+    },
+    "lots": {
+      "title": "Divide tu finca en lotes",
+      "hint": "Marca cada parte donde siembras algo distinto. Un lote no puede salirse de la finca ni montarse sobre otro.",
+      "farmArea": "Tu finca mide",
+      "hectares": "{area} ha",
+      "unassigned": "sin lote: {area} ha",
+      "lotCount": "{count, plural, =0 {Sin lotes} one {# lote} other {# lotes}}",
+      "addLot": "Marcar un lote",
+      "finishLots": "Terminar de marcar",
+      "drawingHint": "Toca las esquinas del lote. Cierra tocando el primer punto.",
+      "defaultName": "Lote {number}",
+      "nameLabel": "Nombre del lote {number}",
+      "removeLot": "Borrar {name}",
+      "empty": "Todavía no hay lotes. Marca el primero sobre el mapa.",
+      "redrawFarm": "Volver a marcar la finca",
+      "redrawConfirm": "Se borrarán el borde y todos los lotes. ¿Quieres continuar?",
+      "outsideFarm": "Ese lote se sale de la finca. Márcalo dentro de la línea amarilla.",
+      "overlapsLot": "Ese lote se monta sobre {lotName}. Márcalo en otra parte.",
+      "dismiss": "Entendido",
+      "undoPoint": "Quitar último punto"
+    }
   }
 }
