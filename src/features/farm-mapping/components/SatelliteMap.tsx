@@ -108,7 +108,7 @@ export default function SatelliteMap({
       maxZoom: 19,
       attributionControl: { compact: true },
     });
-    map.addControl(new NavigationControl({ showCompass: false }), "top-right");
+    map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
     map.on("load", () => {
       drawingRef.current = createDrawingSession(map, {
         onShapeFinished: (shape) => callbacksRef.current.onShapeFinished(shape),

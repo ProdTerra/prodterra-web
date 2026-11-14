@@ -77,6 +77,16 @@
     "area": {
       "squareMeters": "{value} m²",
       "hectares": "{value} ha"
+    },
+    "position": {
+      "label": "Position of the map center",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "elevation": "Elevation",
+      "meters": "{value} m",
+      "loading": "Loading…",
+      "unavailable": "No data",
+      "source": "Elevation: NASADEM (NASA)"
     }
   }
 }

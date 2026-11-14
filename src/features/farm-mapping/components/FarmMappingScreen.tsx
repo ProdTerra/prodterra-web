@@ -27,7 +27,8 @@ import {
 import { BoundaryStep } from "./BoundaryStep";
 import { LocateStep } from "./LocateStep";
 import { LotsStep } from "./LotsStep";
-import type { SatelliteMapHandle } from "./SatelliteMap";
+import { MapPositionChip } from "./MapPositionChip";
+import type { MapCoordinates, SatelliteMapHandle } from "./SatelliteMap";
 import { StepIndicator } from "./StepIndicator";
 
 const SatelliteMap = dynamic(() => import("./SatelliteMap"), { ssr: false });
@@ -63,6 +64,7 @@ export function FarmMappingScreen() {
   const [isRedrawConfirmOpen, setIsRedrawConfirmOpen] = useState(false);
   const mapRef = useRef<SatelliteMapHandle>(null);
   const [initialMapView] = useState(readInitialMapView);
+  const [mapCenter, setMapCenter] = useState<MapCoordinates>(initialMapView);
 
   useEffect(() => {
     const storage = getBrowserStorage();
@@ -89,6 +91,7 @@ export function FarmMappingScreen() {
   }
 
   function handleMapViewChanged(view: MapView) {
+    setMapCenter({ longitude: view.longitude, latitude: view.latitude });
     const storage = getBrowserStorage();
     if (storage) {
       saveMapView(storage, view);
@@ -251,7 +254,8 @@ export function FarmMappingScreen() {
           label={translate("mapLabel")}
           language={locale}
         />
-        {state.step === "locate" && <span aria-hidden className="map-crosshair" />}
+        <span aria-hidden className="map-crosshair" data-subtle={state.step !== "locate" || undefined} />
+        <MapPositionChip center={mapCenter} />
         {drawingKind && (
           <p role="status" className="map-hint">
             {drawingKind === "farm" ? translate("boundary.drawingHint") : translate("lots.drawingHint")}
