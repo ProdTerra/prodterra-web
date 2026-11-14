@@ -34,12 +34,14 @@
     },
     "boundary": {
       "title": "Mark the edge of your farm",
-      "hint": "Tap each corner of the land, one at a time. To close it, tap the first point again.",
+      "hint": "Tap each corner of the land, one at a time. When you have them all, tap “Close farm”.",
       "start": "Start marking",
-      "drawingHint": "Tap the corners. Close by tapping the first point.",
+      "drawingHint": "Tap each corner of your farm.",
       "undo": "Remove last point",
       "cancel": "Cancel",
-      "changeLocation": "Change location"
+      "changeLocation": "Change location",
+      "close": "Close farm",
+      "closeRequirement": "Mark at least 3 corners to close the farm."
     },
     "lots": {
       "title": "Split your farm into lots",
@@ -50,17 +52,28 @@
       "lotCount": "{count, plural, =0 {No lots} one {# lot} other {# lots}}",
       "addLot": "Mark a lot",
       "finishLots": "Done marking",
-      "drawingHint": "Tap the corners of the lot. Close by tapping the first point.",
+      "drawingHint": "Tap each corner of the lot.",
       "defaultName": "Lot {number}",
       "nameLabel": "Name of lot {number}",
       "removeLot": "Delete {name}",
       "empty": "No lots yet. Mark the first one on the map.",
       "redrawFarm": "Mark the farm again",
-      "redrawConfirm": "The edge and every lot will be deleted. Do you want to continue?",
-      "outsideFarm": "That lot goes outside the farm. Mark it inside the yellow line.",
-      "overlapsLot": "That lot overlaps {lotName}. Mark it somewhere else.",
-      "dismiss": "Got it",
-      "undoPoint": "Remove last point"
+      "undoPoint": "Remove last point",
+      "closeLot": "Close lot",
+      "closeRequirement": "Mark at least 3 corners to close the lot.",
+      "redrawDialog": {
+        "title": "Mark the farm again?",
+        "description": "The farm edge and {count, plural, =0 {}one {the lot you marked} other {the # lots you marked}} will be deleted. This can’t be undone.",
+        "confirm": "Delete and mark again",
+        "cancel": "Keep my farm"
+      },
+      "rejection": {
+        "outsideFarmTitle": "The lot goes outside the farm",
+        "outsideFarm": "Mark the lot inside the yellow line, which is the edge of your farm.",
+        "overlapsLotTitle": "The lot overlaps another one",
+        "overlapsLot": "This lot covers part of {lotName}. Mark it in a free part of the farm.",
+        "dismiss": "Got it"
+      }
     }
   }
 }

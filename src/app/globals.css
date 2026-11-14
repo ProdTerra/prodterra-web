@@ -300,19 +300,6 @@ body {
   color: #8f2219;
 }
 
-.notice--action {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-}
-
-.notice--action .button {
-  min-height: 2.25rem;
-  padding: 0;
-  color: #8f2219;
-}
-
 .farm-area {
   display: grid;
   gap: 0.125rem;
@@ -421,5 +408,103 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .button {
     transition: none;
+  }
+}
+
+.button--danger {
+  background: var(--color-danger);
+  color: var(--color-paper);
+}
+
+.button--danger:hover {
+  background: #c23a30;
+}
+
+.button--primary:disabled {
+  background: var(--color-line);
+  color: var(--color-stone);
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.dialog {
+  width: min(32rem, calc(100% - 2rem));
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: 1.25rem;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: 0 24px 48px rgb(22 26 21 / 0.25);
+}
+
+.dialog::backdrop {
+  background: rgb(22 26 21 / 0.55);
+}
+
+.dialog[open] {
+  animation: dialog-enter 160ms ease-out;
+}
+
+.dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.dialog__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+}
+
+.dialog[data-tone="danger"] .dialog__icon {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.dialog[data-tone="info"] .dialog__icon {
+  background: #fdf3cf;
+  color: #8a6800;
+}
+
+.dialog__title {
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.dialog__description {
+  color: var(--color-stone);
+}
+
+.dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .dialog__actions {
+    flex-direction: column-reverse;
+  }
+}
+
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog[open] {
+    animation: none;
   }
 }

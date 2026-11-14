@@ -34,12 +34,14 @@
     },
     "boundary": {
       "title": "Marca el borde de tu finca",
-      "hint": "Toca cada esquina del terreno, una por una. Para cerrarlo, toca otra vez el primer punto.",
+      "hint": "Toca cada esquina del terreno, una por una. Cuando las tengas todas, toca «Cerrar finca».",
       "start": "Empezar a marcar",
-      "drawingHint": "Toca las esquinas. Cierra tocando el primer punto.",
+      "drawingHint": "Toca cada esquina de tu finca.",
       "undo": "Quitar último punto",
       "cancel": "Cancelar",
-      "changeLocation": "Cambiar ubicación"
+      "changeLocation": "Cambiar ubicación",
+      "close": "Cerrar finca",
+      "closeRequirement": "Marca al menos 3 esquinas para poder cerrar la finca."
     },
     "lots": {
       "title": "Divide tu finca en lotes",
@@ -50,17 +52,28 @@
       "lotCount": "{count, plural, =0 {Sin lotes} one {# lote} other {# lotes}}",
       "addLot": "Marcar un lote",
       "finishLots": "Terminar de marcar",
-      "drawingHint": "Toca las esquinas del lote. Cierra tocando el primer punto.",
+      "drawingHint": "Toca cada esquina del lote.",
       "defaultName": "Lote {number}",
       "nameLabel": "Nombre del lote {number}",
       "removeLot": "Borrar {name}",
       "empty": "Todavía no hay lotes. Marca el primero sobre el mapa.",
       "redrawFarm": "Volver a marcar la finca",
-      "redrawConfirm": "Se borrarán el borde y todos los lotes. ¿Quieres continuar?",
-      "outsideFarm": "Ese lote se sale de la finca. Márcalo dentro de la línea amarilla.",
-      "overlapsLot": "Ese lote se monta sobre {lotName}. Márcalo en otra parte.",
-      "dismiss": "Entendido",
-      "undoPoint": "Quitar último punto"
+      "undoPoint": "Quitar último punto",
+      "closeLot": "Cerrar lote",
+      "closeRequirement": "Marca al menos 3 esquinas para poder cerrar el lote.",
+      "redrawDialog": {
+        "title": "¿Volver a marcar la finca?",
+        "description": "Se borrarán el borde de la finca y {count, plural, =0 {}one {el lote que marcaste} other {los # lotes que marcaste}}. Esta acción no se puede deshacer.",
+        "confirm": "Borrar y volver a marcar",
+        "cancel": "Conservar mi finca"
+      },
+      "rejection": {
+        "outsideFarmTitle": "El lote se sale de la finca",
+        "outsideFarm": "Marca el lote dentro de la línea amarilla, que es el borde de tu finca.",
+        "overlapsLotTitle": "El lote se monta sobre otro",
+        "overlapsLot": "Este lote ocupa parte de {lotName}. Márcalo en un espacio libre de la finca.",
+        "dismiss": "Entendido"
+      }
     }
   }
 }

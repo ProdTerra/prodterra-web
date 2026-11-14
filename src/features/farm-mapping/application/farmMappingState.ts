@@ -41,7 +41,8 @@ export type FarmMappingAction =
   | { type: "lotRejected"; validation: RejectedLotValidation }
   | { type: "lotRenamed"; shapeId: string; name: string }
   | { type: "lotRemoved"; shapeId: string }
-  | { type: "rejectionDismissed" };
+  | { type: "rejectionDismissed" }
+  | { type: "draftRestored"; draft: FarmMappingState };
 
 export const initialFarmMappingState: FarmMappingState = {
   step: "locate",
@@ -57,7 +58,7 @@ function toShape({ shapeId, geometry, areaInHectares }: DrawnShape): DrawnShape 
 
 function toRejection(validation: RejectedLotValidation): LotRejection {
   if (validation.reason === "overlapsLot") {
-    return { reason: validation.reason, overlappedLotName: validation.overlappedLotName };
+    return { reason: validation.reason, overlappedLotNumber: validation.overlappedLotNumber };
   }
   return { reason: validation.reason };
 }
@@ -93,5 +94,7 @@ export function farmMappingReducer(
       return { ...state, lots: state.lots.filter((lot) => lot.shapeId !== action.shapeId) };
     case "rejectionDismissed":
       return { ...state, rejection: null };
+    case "draftRestored":
+      return { ...action.draft, rejection: null };
   }
 }

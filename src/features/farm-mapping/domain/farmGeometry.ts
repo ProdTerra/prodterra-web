@@ -7,15 +7,15 @@ const squareMetersPerHectare = 10_000;
 const allowedOutsideShare = 0.01;
 const allowedOverlapInSquareMeters = 1;
 
-export type NamedLotGeometry = {
-  name: string;
+export type NumberedLotGeometry = {
+  lotNumber: number;
   geometry: Polygon;
 };
 
 export type LotValidation =
   | { isValid: true }
   | { isValid: false; reason: "outsideFarm" }
-  | { isValid: false; reason: "overlapsLot"; overlappedLotName: string };
+  | { isValid: false; reason: "overlapsLot"; overlappedLotNumber: number };
 
 export function calculateAreaInHectares(polygon: Polygon): number {
   return area(polygon) / squareMetersPerHectare;
@@ -35,7 +35,7 @@ function isInsideFarm(lot: Polygon, farmBoundary: Polygon): boolean {
 export function validateLot(
   lot: Polygon,
   farmBoundary: Polygon,
-  existingLots: NamedLotGeometry[],
+  existingLots: NumberedLotGeometry[],
 ): LotValidation {
   if (!isInsideFarm(lot, farmBoundary)) {
     return { isValid: false, reason: "outsideFarm" };
@@ -45,7 +45,7 @@ export function validateLot(
       sharedAreaInSquareMeters(lot, existingLot.geometry) > allowedOverlapInSquareMeters,
   );
   if (overlappedLot) {
-    return { isValid: false, reason: "overlapsLot", overlappedLotName: overlappedLot.name };
+    return { isValid: false, reason: "overlapsLot", overlappedLotNumber: overlappedLot.lotNumber };
   }
   return { isValid: true };
 }

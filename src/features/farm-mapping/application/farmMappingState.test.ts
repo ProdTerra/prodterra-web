@@ -62,10 +62,10 @@ describe("farmMappingReducer", () => {
   it("keeps the rejection reason when a lot is not valid", () => {
     const state = farmMappingReducer(stateWithBoundary, {
       type: "lotRejected",
-      validation: { isValid: false, reason: "overlapsLot", overlappedLotName: "Norte" },
+      validation: { isValid: false, reason: "overlapsLot", overlappedLotNumber: 2 },
     });
     expect(state.lots).toHaveLength(0);
-    expect(state.rejection).toEqual({ reason: "overlapsLot", overlappedLotName: "Norte" });
+    expect(state.rejection).toEqual({ reason: "overlapsLot", overlappedLotNumber: 2 });
   });
 
   it("renames and removes lots", () => {
@@ -104,5 +104,21 @@ describe("farmMappingReducer", () => {
       { type: "locationChangeRequested" },
     );
     expect(state.step).toBe("locate");
+  });
+});
+
+describe("restoring a saved draft", () => {
+  it("replaces the current progress with the saved one", () => {
+    const saved = farmMappingReducer(stateWithBoundary, {
+      type: "lotAccepted",
+      shapeId: "lot-a",
+      geometry,
+      areaInHectares: 0.5,
+    });
+    const restored = farmMappingReducer(initialFarmMappingState, {
+      type: "draftRestored",
+      draft: saved,
+    });
+    expect(restored).toEqual(saved);
   });
 });

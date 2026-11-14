@@ -1,14 +1,22 @@
 "use client";
 
-import { Map as MapLibreMap, NavigationControl, setWorkerUrl } from "maplibre-gl";
+import {
+  Map as MapLibreMap,
+  NavigationControl,
+  setWorkerUrl,
+  type StyleSpecification,
+} from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
 import {
   createDrawingSession,
+  drawingLayerPrefix,
   type DrawingSession,
   type FinishedShape,
+  type RestorableShape,
   type ShapeKind,
 } from "../infrastructure/drawingSession";
+import type { MapView } from "../infrastructure/farmDraftStorage";
 import { createSatelliteStyleUrl } from "../infrastructure/satelliteBasemap";
 
 export type MapCoordinates = { longitude: number; latitude: number };
@@ -17,29 +25,55 @@ export type SatelliteMapHandle = {
   flyTo: (coordinates: MapCoordinates) => void;
   getCenter: () => MapCoordinates | null;
   startDrawing: (kind: ShapeKind) => void;
+  closeShape: () => void;
   stopDrawing: () => void;
   undoLastPoint: () => void;
   removeShapes: (shapeIds: string[]) => void;
   paintLot: (shapeId: string, color: string) => void;
+  restoreShapes: (shapes: RestorableShape[]) => void;
 };
 
 type SatelliteMapProps = {
-  initialCenter: MapCoordinates;
+  initialView: MapView;
+  onReady: () => void;
+  onViewChanged: (view: MapView) => void;
   onShapeFinished: (shape: FinishedShape) => void;
+  onDrawingProgress: (canClose: boolean) => void;
   label: string;
   language: string;
   handleRef: Ref<SatelliteMapHandle>;
 };
 
 const mapWorkerUrl = "/vendor/maplibre-gl-worker.mjs";
-const initialZoom = 13;
 
 setWorkerUrl(mapWorkerUrl);
 const farmZoom = 17;
 
+function keepDrawingLayers(
+  previousStyle: StyleSpecification | undefined,
+  nextStyle: StyleSpecification,
+): StyleSpecification {
+  if (!previousStyle) {
+    return nextStyle;
+  }
+  const isDrawingId = (id: string) => id.startsWith(drawingLayerPrefix);
+  const drawingSources = Object.fromEntries(
+    Object.entries(previousStyle.sources).filter(([sourceId]) => isDrawingId(sourceId)),
+  );
+  const drawingLayers = previousStyle.layers.filter((layer) => isDrawingId(layer.id));
+  return {
+    ...nextStyle,
+    sources: { ...nextStyle.sources, ...drawingSources },
+    layers: [...nextStyle.layers, ...drawingLayers],
+  };
+}
+
 export default function SatelliteMap({
-  initialCenter,
+  initialView,
+  onReady,
+  onViewChanged,
   onShapeFinished,
+  onDrawingProgress,
   label,
   language,
   handleRef,
@@ -47,11 +81,13 @@ export default function SatelliteMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const drawingRef = useRef<DrawingSession | null>(null);
-  const onShapeFinishedRef = useRef(onShapeFinished);
+  const callbacksRef = useRef({ onReady, onViewChanged, onShapeFinished, onDrawingProgress });
+  const initialViewRef = useRef(initialView);
+  const initialLanguageRef = useRef(language);
 
   useEffect(() => {
-    onShapeFinishedRef.current = onShapeFinished;
-  }, [onShapeFinished]);
+    callbacksRef.current = { onReady, onViewChanged, onShapeFinished, onDrawingProgress };
+  }, [onReady, onViewChanged, onShapeFinished, onDrawingProgress]);
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -59,17 +95,27 @@ export default function SatelliteMap({
     }
     const map = new MapLibreMap({
       container: containerRef.current,
-      style: createSatelliteStyleUrl(language),
-      center: [initialCenter.longitude, initialCenter.latitude],
-      zoom: initialZoom,
+      style: createSatelliteStyleUrl(initialLanguageRef.current),
+      center: [initialViewRef.current.longitude, initialViewRef.current.latitude],
+      zoom: initialViewRef.current.zoom,
       maxZoom: 19,
       attributionControl: { compact: true },
     });
     map.addControl(new NavigationControl({ showCompass: false }), "top-right");
     map.on("load", () => {
-      drawingRef.current = createDrawingSession(map, (shape) =>
-        onShapeFinishedRef.current(shape),
-      );
+      drawingRef.current = createDrawingSession(map, {
+        onShapeFinished: (shape) => callbacksRef.current.onShapeFinished(shape),
+        onDrawingProgress: (canClose) => callbacksRef.current.onDrawingProgress(canClose),
+      });
+      callbacksRef.current.onReady();
+    });
+    map.on("moveend", () => {
+      const center = map.getCenter();
+      callbacksRef.current.onViewChanged({
+        longitude: center.lng,
+        latitude: center.lat,
+        zoom: map.getZoom(),
+      });
     });
     mapRef.current = map;
 
@@ -79,7 +125,16 @@ export default function SatelliteMap({
       map.remove();
       mapRef.current = null;
     };
-  }, [initialCenter.latitude, initialCenter.longitude, language]);
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || language === initialLanguageRef.current) {
+      return;
+    }
+    initialLanguageRef.current = language;
+    map.setStyle(createSatelliteStyleUrl(language), { transformStyle: keepDrawingLayers });
+  }, [language]);
 
   useImperativeHandle(
     handleRef,
@@ -91,10 +146,12 @@ export default function SatelliteMap({
         return center ? { longitude: center.lng, latitude: center.lat } : null;
       },
       startDrawing: (kind) => drawingRef.current?.startDrawing(kind),
+      closeShape: () => drawingRef.current?.closeShape(),
       stopDrawing: () => drawingRef.current?.stopDrawing(),
       undoLastPoint: () => drawingRef.current?.undoLastPoint(),
       removeShapes: (shapeIds) => drawingRef.current?.removeShapes(shapeIds),
       paintLot: (shapeId, color) => drawingRef.current?.paintLot(shapeId, color),
+      restoreShapes: (shapes) => drawingRef.current?.restoreShapes(shapes),
     }),
     [],
   );

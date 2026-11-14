@@ -42,18 +42,18 @@ describe("validateLot", () => {
     });
   });
 
-  it("rejects a lot that overlaps an existing lot and names it", () => {
-    const existingLot = { name: "Norte", geometry: square(-83.892, 9.918, 80) };
+  it("rejects a lot that overlaps an existing lot and says which one", () => {
+    const existingLot = { lotNumber: 3, geometry: square(-83.892, 9.918, 80) };
     const lot = square(-83.892 + 40 * metersToDegrees, 9.918, 80);
     expect(validateLot(lot, farmBoundary, [existingLot])).toEqual({
       isValid: false,
       reason: "overlapsLot",
-      overlappedLotName: "Norte",
+      overlappedLotNumber: 3,
     });
   });
 
   it("accepts a lot that only shares an edge with an existing lot", () => {
-    const existingLot = { name: "Norte", geometry: square(-83.892, 9.918, 80) };
+    const existingLot = { lotNumber: 1, geometry: square(-83.892, 9.918, 80) };
     const lot = square(-83.892 + 80 * metersToDegrees, 9.918, 80);
     expect(validateLot(lot, farmBoundary, [existingLot])).toEqual({ isValid: true });
   });

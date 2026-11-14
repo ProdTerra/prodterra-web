@@ -1,33 +1,33 @@
 import { Check, Plus, Undo2 } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
-import type { DrawnShape, Lot, LotRejection } from "../application/farmMappingState";
+import type { DrawnShape, Lot } from "../application/farmMappingState";
 import { LotListItem } from "./LotListItem";
 
 type LotsStepProps = {
   farmBoundary: DrawnShape;
   lots: Lot[];
-  rejection: LotRejection | null;
   isDrawing: boolean;
+  canCloseShape: boolean;
+  onCloseShape: () => void;
   onStartDrawing: () => void;
   onStopDrawing: () => void;
   onUndoLastPoint: () => void;
   onRenameLot: (shapeId: string, name: string) => void;
   onRemoveLot: (shapeId: string) => void;
-  onDismissRejection: () => void;
   onRedrawFarm: () => void;
 };
 
 export function LotsStep({
   farmBoundary,
   lots,
-  rejection,
   isDrawing,
+  canCloseShape,
+  onCloseShape,
   onStartDrawing,
   onStopDrawing,
   onUndoLastPoint,
   onRenameLot,
   onRemoveLot,
-  onDismissRejection,
   onRedrawFarm,
 }: LotsStepProps) {
   const translate = useTranslations("farmMapping.lots");
@@ -51,19 +51,6 @@ export function LotsStep({
         </span>
       </div>
 
-      {rejection && (
-        <div role="alert" className="notice notice--error notice--action">
-          <p>
-            {rejection.reason === "overlapsLot"
-              ? translate("overlapsLot", { lotName: rejection.overlappedLotName })
-              : translate("outsideFarm")}
-          </p>
-          <button type="button" onClick={onDismissRejection} className="button button--quiet">
-            {translate("dismiss")}
-          </button>
-        </div>
-      )}
-
       {lots.length === 0 ? (
         <p className="notice">{translate("empty")}</p>
       ) : (
@@ -79,16 +66,31 @@ export function LotsStep({
         </ul>
       )}
 
+      {isDrawing && !canCloseShape && (
+        <p id="lot-close-requirement" className="notice">
+          {translate("closeRequirement")}
+        </p>
+      )}
+
       <div className="step-actions">
         {isDrawing ? (
           <>
-            <button type="button" onClick={onStopDrawing} className="button button--primary">
+            <button
+              type="button"
+              onClick={onCloseShape}
+              disabled={!canCloseShape}
+              aria-describedby={canCloseShape ? undefined : "lot-close-requirement"}
+              className="button button--primary"
+            >
               <Check aria-hidden size={18} />
-              {translate("finishLots")}
+              {translate("closeLot")}
             </button>
             <button type="button" onClick={onUndoLastPoint} className="button button--outline">
               <Undo2 aria-hidden size={18} />
               {translate("undoPoint")}
+            </button>
+            <button type="button" onClick={onStopDrawing} className="button button--quiet">
+              {translate("finishLots")}
             </button>
           </>
         ) : (
