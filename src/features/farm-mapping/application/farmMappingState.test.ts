@@ -145,3 +145,27 @@ describe("splitting the farm into equal lots", () => {
     expect(split.lastLotNumber).toBe(2);
   });
 });
+
+describe("moving to the crops step", () => {
+  const withLot = farmMappingReducer(stateWithBoundary, {
+    type: "lotAccepted",
+    shapeId: "lot-a",
+    geometry,
+    areaInHectares: 0.5,
+  });
+
+  it("goes to the crops step once the lots are confirmed", () => {
+    expect(farmMappingReducer(withLot, { type: "lotsConfirmed" }).step).toBe("crops");
+  });
+
+  it("stays on the lots step when there are no lots to confirm", () => {
+    expect(farmMappingReducer(stateWithBoundary, { type: "lotsConfirmed" }).step).toBe("lots");
+  });
+
+  it("returns to the lots step keeping the lots", () => {
+    const crops = farmMappingReducer(withLot, { type: "lotsConfirmed" });
+    const back = farmMappingReducer(crops, { type: "lotsEditRequested" });
+    expect(back.step).toBe("lots");
+    expect(back.lots).toHaveLength(1);
+  });
+});

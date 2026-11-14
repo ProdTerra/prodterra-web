@@ -14,7 +14,8 @@
       "label": "Pasos para registrar tu finca",
       "locate": "Ubica tu finca",
       "boundary": "Marca el borde",
-      "lots": "Divide en lotes"
+      "lots": "Divide en lotes",
+      "crops": "Tus cultivos"
     },
     "locate": {
       "title": "¿Dónde está tu finca?",
@@ -74,7 +75,8 @@
         "dismiss": "Entendido"
       },
       "splitEqually": "Dividir en partes iguales",
-      "farmFull": "Toda la finca ya está en lotes. Borra un lote si quieres marcarlo distinto."
+      "farmFull": "Toda la finca ya está en lotes. Borra un lote si quieres marcarlo distinto.",
+      "continue": "Continuar"
     },
     "area": {
       "squareMeters": "{value} m²",
@@ -106,6 +108,45 @@
         "confirm": "Reemplazar lotes",
         "cancel": "Conservar mis lotes"
       }
+    },
+    "summary": {
+      "title": "Resumen de tu finca",
+      "intro": "Esto es lo que sabemos de tu finca antes de planear los cultivos.",
+      "loading": "Consultando los datos de la NASA…",
+      "failed": "No se pudieron cargar los datos del clima. Revisa que la API esté encendida e inténtalo otra vez.",
+      "retry": "Intentar otra vez",
+      "landTitle": "Terreno",
+      "farmArea": "Área de la finca",
+      "lotCount": "Lotes",
+      "freeArea": "Área sin lote",
+      "landSource": "Calculado con tu dibujo sobre la imagen satelital de Esri.",
+      "elevationTitle": "Altura",
+      "elevationMean": "Promedio",
+      "elevationRange": "De {minimum} a {maximum}",
+      "elevationSource": "NASADEM (NASA), modelo de elevación del terreno.",
+      "climateTitle": "Clima del año",
+      "coldestMonth": "Mes más frío",
+      "warmestMonth": "Mes más cálido",
+      "coldestNight": "Noche más fría (promedio)",
+      "driestMonth": "Mes más seco",
+      "wettestMonth": "Mes más lluvioso",
+      "humidity": "Humedad promedio",
+      "sunlight": "Sol promedio",
+      "temperatureValue": "{month}: {value} °C",
+      "rainValue": "{month}: {value} mm al día",
+      "percentValue": "{value} %",
+      "sunlightValue": "{value} kWh/m² al día",
+      "climateSource": "NASA POWER, promedios de 2001 a 2025. Temperaturas ajustadas {correction} °C por la altura de tu finca.",
+      "estimateNote": "Son estimaciones a partir de datos satelitales; no reemplazan lo que tú conoces de tu finca.",
+      "openSource": "Ver fuente",
+      "back": "Volver a mis lotes",
+      "continue": "Continuar a mis cultivos",
+      "elevationRangeLabel": "Rango"
+    },
+    "crops": {
+      "title": "¿Qué siembras en cada lote?",
+      "hint": "Cuéntanos qué tiene cada uno de tus {count, plural, one {# lote} other {# lotes}}. Con eso armamos tu calendario.",
+      "editLots": "Cambiar mis lotes"
     }
   }
 }
