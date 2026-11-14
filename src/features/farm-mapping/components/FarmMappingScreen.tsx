@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useReducer, useRef, useState } from "react";
 import { LanguageSwitcher } from "@/shared/components/LanguageSwitcher";
 import { farmMappingReducer, initialFarmMappingState } from "../application/farmMappingState";
@@ -21,6 +21,7 @@ const cartagoHighlands: MapCoordinates = { longitude: -83.892, latitude: 9.918 }
 
 export function FarmMappingScreen() {
   const translate = useTranslations("farmMapping");
+  const locale = useLocale();
   const [state, dispatch] = useReducer(farmMappingReducer, initialFarmMappingState);
   const [drawingKind, setDrawingKind] = useState<ShapeKind | null>(null);
   const mapRef = useRef<SatelliteMapHandle>(null);
@@ -155,6 +156,7 @@ export function FarmMappingScreen() {
           initialCenter={cartagoHighlands}
           onShapeFinished={handleShapeFinished}
           label={translate("mapLabel")}
+          language={locale}
         />
         {state.step === "locate" && <span aria-hidden className="map-crosshair" />}
         {drawingKind && (

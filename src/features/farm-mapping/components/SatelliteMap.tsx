@@ -9,7 +9,7 @@ import {
   type FinishedShape,
   type ShapeKind,
 } from "../infrastructure/drawingSession";
-import { createSatelliteStyle } from "../infrastructure/satelliteBasemap";
+import { createSatelliteStyleUrl } from "../infrastructure/satelliteBasemap";
 
 export type MapCoordinates = { longitude: number; latitude: number };
 
@@ -27,6 +27,7 @@ type SatelliteMapProps = {
   initialCenter: MapCoordinates;
   onShapeFinished: (shape: FinishedShape) => void;
   label: string;
+  language: string;
   handleRef: Ref<SatelliteMapHandle>;
 };
 
@@ -40,6 +41,7 @@ export default function SatelliteMap({
   initialCenter,
   onShapeFinished,
   label,
+  language,
   handleRef,
 }: SatelliteMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -57,7 +59,7 @@ export default function SatelliteMap({
     }
     const map = new MapLibreMap({
       container: containerRef.current,
-      style: createSatelliteStyle(),
+      style: createSatelliteStyleUrl(language),
       center: [initialCenter.longitude, initialCenter.latitude],
       zoom: initialZoom,
       maxZoom: 19,
@@ -77,7 +79,7 @@ export default function SatelliteMap({
       map.remove();
       mapRef.current = null;
     };
-  }, [initialCenter.latitude, initialCenter.longitude]);
+  }, [initialCenter.latitude, initialCenter.longitude, language]);
 
   useImperativeHandle(
     handleRef,
