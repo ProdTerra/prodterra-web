@@ -47,6 +47,7 @@ const unpaintedLotColor: HexColor = "#FFFFFF";
 const staticModeName = "static";
 const finishKey = "Enter";
 const ringLengthWithThreeCorners = 5;
+const storeCoordinateDecimals = 9;
 
 export const drawingLayerPrefix = "farm-drawing";
 
@@ -111,12 +112,26 @@ function isPolygonFeature(
   return feature?.geometry.type === "Polygon";
 }
 
+function roundToStorePrecision(value: number): number {
+  const factor = 10 ** storeCoordinateDecimals;
+  return Math.round(value * factor) / factor;
+}
+
+function toStoreGeometry(geometry: Polygon): Polygon {
+  return {
+    type: "Polygon",
+    coordinates: geometry.coordinates.map((ring) =>
+      ring.map(([longitude, latitude]) => [roundToStorePrecision(longitude), roundToStorePrecision(latitude)]),
+    ),
+  };
+}
+
 function toStoreFeature(shape: RestorableShape): GeoJSONStoreFeatures {
   const properties: GeoJSONStoreFeatures["properties"] = { mode: shape.kind };
   if (shape.color) {
     properties.color = shape.color;
   }
-  return { id: shape.shapeId, type: "Feature", geometry: shape.geometry, properties };
+  return { id: shape.shapeId, type: "Feature", geometry: toStoreGeometry(shape.geometry), properties };
 }
 
 function hasEnoughCornersToClose(features: GeoJSONStoreFeatures[]): boolean {
@@ -182,7 +197,10 @@ export function createDrawingSession(
     },
     paintLot: (shapeId, color) => draw.updateFeatureProperties(shapeId, { color }),
     restoreShapes: (shapes) => {
-      draw.addFeatures(shapes.map(toStoreFeature));
+      const rejected = draw.addFeatures(shapes.map(toStoreFeature)).filter((result) => !result.valid);
+      if (rejected.length > 0) {
+        console.warn("Some lot shapes could not be drawn on the map", rejected);
+      }
     },
     destroy: () => draw.stop(),
   };

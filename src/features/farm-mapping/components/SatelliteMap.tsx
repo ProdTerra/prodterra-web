@@ -2,6 +2,7 @@
 
 import {
   Map as MapLibreMap,
+  Marker,
   NavigationControl,
   setWorkerUrl,
   type StyleSpecification,
@@ -21,7 +22,15 @@ import { createSatelliteStyleUrl } from "../infrastructure/satelliteBasemap";
 
 export type MapCoordinates = { longitude: number; latitude: number };
 
+export type LotLabel = {
+  shapeId: string;
+  text: string;
+  color: string;
+  position: MapCoordinates;
+};
+
 export type SatelliteMapHandle = {
+  setLotLabels: (labels: LotLabel[]) => void;
   flyTo: (coordinates: MapCoordinates) => void;
   getCenter: () => MapCoordinates | null;
   startDrawing: (kind: ShapeKind) => void;
@@ -48,6 +57,15 @@ const mapWorkerUrl = "/vendor/maplibre-gl-worker.mjs";
 
 setWorkerUrl(mapWorkerUrl);
 const farmZoom = 17;
+
+function createLabelElement(label: LotLabel): HTMLElement {
+  const element = document.createElement("span");
+  element.className = "lot-badge";
+  element.textContent = label.text;
+  element.style.setProperty("--lot-color", label.color);
+  element.setAttribute("aria-hidden", "true");
+  return element;
+}
 
 function collapseAttribution(map: MapLibreMap) {
   const openAttributionButton = map
@@ -88,6 +106,7 @@ export default function SatelliteMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const drawingRef = useRef<DrawingSession | null>(null);
+  const labelMarkersRef = useRef<Marker[]>([]);
   const callbacksRef = useRef({ onReady, onViewChanged, onShapeFinished, onDrawingProgress });
   const initialViewRef = useRef(initialView);
   const initialLanguageRef = useRef(language);
@@ -128,6 +147,8 @@ export default function SatelliteMap({
     mapRef.current = map;
 
     return () => {
+      labelMarkersRef.current.forEach((marker) => marker.remove());
+      labelMarkersRef.current = [];
       drawingRef.current?.destroy();
       drawingRef.current = null;
       map.remove();
@@ -147,6 +168,19 @@ export default function SatelliteMap({
   useImperativeHandle(
     handleRef,
     () => ({
+      setLotLabels: (labels) => {
+        const map = mapRef.current;
+        labelMarkersRef.current.forEach((marker) => marker.remove());
+        if (!map) {
+          labelMarkersRef.current = [];
+          return;
+        }
+        labelMarkersRef.current = labels.map((label) =>
+          new Marker({ element: createLabelElement(label) })
+            .setLngLat([label.position.longitude, label.position.latitude])
+            .addTo(map),
+        );
+      },
       flyTo: ({ longitude, latitude }) =>
         mapRef.current?.flyTo({ center: [longitude, latitude], zoom: farmZoom }),
       getCenter: () => {

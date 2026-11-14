@@ -122,3 +122,26 @@ describe("restoring a saved draft", () => {
     expect(restored).toEqual(saved);
   });
 });
+
+describe("splitting the farm into equal lots", () => {
+  it("replaces every lot with the new ones numbered from one", () => {
+    const withManualLot = farmMappingReducer(stateWithBoundary, {
+      type: "lotAccepted",
+      shapeId: "manual",
+      geometry,
+      areaInHectares: 0.5,
+    });
+    const split = farmMappingReducer(withManualLot, {
+      type: "lotsReplaced",
+      lots: [
+        { shapeId: "split-a", geometry, areaInHectares: 1.2 },
+        { shapeId: "split-b", geometry, areaInHectares: 1.2 },
+      ],
+    });
+    expect(split.lots.map((lot) => [lot.shapeId, lot.number, lot.color])).toEqual([
+      ["split-a", 1, lotColors[0]],
+      ["split-b", 2, lotColors[1]],
+    ]);
+    expect(split.lastLotNumber).toBe(2);
+  });
+});
