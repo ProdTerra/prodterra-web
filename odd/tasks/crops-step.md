@@ -10,8 +10,9 @@ Branch: feature/crops-step (from feature/split-farm-into-lots). Delivery: ask-on
 
 ## Tasks
 - T1 [S1] Continue button + farm summary dialog with sources — route: inline — status: done (browser: live NASADEM + NASA POWER data; step indicator and dialog scroll CSS pending visual check after dev server restart)
-- T2 [S3] lot planting rules and state (tests) — route: inline — status: pending
+- T2 [S3] lot planting rules and state (tests) — route: inline — status: done (10 new tests)
 - T3 [S2, S4] crops step UI with catalog from API, apply to all lots — route: inline — status: pending
 
 ## Log
 - L1 (2026-11-14): "si ya no nos interesa el objetivo, siempre es el mismo y se entiende ese es el objetivo de la app" (answer to the four questions per lot).
+- L2 (2026-11-14): user's `next dev` serves stale globals.css (served chunk keeps old rules after edits); style changes need a dev server restart to be verified. Pending visual checks: step indicator in 4 columns, wide dialog scroll, lot label containment.
