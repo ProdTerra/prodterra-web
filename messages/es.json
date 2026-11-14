@@ -47,8 +47,7 @@
       "title": "Divide tu finca en lotes",
       "hint": "Marca cada parte donde siembras algo distinto. Un lote no puede salirse de la finca ni montarse sobre otro.",
       "farmArea": "Tu finca mide",
-      "hectares": "{area} ha",
-      "unassigned": "sin lote: {area} ha",
+      "unassigned": "sin lote: {area}",
       "lotCount": "{count, plural, =0 {Sin lotes} one {# lote} other {# lotes}}",
       "addLot": "Marcar un lote",
       "finishLots": "Terminar de marcar",
@@ -74,6 +73,10 @@
         "overlapsLot": "Este lote ocupa parte de {lotName}. Márcalo en un espacio libre de la finca.",
         "dismiss": "Entendido"
       }
+    },
+    "area": {
+      "squareMeters": "{value} m²",
+      "hectares": "{value} ha"
     }
   }
 }

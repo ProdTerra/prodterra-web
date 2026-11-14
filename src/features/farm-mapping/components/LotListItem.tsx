@@ -1,7 +1,8 @@
 import { Trash2 } from "lucide-react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import type { Lot } from "../application/farmMappingState";
 import { lotDisplayName } from "../application/lotDisplayName";
+import { useAreaFormatter } from "./useAreaFormatter";
 
 type LotListItemProps = {
   lot: Lot;
@@ -11,7 +12,7 @@ type LotListItemProps = {
 
 export function LotListItem({ lot, onRename, onRemove }: LotListItemProps) {
   const translate = useTranslations("farmMapping.lots");
-  const format = useFormatter();
+  const formatArea = useAreaFormatter();
   const defaultName = translate("defaultName", { number: lot.number });
   const displayName = lotDisplayName(lot, () => defaultName);
   const inputId = `lot-name-${lot.shapeId}`;
@@ -30,9 +31,7 @@ export function LotListItem({ lot, onRename, onRemove }: LotListItemProps) {
         className="lot-item__name"
       />
       <span className="lot-item__area">
-        {translate("hectares", {
-          area: format.number(lot.areaInHectares, { maximumFractionDigits: 2 }),
-        })}
+        {formatArea(lot.areaInHectares)}
       </span>
       <button
         type="button"

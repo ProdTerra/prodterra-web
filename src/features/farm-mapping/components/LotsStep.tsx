@@ -1,7 +1,8 @@
 import { Check, Plus, Undo2 } from "lucide-react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import type { DrawnShape, Lot } from "../application/farmMappingState";
 import { LotListItem } from "./LotListItem";
+import { useAreaFormatter } from "./useAreaFormatter";
 
 type LotsStepProps = {
   farmBoundary: DrawnShape;
@@ -31,9 +32,7 @@ export function LotsStep({
   onRedrawFarm,
 }: LotsStepProps) {
   const translate = useTranslations("farmMapping.lots");
-  const format = useFormatter();
-  const formatHectares = (area: number) =>
-    translate("hectares", { area: format.number(area, { maximumFractionDigits: 2 }) });
+  const formatArea = useAreaFormatter();
   const lotsArea = lots.reduce((total, lot) => total + lot.areaInHectares, 0);
   const unassignedArea = Math.max(farmBoundary.areaInHectares - lotsArea, 0);
 
@@ -44,10 +43,10 @@ export function LotsStep({
 
       <div className="farm-area">
         <span className="farm-area__label">{translate("farmArea")}</span>
-        <span className="farm-area__value">{formatHectares(farmBoundary.areaInHectares)}</span>
+        <span className="farm-area__value">{formatArea(farmBoundary.areaInHectares)}</span>
         <span className="farm-area__detail">
           {translate("lotCount", { count: lots.length })}
-          {lots.length > 0 && <>, {translate("unassigned", { area: format.number(unassignedArea, { maximumFractionDigits: 2 }) })}</>}
+          {lots.length > 0 && <>, {translate("unassigned", { area: formatArea(unassignedArea) })}</>}
         </span>
       </div>
 

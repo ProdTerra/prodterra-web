@@ -47,8 +47,7 @@
       "title": "Split your farm into lots",
       "hint": "Mark each part where you grow something different. A lot can't go outside the farm or overlap another lot.",
       "farmArea": "Your farm measures",
-      "hectares": "{area} ha",
-      "unassigned": "not in a lot: {area} ha",
+      "unassigned": "not in a lot: {area}",
       "lotCount": "{count, plural, =0 {No lots} one {# lot} other {# lots}}",
       "addLot": "Mark a lot",
       "finishLots": "Done marking",
@@ -74,6 +73,10 @@
         "overlapsLot": "This lot covers part of {lotName}. Mark it in a free part of the farm.",
         "dismiss": "Got it"
       }
+    },
+    "area": {
+      "squareMeters": "{value} m²",
+      "hectares": "{value} ha"
     }
   }
 }
