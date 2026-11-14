@@ -326,7 +326,7 @@ export function FarmMappingScreen() {
           language={locale}
         />
         <span aria-hidden className="map-crosshair" data-subtle={state.step !== "locate" || undefined} />
-        <MapPositionChip center={mapCenter} />
+        {isMapReady && <MapPositionChip center={mapCenter} />}
         {drawingKind && (
           <p role="status" className="map-hint">
             {drawingKind === "farm" ? translate("boundary.drawingHint") : translate("lots.drawingHint")}
