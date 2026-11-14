@@ -34,6 +34,8 @@ body {
 
 .visually-hidden {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 1px;
   height: 1px;
   overflow: hidden;
@@ -53,6 +55,7 @@ body {
 }
 
 .farm-mapping__panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -331,6 +334,7 @@ body {
 }
 
 .lot-item {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   align-items: center;
