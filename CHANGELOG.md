@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Fixed
+- When an older photo is zoomed past its detail, the map says so ("Foto de …: no tiene más detalle").
 - Older satellite photos no longer log "Failed to fetch" at the closest zoom: Wayback has no level 19 photos, so the map enlarges the level 18 photo instead.
 
 ### Added

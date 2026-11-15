@@ -10,6 +10,7 @@ const configUrl = "https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com
 const tilemapUrl = "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tilemap";
 const datePattern = /(\d{4}-\d{2}-\d{2})/;
 const detailZoom = 17;
+export const waybackMaximumZoom = 18;
 const maximumVersions = 12;
 
 let releasesRequest: Promise<WaybackRelease[]> | null = null;

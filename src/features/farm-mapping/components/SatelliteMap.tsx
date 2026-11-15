@@ -21,6 +21,7 @@ import {
 } from "../infrastructure/drawingSession";
 import type { MapView } from "../infrastructure/farmDraftStorage";
 import { createSatelliteStyleUrl } from "../infrastructure/satelliteBasemap";
+import { waybackMaximumZoom } from "../infrastructure/waybackImagery";
 
 export type MapCoordinates = { longitude: number; latitude: number };
 
@@ -62,8 +63,8 @@ const mapWorkerUrl = "/vendor/maplibre-gl-worker.mjs";
 
 setWorkerUrl(mapWorkerUrl);
 const farmZoom = 17;
+
 const imagerySourceId = "wayback-imagery";
-const waybackMaximumZoom = 18;
 
 function applyImagery(map: MapLibreMap, tileUrl: string | null): void {
   if (!map.isStyleLoaded()) {
