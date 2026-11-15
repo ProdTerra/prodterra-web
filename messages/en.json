@@ -572,18 +572,56 @@
     "deleteCancel": "Keep it",
     "retry": "Try again"
   },
-  "print": {
+  "calendarExport": {
+    "open": "Download PDF",
+    "title": "Download PDF",
+    "description": "Choose what goes in the PDF. Each month is one page.",
+    "calendar": {
+      "label": "Calendar",
+      "farmer": "Your calendar",
+      "recommended": "Recommended",
+      "recommendedLater": "The recommended calendar is downloaded from the “Recommended” step, after analyzing your plan."
+    },
+    "period": {
+      "label": "Period",
+      "all": "Whole plan",
+      "range": "Choose months",
+      "from": "From",
+      "to": "To",
+      "pages": "{months, plural, one {# month} other {# months}} → {months, plural, one {# page} other {# pages}}"
+    },
+    "paper": {
+      "label": "Paper size",
+      "A4": "A4",
+      "LETTER": "Letter"
+    },
+    "lots": {
+      "label": "Lots",
+      "counter": "{selected} of {maximum}",
+      "limit": "At most 5 lots per PDF so they stay readable. Export another PDF for the other lots.",
+      "none": "Choose at least one lot."
+    },
     "download": "Download PDF",
-    "farmerTitle": "Your rotation calendar",
-    "analysisTitle": "Your plan and the recommended one",
-    "subtitle": "From {start}. Generated on {today}.",
-    "farmerRow": "Your plan",
-    "recommendedRow": "Recommended",
-    "line": "{name}: {start} to {end}",
-    "recommendedLine": "Recommended. {name}: {start} to {end}",
-    "statusOk": "Fine",
-    "statusWatch": "Watch",
-    "statusRisk": "Risk",
-    "rest": "Rest"
+    "generating": "Generating…",
+    "cancel": "Cancel",
+    "errorTitle": "We could not create the PDF",
+    "error": "Try again. If it keeps failing, reload the page.",
+    "fileSlug": {
+      "farmer": "your-calendar",
+      "recommended": "recommended"
+    },
+    "pdf": {
+      "brand": "ProdTerra",
+      "defaultFarmName": "My farm",
+      "period": "{from} to {to}",
+      "climateTitle": "Typical climate in {month}",
+      "temperature": "{min} to {max} °C",
+      "frost": "Frost possible",
+      "rain": "About {value} L/m² in the month",
+      "humidity": "{value} % humidity",
+      "sun": "{value} kWh/m² of sun per day",
+      "sourceNote": "Typical climate from NASA POWER, not a forecast",
+      "page": "Page {page} of {total}"
+    }
   }
 }

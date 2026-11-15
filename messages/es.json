@@ -572,18 +572,56 @@
     "deleteCancel": "Conservarla",
     "retry": "Intentar otra vez"
   },
-  "print": {
+  "calendarExport": {
+    "open": "Descargar PDF",
+    "title": "Descargar PDF",
+    "description": "Elige qué va en el PDF. Cada mes sale en una página.",
+    "calendar": {
+      "label": "Calendario",
+      "farmer": "Tu calendario",
+      "recommended": "Recomendado",
+      "recommendedLater": "El calendario recomendado se descarga desde el paso «Recomendado», después de analizar tu plan."
+    },
+    "period": {
+      "label": "Periodo",
+      "all": "Todo el plan",
+      "range": "Elegir meses",
+      "from": "Desde",
+      "to": "Hasta",
+      "pages": "{months, plural, one {# mes} other {# meses}} → {months, plural, one {# página} other {# páginas}}"
+    },
+    "paper": {
+      "label": "Tamaño de papel",
+      "A4": "A4",
+      "LETTER": "Carta"
+    },
+    "lots": {
+      "label": "Lotes",
+      "counter": "{selected} de {maximum}",
+      "limit": "Máximo 5 lotes por PDF para que se lean bien. Exporta otro PDF para los demás lotes.",
+      "none": "Elige al menos un lote."
+    },
     "download": "Descargar PDF",
-    "farmerTitle": "Tu calendario de rotación",
-    "analysisTitle": "Tu plan y el recomendado",
-    "subtitle": "Desde el {start}. Generado el {today}.",
-    "farmerRow": "Tu plan",
-    "recommendedRow": "Recomendado",
-    "line": "{name}: {start} a {end}",
-    "recommendedLine": "Recomendado. {name}: {start} a {end}",
-    "statusOk": "Bien",
-    "statusWatch": "Vigilar",
-    "statusRisk": "Riesgo",
-    "rest": "Descanso"
+    "generating": "Generando…",
+    "cancel": "Cancelar",
+    "errorTitle": "No pudimos crear el PDF",
+    "error": "Inténtalo otra vez. Si sigue fallando, recarga la página.",
+    "fileSlug": {
+      "farmer": "tu-calendario",
+      "recommended": "recomendado"
+    },
+    "pdf": {
+      "brand": "ProdTerra",
+      "defaultFarmName": "Mi finca",
+      "period": "{from} a {to}",
+      "climateTitle": "Clima típico de {month}",
+      "temperature": "{min} a {max} °C",
+      "frost": "Puede helar",
+      "rain": "Unos {value} L/m² en el mes",
+      "humidity": "{value} % de humedad",
+      "sun": "{value} kWh/m² de sol al día",
+      "sourceNote": "Clima típico NASA POWER, no es un pronóstico",
+      "page": "Página {page} de {total}"
+    }
   }
 }
