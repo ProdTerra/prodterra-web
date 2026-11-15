@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.7.0 - 2026-11-15
 
 ### Added
 - Illustrated icons and fixed colors for the crops of the real catalog: eggplant, cilantro, sweet pepper, avocado, cassava, sugarcane, coffee and maize.
