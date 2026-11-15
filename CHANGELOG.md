@@ -19,6 +19,7 @@
 - Place search with the ArcGIS geocoder, the split panel with lengthwise, crosswise and grid layouts aligned to the farm's long axis.
 
 ### Changed
+- Rotation timeline editor: durations in days, weeks or months with a typed field and quick rest choices (3, 7, 14, 30 days); blocks from 1 day; "Agregar aquí" between blocks opens a crop or rest picker (bottom sheet on mobile); each block has Subir, Bajar, Duplicar and Quitar with Deshacer; a sticky strip shows the whole 24 months and what is left (right column on desktop). Removed the reference badges, min/max hints and the separate capacity bar.
 - Step 4 always opens with "¿Desde cuándo quieres planificar?", and a new farm no longer reuses the start date of the previous one.
 - The flow now has six steps: locate, boundary, lots, your rotation, your calendar and recommended. The recommended step evaluates the whole rotation plan.
 

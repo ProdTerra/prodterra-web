@@ -20,7 +20,10 @@ export type RotationPlanAction =
   | { type: "startDateChosen"; startDate: string }
   | { type: "previousUseChosen"; lotId: string; previousUse: PreviousUse }
   | { type: "irrigationChosen"; lotId: string; hasIrrigation: boolean }
-  | { type: "blockAdded"; lotId: string; blockId: string; block: NewBlock }
+  | { type: "blockAdded"; lotId: string; blockId: string; block: NewBlock; index?: number }
+  | { type: "blockMoved"; lotId: string; blockId: string; direction: "up" | "down" }
+  | { type: "blockDuplicated"; lotId: string; blockId: string; newBlockId: string }
+  | { type: "blockRestored"; lotId: string; block: RotationBlock; index: number }
   | { type: "blockDurationChanged"; lotId: string; blockId: string; durationInDays: number }
   | { type: "blockDurationReset"; lotId: string; blockId: string; referenceInDays: number }
   | { type: "blockRemoved"; lotId: string; blockId: string }
@@ -40,12 +43,40 @@ function createBlock(blocks: RotationBlock[], blockId: string, newBlock: NewBloc
   return { id: blockId, kind: "crop", cropKey: newBlock.cropKey, durationInDays: durationForNewBlock(blocks, requestedDays) };
 }
 
-function addBlock(plan: RotationPlan, lotId: string, blockId: string, newBlock: NewBlock): RotationPlan {
+function insertAt(blocks: RotationBlock[], block: RotationBlock, index: number): RotationBlock[] {
+  const position = Math.max(0, Math.min(index, blocks.length));
+  return [...blocks.slice(0, position), block, ...blocks.slice(position)];
+}
+
+function addBlock(plan: RotationPlan, lotId: string, blockId: string, newBlock: NewBlock, index?: number): RotationPlan {
   const blocks = rotationOf(plan, lotId).blocks;
   if (!canAddBlock(blocks)) {
     return plan;
   }
-  return updateLot(plan, lotId, { blocks: [...blocks, createBlock(blocks, blockId, newBlock)] });
+  return updateLot(plan, lotId, { blocks: insertAt(blocks, createBlock(blocks, blockId, newBlock), index ?? blocks.length) });
+}
+
+function moveBlock(plan: RotationPlan, lotId: string, blockId: string, direction: "up" | "down"): RotationPlan {
+  const blocks = rotationOf(plan, lotId).blocks;
+  const index = blocks.findIndex((block) => block.id === blockId);
+  const target = direction === "up" ? index - 1 : index + 1;
+  if (index < 0 || target < 0 || target >= blocks.length) {
+    return plan;
+  }
+  const reordered = [...blocks];
+  [reordered[index], reordered[target]] = [reordered[target], reordered[index]];
+  return updateLot(plan, lotId, { blocks: reordered });
+}
+
+function duplicateBlock(plan: RotationPlan, lotId: string, blockId: string, newBlockId: string): RotationPlan {
+  const blocks = rotationOf(plan, lotId).blocks;
+  const index = blocks.findIndex((block) => block.id === blockId);
+  if (index < 0 || !canAddBlock(blocks)) {
+    return plan;
+  }
+  const original = blocks[index];
+  const copy = { ...original, id: newBlockId, durationInDays: durationForNewBlock(blocks, original.durationInDays) };
+  return updateLot(plan, lotId, { blocks: insertAt(blocks, copy, index + 1) });
 }
 
 function resizeBlock(plan: RotationPlan, lotId: string, blockId: string, requestedDays: number): RotationPlan {
@@ -81,7 +112,13 @@ export function rotationPlanReducer(plan: RotationPlan, action: RotationPlanActi
     case "irrigationChosen":
       return updateLot(plan, action.lotId, { hasIrrigation: action.hasIrrigation });
     case "blockAdded":
-      return addBlock(plan, action.lotId, action.blockId, action.block);
+      return addBlock(plan, action.lotId, action.blockId, action.block, action.index);
+    case "blockMoved":
+      return moveBlock(plan, action.lotId, action.blockId, action.direction);
+    case "blockDuplicated":
+      return duplicateBlock(plan, action.lotId, action.blockId, action.newBlockId);
+    case "blockRestored":
+      return updateLot(plan, action.lotId, { blocks: insertAt(rotationOf(plan, action.lotId).blocks, action.block, action.index) });
     case "blockDurationChanged":
       return resizeBlock(plan, action.lotId, action.blockId, action.durationInDays);
     case "blockDurationReset":

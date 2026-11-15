@@ -28,8 +28,8 @@ describe("rotationPlanReducer", () => {
   });
 
   it("changes, resets and removes a block within the limits", () => {
-    const changed = apply([{ type: "blockDurationChanged", lotId: "a", blockId: "b1", durationInDays: 5 }], potatoThenRest);
-    expect(rotationOf(changed, "a").blocks[0].durationInDays).toBe(14);
+    const changed = apply([{ type: "blockDurationChanged", lotId: "a", blockId: "b1", durationInDays: 0 }], potatoThenRest);
+    expect(rotationOf(changed, "a").blocks[0].durationInDays).toBe(1);
     const reset = apply([{ type: "blockDurationReset", lotId: "a", blockId: "b1", referenceInDays: 120 }], changed);
     expect(rotationOf(reset, "a").blocks[0].durationInDays).toBe(120);
     const removed = apply([{ type: "blockRemoved", lotId: "a", blockId: "b2" }], reset);
@@ -62,5 +62,34 @@ describe("rotationPlanReducer", () => {
 
   it("restores a saved plan", () => {
     expect(apply([{ type: "planRestored", plan: potatoThenRest }])).toEqual(potatoThenRest);
+  });
+
+  it("inserts a block at a position, moves it and duplicates it", () => {
+    const plan = apply(
+      [
+        { type: "blockAdded", lotId: "a", blockId: "carrot", block: { kind: "crop", cropKey: "carrot", referenceInDays: 180 }, index: 0 },
+        { type: "blockMoved", lotId: "a", blockId: "carrot", direction: "down" },
+        { type: "blockDuplicated", lotId: "a", blockId: "carrot", newBlockId: "carrot-copy" },
+      ],
+      potatoThenRest,
+    );
+    const blocks = rotationOf(plan, "a").blocks;
+    expect(blocks.map((block) => block.id)).toEqual([blocks[0].id, "carrot", "carrot-copy", blocks[3].id]);
+    expect(blocks[2]).toEqual({ ...blocks[1], id: "carrot-copy" });
+  });
+
+  it("accepts a rest of 3 days and puts a removed block back where it was", () => {
+    const original = rotationOf(potatoThenRest, "a").blocks;
+    const rest = original.find((block) => block.kind === "rest")!;
+    const shortened = apply([{ type: "blockDurationChanged", lotId: "a", blockId: rest.id, durationInDays: 3 }], potatoThenRest);
+    expect(rotationOf(shortened, "a").blocks.find((block) => block.id === rest.id)?.durationInDays).toBe(3);
+    const restored = apply(
+      [
+        { type: "blockRemoved", lotId: "a", blockId: original[0].id },
+        { type: "blockRestored", lotId: "a", block: original[0], index: 0 },
+      ],
+      potatoThenRest,
+    );
+    expect(rotationOf(restored, "a").blocks).toEqual(original);
   });
 });

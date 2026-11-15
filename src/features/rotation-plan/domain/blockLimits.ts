@@ -1,11 +1,10 @@
 import type { RotationBlock } from "./rotationPlan";
 
-export const minimumBlockDays = 14;
+export const minimumBlockDays = 1;
 export const maximumBlockDays = 730;
 export const maximumPlanDays = 730;
 export const defaultCropDays = 90;
 export const defaultRestDays = 28;
-export const daysPerStep = 7;
 
 export function totalDays(blocks: RotationBlock[]): number {
   return blocks.reduce((sum, block) => sum + block.durationInDays, 0);

@@ -6,15 +6,17 @@ const potato: RotationBlock = { id: "a", kind: "crop", cropKey: "potato", durati
 const longRest: RotationBlock = { id: "b", kind: "rest", durationInDays: 600 };
 
 describe("block limits", () => {
-  it("keeps every block between 14 and 730 days and inside the 730-day plan", () => {
-    expect(clampBlockDuration([potato], "a", 7)).toBe(14);
+  it("keeps every block between 1 and 730 days and inside the 730-day plan", () => {
+    expect(clampBlockDuration([potato], "a", 0)).toBe(1);
+    expect(clampBlockDuration([potato], "a", 3)).toBe(3);
     expect(clampBlockDuration([potato], "a", 900)).toBe(730);
     expect(clampBlockDuration([potato, longRest], "a", 200)).toBe(130);
   });
 
-  it("knows the room left and blocks adding when less than 14 days remain", () => {
+  it("knows the room left and blocks adding only when the plan is full", () => {
     expect(remainingDays([potato, longRest])).toBe(10);
-    expect(canAddBlock([potato, longRest])).toBe(false);
+    expect(canAddBlock([potato, longRest])).toBe(true);
+    expect(canAddBlock([potato, { ...longRest, durationInDays: 610 }])).toBe(false);
     expect(canAddBlock([potato])).toBe(true);
   });
 
