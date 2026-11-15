@@ -42,7 +42,7 @@ export function AccountMenu() {
 
   if (!user) {
     return (
-      <button type="button" onClick={openAuthDialog} className="button button--secondary button--small">
+      <button type="button" onClick={() => openAuthDialog()} className="button button--secondary button--small">
         <LogIn aria-hidden size={16} />
         {translate("openLogin")}
       </button>

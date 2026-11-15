@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { Dialog } from "@/shared/components/Dialog";
 import { AccountMenu } from "@/features/account/components/AccountMenu";
+import { SavePlanButton } from "@/features/saved-farms/components/SavePlanButton";
 import { CalendarStep } from "@/features/calendar/components/CalendarStep";
 import { FarmerCalendarStep } from "@/features/rotation-plan/components/FarmerCalendarStep";
 import { PlanStep } from "@/features/rotation-plan/components/PlanStep";
@@ -412,7 +413,11 @@ export function FarmMappingScreen() {
           />
         )}
         {state.step === "analysis" && (
-          <CalendarStep lots={state.lots} onBack={() => dispatch({ type: "myCalendarRequested" })} />
+          <CalendarStep
+            lots={state.lots}
+            onBack={() => dispatch({ type: "myCalendarRequested" })}
+            actions={<SavePlanButton farmState={state} />}
+          />
         )}
       </section>
 

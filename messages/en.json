@@ -391,5 +391,43 @@
       "unavailable": "We couldn't connect. Check your internet connection and try again.",
       "notAuthenticated": "Your session ended. Log in again."
     }
+  },
+  "savedFarms": {
+    "saveAction": "Save my plan",
+    "defaultName": "My farm",
+    "dialogTitle": "Save to My farms",
+    "dialogDescription": "Save the farm, its lots and the rotation to see or change them later.",
+    "nameLabel": "Farm name",
+    "nameHint": "For example: La Esperanza farm.",
+    "cancel": "Cancel",
+    "confirmSave": "Save",
+    "saving": "Saving…",
+    "saved": "You saved \"{name}\".",
+    "goToFarms": "See My farms",
+    "errors": {
+      "nameRequired": "Enter a name for the farm.",
+      "nameTooLong": "The name can have up to 80 characters.",
+      "notAuthenticated": "Your session ended. Log in again to save.",
+      "notFound": "We couldn't find that farm. It may have been deleted.",
+      "unavailable": "We couldn't connect. Check your internet connection and try again."
+    },
+    "pageTitle": "My farms",
+    "pageHint": "The farms you saved, with their rotation and analysis.",
+    "backToPlanner": "Back to the planner",
+    "loading": "Looking for your farms…",
+    "emptyTitle": "You have no saved farms yet",
+    "empty": "Plan a farm and tap \"Save my plan\" at the end to see it here.",
+    "planFarm": "Plan a farm",
+    "loginTitle": "Log in to see your farms",
+    "loginHint": "Your farms are saved in your account.",
+    "lots": "{count, plural, one {# lot} other {# lots}}",
+    "updated": "Saved on {date}",
+    "open": "Open",
+    "delete": "Delete",
+    "deleteTitle": "Delete \"{name}\"?",
+    "deleteDescription": "The saved farm and its rotation will be deleted. What you have open in the planner doesn't change.",
+    "deleteConfirm": "Delete farm",
+    "deleteCancel": "Keep it",
+    "retry": "Try again"
   }
 }
