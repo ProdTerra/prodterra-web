@@ -2,11 +2,12 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { ChevronDown, CirclePause, GripVertical, RotateCcw, Sprout } from "lucide-react";
+import { ChevronDown, CirclePause, GripVertical, RotateCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useId } from "react";
 import type { ScheduledBlock } from "../domain/rotationSchedule";
 import { BlockActionsMenu } from "./BlockActionsMenu";
+import { CropIcon } from "./CropIcon";
 import { DurationField } from "./DurationField";
 import { usePlanFormat } from "./usePlanFormat";
 
@@ -38,7 +39,6 @@ export function RotationBlockCard(props: RotationBlockCardProps) {
   const { block } = scheduled;
   const isCrop = block.kind === "crop";
   const isChanged = isCrop && referenceInDays !== null && referenceInDays !== block.durationInDays;
-  const Icon = isCrop ? Sprout : CirclePause;
   const days = (count: number) => translate("dayCount", { days: count });
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: block.id });
   const dates = { start: shortDate(scheduled.startDate), end: shortDate(scheduled.endDate) };
@@ -68,8 +68,8 @@ export function RotationBlockCard(props: RotationBlockCardProps) {
           <GripVertical aria-hidden size={18} />
         </button>
         <button type="button" aria-expanded={isExpanded} aria-controls={editorId} onClick={props.onToggle} className="rotation-block__summary">
-          <span aria-hidden className="rotation-block__marker">
-            <Icon size={16} />
+          <span aria-hidden className="rotation-block__marker" data-kind={block.kind}>
+            {isCrop ? <CropIcon cropKey={block.cropKey} size={30} /> : <CirclePause size={16} />}
           </span>
           <span className="rotation-block__text">
             <span className="rotation-block__title">

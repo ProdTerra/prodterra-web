@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
 import type { PreviousUse } from "../domain/rotationPlan";
+import { CropIcon } from "./CropIcon";
 import { CropPickerSheet, type PickerCrop } from "./CropPickerSheet";
 
 const restValue = "fallow";
@@ -38,10 +39,10 @@ export function PreviousUseField({ previousUse, crops, suggestedKeys, onChange }
   const selectedValue = selectedValueOf(previousUse);
   const quickKeys = [...new Set([...(previousUse?.kind === "crop" ? [previousUse.cropKey] : []), ...suggestedKeys])].slice(0, maximumQuickCrops);
   const quickCrops = quickKeys.map((key) => crops.find((crop) => crop.key === key)).filter((crop): crop is PickerCrop => crop !== undefined);
-  const options = [
+  const options: { value: string; label: string; cropKey?: string }[] = [
     { value: unknownValue, label: translate("unknown") },
     { value: restValue, label: translate("rest") },
-    ...quickCrops.map((crop) => ({ value: crop.key, label: crop.name })),
+    ...quickCrops.map((crop) => ({ value: crop.key, label: crop.name, cropKey: crop.key })),
   ];
 
   function choose(value: string) {
@@ -64,7 +65,9 @@ export function PreviousUseField({ previousUse, crops, suggestedKeys, onChange }
             aria-checked={selectedValue === option.value}
             onClick={() => choose(option.value)}
             className="choice-chip"
+            data-with-icon={option.cropKey ? true : undefined}
           >
+            {option.cropKey && <CropIcon cropKey={option.cropKey} size={22} />}
             {option.label}
           </button>
         ))}
