@@ -148,6 +148,9 @@ export function FarmMappingScreen() {
     if (draft) {
       mapRef.current?.restoreShapes(toRestorableShapes(draft));
     }
+    if (draft?.farmBoundary) {
+      mapRef.current?.fitToArea(draft.farmBoundary.geometry);
+    }
   }
 
   function handleMapViewChanged(view: MapView) {
