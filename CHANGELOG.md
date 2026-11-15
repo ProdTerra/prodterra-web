@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Step 1: tapping or clicking the map moves the farm marker to that point and zooms in, so the farmer can mark the farm without dragging the map.
+
 ## 0.2.0 - 2026-11-15
 
 ### Added

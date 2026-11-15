@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { Dialog } from "@/shared/components/Dialog";
 import { AccountMenu } from "@/features/account/components/AccountMenu";
 import { SavePlanButton } from "@/features/saved-farms/components/SavePlanButton";
@@ -304,6 +304,15 @@ export function FarmMappingScreen() {
     dispatch({ type: "boundaryReset" });
   }
 
+  const handleMapTapped = useCallback(
+    (point: MapCoordinates) => {
+      if (state.step === "locate") {
+        mapRef.current?.flyTo(point);
+      }
+    },
+    [state.step],
+  );
+
   function handleConfirmLocation() {
     const center = mapRef.current?.getCenter();
     if (center) {
@@ -433,6 +442,7 @@ export function FarmMappingScreen() {
             onViewChanged={handleMapViewChanged}
             onShapeFinished={handleShapeFinished}
             onDrawingProgress={setCanCloseShape}
+            onMapTapped={handleMapTapped}
             label={translate("mapLabel")}
             language={locale}
           />

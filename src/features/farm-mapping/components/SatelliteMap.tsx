@@ -51,6 +51,7 @@ type SatelliteMapProps = {
   onViewChanged: (view: MapView) => void;
   onShapeFinished: (shape: FinishedShape) => void;
   onDrawingProgress: (canClose: boolean) => void;
+  onMapTapped: (point: MapCoordinates) => void;
   label: string;
   language: string;
   handleRef: Ref<SatelliteMapHandle>;
@@ -104,6 +105,7 @@ export default function SatelliteMap({
   onViewChanged,
   onShapeFinished,
   onDrawingProgress,
+  onMapTapped,
   label,
   language,
   handleRef,
@@ -112,13 +114,13 @@ export default function SatelliteMap({
   const mapRef = useRef<MapLibreMap | null>(null);
   const drawingRef = useRef<DrawingSession | null>(null);
   const labelMarkersRef = useRef<Marker[]>([]);
-  const callbacksRef = useRef({ onReady, onViewChanged, onShapeFinished, onDrawingProgress });
+  const callbacksRef = useRef({ onReady, onViewChanged, onShapeFinished, onDrawingProgress, onMapTapped });
   const initialViewRef = useRef(initialView);
   const initialLanguageRef = useRef(language);
 
   useEffect(() => {
-    callbacksRef.current = { onReady, onViewChanged, onShapeFinished, onDrawingProgress };
-  }, [onReady, onViewChanged, onShapeFinished, onDrawingProgress]);
+    callbacksRef.current = { onReady, onViewChanged, onShapeFinished, onDrawingProgress, onMapTapped };
+  }, [onReady, onViewChanged, onShapeFinished, onDrawingProgress, onMapTapped]);
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -141,6 +143,7 @@ export default function SatelliteMap({
       callbacksRef.current.onReady();
     });
     map.once("idle", () => collapseAttribution(map));
+    map.on("click", (event) => callbacksRef.current.onMapTapped({ longitude: event.lngLat.lng, latitude: event.lngLat.lat }));
     map.on("moveend", () => {
       const center = map.getCenter();
       callbacksRef.current.onViewChanged({
