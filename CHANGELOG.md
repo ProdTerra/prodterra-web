@@ -19,6 +19,7 @@
 - Place search with the ArcGIS geocoder, the split panel with lengthwise, crosswise and grid layouts aligned to the farm's long axis.
 
 ### Changed
+- The 24-month strip shows thin dashed guides with a small notch at 6 meses, 1 año and 18 meses, so each mark lines up with the crops on the bar.
 - The 24-month strip marks Inicio, 6 meses, 1 año, 18 meses and 2 años with the month and full year (only Inicio, 1 año and 2 años on phones), and "Usar N días" sits next to the duration field.
 - The 24-month strip now sits above the blocks at full width with crop names inside and month labels underneath; the "Quedan … meses" line was removed.
 - Timeline editor: blocks are reordered by dragging the handle (mouse, touch or keyboard), and new blocks are added only at the end; crop rows read "Siembra … · cosecha …" and the duration editor asks "¿Cuánto tiempo pasa de la siembra a la cosecha?"; the time left is shown in whole months; each crop keeps the same color when blocks are reordered.
