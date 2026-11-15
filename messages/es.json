@@ -21,7 +21,7 @@
     },
     "locate": {
       "title": "¿Dónde está tu finca?",
-      "hint": "Busca tu pueblo o usa tu ubicación. Después mueve el mapa hasta ver tu terreno en el centro.",
+      "hint": "Busca tu pueblo, usa tu ubicación o toca el mapa donde está tu finca.",
       "searchLabel": "Buscar un lugar",
       "searchPlaceholder": "Ej.: Tierra Blanca, Cartago",
       "searchAction": "Buscar",
@@ -36,7 +36,7 @@
       "locationUnavailable": "No pudimos encontrar tu ubicación. Búscala por nombre.",
       "confirm": "Mi finca está aquí",
       "locationApproximateTitle": "Tu ubicación es aproximada",
-      "locationApproximate": "Puede estar a unos {distance} de donde estás, porque este equipo no tiene GPS. Busca tu pueblo arriba o mueve el mapa hasta tu finca.",
+      "locationApproximate": "Puede estar a unos {distance} de donde estás, porque este equipo no tiene GPS. Busca tu pueblo arriba o toca el mapa donde está tu finca.",
       "meters": "{meters} m",
       "kilometers": "{kilometers} km"
     },

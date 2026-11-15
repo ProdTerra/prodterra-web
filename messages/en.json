@@ -21,7 +21,7 @@
     },
     "locate": {
       "title": "Where is your farm?",
-      "hint": "Search for your town or use your location. Then move the map until your land is in the center.",
+      "hint": "Search for your town, use your location or tap the map where your farm is.",
       "searchLabel": "Search for a place",
       "searchPlaceholder": "E.g. Tierra Blanca, Cartago",
       "searchAction": "Search",
@@ -36,7 +36,7 @@
       "locationUnavailable": "We couldn't find your location. Search for it by name.",
       "confirm": "My farm is here",
       "locationApproximateTitle": "Your location is approximate",
-      "locationApproximate": "It may be about {distance} from where you are, because this device has no GPS. Search for your town above or move the map to your farm.",
+      "locationApproximate": "It may be about {distance} from where you are, because this device has no GPS. Search for your town above or tap the map where your farm is.",
       "meters": "{meters} m",
       "kilometers": "{kilometers} km"
     },
