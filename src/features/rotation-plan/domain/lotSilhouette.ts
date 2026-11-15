@@ -47,3 +47,35 @@ export function silhouetteBounds(lot: Polygon, boxSize: number, padding: number)
     north: centerLatitude + halfSide,
   };
 }
+
+const finestDegreesPerPixel = 3.2e-6;
+const smallestSnapshotPixels = 128;
+
+export type SnapshotFraming = { bounds: GeographicBounds; sizeInPixels: number; padding: number };
+
+export function snapshotFraming(lot: Polygon, boxSize: number, padding: number, largestPixels: number): SnapshotFraming {
+  const bounds = silhouetteBounds(lot, boxSize, padding);
+  const latitudeSpan = bounds.north - bounds.south;
+  const affordablePixels = Math.floor(latitudeSpan / finestDegreesPerPixel);
+  if (affordablePixels >= largestPixels) {
+    return { bounds, sizeInPixels: largestPixels, padding };
+  }
+  if (affordablePixels >= smallestSnapshotPixels) {
+    return { bounds, sizeInPixels: affordablePixels, padding };
+  }
+  const widening = (smallestSnapshotPixels * finestDegreesPerPixel) / latitudeSpan;
+  const centerLongitude = (bounds.west + bounds.east) / 2;
+  const centerLatitude = (bounds.south + bounds.north) / 2;
+  const halfLongitude = ((bounds.east - bounds.west) / 2) * widening;
+  const halfLatitude = (latitudeSpan / 2) * widening;
+  return {
+    bounds: {
+      west: centerLongitude - halfLongitude,
+      east: centerLongitude + halfLongitude,
+      south: centerLatitude - halfLatitude,
+      north: centerLatitude + halfLatitude,
+    },
+    sizeInPixels: smallestSnapshotPixels,
+    padding: (boxSize - (boxSize - padding * 2) / widening) / 2,
+  };
+}
