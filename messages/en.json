@@ -21,7 +21,7 @@
     },
     "locate": {
       "title": "Where is your farm?",
-      "hint": "Search for your town or use your location. Then move the map until your land is in the center.",
+      "hint": "Search for your town, use your location or tap the map where your farm is.",
       "searchLabel": "Search for a place",
       "searchPlaceholder": "E.g. Tierra Blanca, Cartago",
       "searchAction": "Search",
@@ -36,7 +36,7 @@
       "locationUnavailable": "We couldn't find your location. Search for it by name.",
       "confirm": "My farm is here",
       "locationApproximateTitle": "Your location is approximate",
-      "locationApproximate": "It may be about {distance} from where you are, because this device has no GPS. Search for your town above or move the map to your farm.",
+      "locationApproximate": "It may be about {distance} from where you are, because this device has no GPS. Search for your town above or tap the map where your farm is.",
       "meters": "{meters} m",
       "kilometers": "{kilometers} km"
     },
@@ -179,6 +179,21 @@
       "gridElevationRow": "Elevation of the area NASA POWER measures (~50 km)",
       "adjustmentRow": "Adjustment to temperatures",
       "adjustmentExplanation": "The farm is {difference} {direction, select, colder {higher} other {lower}} than that area. Air changes 6.5 °C for every 1,000 m of elevation (U.S. Standard Atmosphere 1976)."
+    },
+    "showMorePanel": "Show more of the panel",
+    "showMoreMap": "Show more of the map",
+    "imagery": {
+      "otherPhoto": "Other photo",
+      "photoOf": "Photo from {date}",
+      "title": "Photos of this place",
+      "hint": "If there are clouds, try a photo from another date.",
+      "loading": "Looking for photos…",
+      "failed": "We could not load other photos. Try again.",
+      "latest": "The most recent",
+      "noOthers": "There are no other photos of this place.",
+      "close": "Close",
+      "noMoreDetail": "{date} photo: no more detail",
+      "noMoreDetailHere": "This area has no more detail: the photo is enlarged"
     }
   },
   "calendar": {

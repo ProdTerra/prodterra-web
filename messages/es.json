@@ -21,7 +21,7 @@
     },
     "locate": {
       "title": "¿Dónde está tu finca?",
-      "hint": "Busca tu pueblo o usa tu ubicación. Después mueve el mapa hasta ver tu terreno en el centro.",
+      "hint": "Busca tu pueblo, usa tu ubicación o toca el mapa donde está tu finca.",
       "searchLabel": "Buscar un lugar",
       "searchPlaceholder": "Ej.: Tierra Blanca, Cartago",
       "searchAction": "Buscar",
@@ -36,7 +36,7 @@
       "locationUnavailable": "No pudimos encontrar tu ubicación. Búscala por nombre.",
       "confirm": "Mi finca está aquí",
       "locationApproximateTitle": "Tu ubicación es aproximada",
-      "locationApproximate": "Puede estar a unos {distance} de donde estás, porque este equipo no tiene GPS. Busca tu pueblo arriba o mueve el mapa hasta tu finca.",
+      "locationApproximate": "Puede estar a unos {distance} de donde estás, porque este equipo no tiene GPS. Busca tu pueblo arriba o toca el mapa donde está tu finca.",
       "meters": "{meters} m",
       "kilometers": "{kilometers} km"
     },
@@ -179,6 +179,21 @@
       "gridElevationRow": "Altura de la zona que mide NASA POWER (~50 km)",
       "adjustmentRow": "Ajuste a las temperaturas",
       "adjustmentExplanation": "La finca está {difference} más {direction, select, colder {arriba} other {abajo}} que esa zona. El aire cambia 6,5 °C por cada 1.000 m de altura (U.S. Standard Atmosphere 1976)."
+    },
+    "showMorePanel": "Ver más del panel",
+    "showMoreMap": "Ver más del mapa",
+    "imagery": {
+      "otherPhoto": "Otra foto",
+      "photoOf": "Foto de {date}",
+      "title": "Fotos de este lugar",
+      "hint": "Si hay nubes, prueba una foto de otra fecha.",
+      "loading": "Buscando fotos…",
+      "failed": "No pudimos traer otras fotos. Inténtalo otra vez.",
+      "latest": "La más reciente",
+      "noOthers": "No hay otras fotos de este lugar.",
+      "close": "Cerrar",
+      "noMoreDetail": "Foto de {date}: no tiene más detalle",
+      "noMoreDetailHere": "Esta zona no tiene más detalle: la foto se ve ampliada"
     }
   },
   "calendar": {

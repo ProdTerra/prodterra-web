@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 - 2026-11-15
+
+### Added
+- When an older photo is zoomed past its detail, the map says so ("Foto de …: no tiene más detalle").
+- "Otra foto" on the map: lists the dates when the satellite photo of that place changed (Esri World Imagery Wayback) and switches the map to an older photo, useful when clouds cover the farm; the choice is remembered in the browser.
+- Phones: in steps 1 to 3 the panel has a handle; swipe it up to cover most of the map for comfortable reading, swipe down or tap to see the full map again. The map resizes with its container.
+- Step 1: tapping or clicking the map moves the farm marker to that point and zooms in, so the farmer can mark the farm without dragging the map.
+
+### Fixed
+- The map uses the deepest satellite detail available at each place worldwide (checked with the Esri tilemap; for example level 19 in Costa Rica, 21 in Madrid) instead of requesting missing levels that left blank areas and 404 errors; beyond that level the photo is enlarged and the map says "Esta zona no tiene más detalle". The base imagery is now an app-managed layer, so older photos and language changes keep working.
+- Lot card photos retry up to 3 times when the imagery service fails for a moment, and show a soft loading shimmer meanwhile; only then they fall back to the colored shape.
+- Older satellite photos no longer log "Failed to fetch" at the closest zoom: Wayback has no level 19 photos, so the map enlarges the level 18 photo instead.
+
 ## 0.2.0 - 2026-11-15
 
 ### Added

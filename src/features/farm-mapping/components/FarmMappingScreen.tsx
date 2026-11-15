@@ -1,8 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { Dialog } from "@/shared/components/Dialog";
 import { AccountMenu } from "@/features/account/components/AccountMenu";
 import { SavePlanButton } from "@/features/saved-farms/components/SavePlanButton";
@@ -48,6 +48,11 @@ import type {
   MapCoordinates,
   SatelliteMapHandle,
 } from "./SatelliteMap";
+import { ImageryPicker } from "./ImageryPicker";
+import { PanelSheetHandle } from "./PanelSheetHandle";
+import { loadImageryChoice, saveImageryChoice } from "../infrastructure/imageryChoiceStorage";
+import { deepestImageryLevelAt, defaultImageryLevel } from "../infrastructure/imageryDetail";
+import { waybackMaximumZoom, type WaybackRelease } from "../infrastructure/waybackImagery";
 import { StepIndicator } from "./StepIndicator";
 
 const SatelliteMap = dynamic(() => import("./SatelliteMap"), { ssr: false });
@@ -104,8 +109,11 @@ function readInitialMapView(): MapView {
   return (storage && loadMapView(storage)) ?? cartagoHighlandsView;
 }
 
+const detailCheckZoom = 16;
+
 export function FarmMappingScreen() {
   const translate = useTranslations("farmMapping");
+  const format = useFormatter();
   const locale = useLocale();
   const [state, dispatch] = useReducer(
     farmMappingReducer,
@@ -125,6 +133,10 @@ export function FarmMappingScreen() {
   const [initialMapView] = useState(readInitialMapView);
   const [mapCenter, setMapCenter] = useState<MapCoordinates>(initialMapView);
   const [isMapReady, setIsMapReady] = useState(false);
+  const [isPanelExpanded, setIsPanelExpanded] = useState(false);
+  const [imageryRelease, setImageryRelease] = useState<WaybackRelease | null>(null);
+  const [mapZoom, setMapZoom] = useState(initialMapView.zoom);
+  const [deepestLevel, setDeepestLevel] = useState(defaultImageryLevel);
   const screenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -153,9 +165,23 @@ export function FarmMappingScreen() {
     }
   }, [state]);
 
+  function chooseImagery(release: WaybackRelease | null) {
+    setImageryRelease(release);
+    mapRef.current?.showImagery(release?.tileUrl ?? null);
+    const storage = getBrowserStorage();
+    if (storage) {
+      saveImageryChoice(storage, release);
+    }
+  }
+
   function handleMapReady() {
     setIsMapReady(true);
     const storage = getBrowserStorage();
+    const savedImagery = storage && loadImageryChoice(storage);
+    if (savedImagery) {
+      setImageryRelease(savedImagery);
+      mapRef.current?.showImagery(savedImagery.tileUrl);
+    }
     const draft = storage && loadFarmDraft(storage);
     if (draft) {
       mapRef.current?.restoreShapes(toRestorableShapes(draft));
@@ -167,6 +193,13 @@ export function FarmMappingScreen() {
 
   function handleMapViewChanged(view: MapView) {
     setMapCenter({ longitude: view.longitude, latitude: view.latitude });
+    setMapZoom(view.zoom);
+    if (view.zoom >= detailCheckZoom) {
+      void deepestImageryLevelAt(view).then((level) => {
+        setDeepestLevel(level);
+        mapRef.current?.setImageryDetailLevel(level);
+      });
+    }
     const storage = getBrowserStorage();
     if (storage) {
       saveMapView(storage, view);
@@ -304,6 +337,15 @@ export function FarmMappingScreen() {
     dispatch({ type: "boundaryReset" });
   }
 
+  const handleMapTapped = useCallback(
+    (point: MapCoordinates) => {
+      if (state.step === "locate") {
+        mapRef.current?.flyTo(point);
+      }
+    },
+    [state.step],
+  );
+
   function handleConfirmLocation() {
     const center = mapRef.current?.getCenter();
     if (center) {
@@ -345,8 +387,14 @@ export function FarmMappingScreen() {
   }
 
   return (
-    <div ref={screenRef} className="farm-mapping" data-layout={isFormStep ? "form" : "map"}>
+    <div
+      ref={screenRef}
+      className="farm-mapping"
+      data-layout={isFormStep ? "form" : "map"}
+      data-sheet={!isFormStep && isPanelExpanded ? "expanded" : undefined}
+    >
       <section className="farm-mapping__panel" data-step={state.step}>
+        {!isFormStep && <PanelSheetHandle isExpanded={isPanelExpanded} onChange={setIsPanelExpanded} />}
         <header className="panel-header">
           <span className="brand">ProdTerra</span>
           <div className="panel-header__actions">
@@ -433,6 +481,7 @@ export function FarmMappingScreen() {
             onViewChanged={handleMapViewChanged}
             onShapeFinished={handleShapeFinished}
             onDrawingProgress={setCanCloseShape}
+            onMapTapped={handleMapTapped}
             label={translate("mapLabel")}
             language={locale}
           />
@@ -442,6 +491,19 @@ export function FarmMappingScreen() {
             data-subtle={state.step !== "locate" || undefined}
           />
           {isMapReady && <MapPositionChip center={mapCenter} />}
+          {isMapReady && imageryRelease && mapZoom > waybackMaximumZoom && (
+            <p role="status" className="imagery-detail-notice">
+              {translate("imagery.noMoreDetail", { date: format.dateTime(new Date(`${imageryRelease.date}T00:00:00Z`), { month: "short", year: "numeric", timeZone: "UTC" }) })}
+            </p>
+          )}
+          {isMapReady && !imageryRelease && mapZoom > deepestLevel && (
+            <p role="status" className="imagery-detail-notice">
+              {translate("imagery.noMoreDetailHere")}
+            </p>
+          )}
+          {isMapReady && (
+            <ImageryPicker selected={imageryRelease} getCenter={() => mapRef.current?.getCenter() ?? null} onSelect={chooseImagery} />
+          )}
           {drawingKind && (
             <p role="status" className="map-hint">
               {drawingKind === "farm"

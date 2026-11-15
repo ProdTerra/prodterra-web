@@ -8,10 +8,14 @@ import { snapshotFraming, toSilhouettePoints } from "../domain/lotSilhouette";
 const boxSize = 64;
 const padding = 6;
 const snapshotPixels = 256;
+const maximumSnapshotAttempts = 3;
+const retryDelayInMilliseconds = 1200;
 
 export function LotSilhouette({ geometry, color }: { geometry: Polygon; color: string }) {
   const maskId = useId();
-  const [hasSnapshotFailed, setHasSnapshotFailed] = useState(false);
+  const [attempt, setAttempt] = useState(1);
+  const [isSnapshotLoaded, setIsSnapshotLoaded] = useState(false);
+  const hasSnapshotFailed = attempt > maximumSnapshotAttempts;
   const framing = snapshotFraming(geometry, boxSize, padding, snapshotPixels);
   const toPoints = (drawingPadding: number) =>
     toSilhouettePoints(geometry, boxSize, drawingPadding)
@@ -29,14 +33,16 @@ export function LotSilhouette({ geometry, color }: { geometry: Polygon; color: s
   }
 
   return (
-    <span aria-hidden className="lot-silhouette lot-silhouette--satellite">
+    <span aria-hidden className="lot-silhouette lot-silhouette--satellite" data-loading={isSnapshotLoaded ? undefined : true}>
       {/* eslint-disable-next-line @next/next/no-img-element -- Esri export images are not served through next/image. */}
       <img
-        src={satelliteSnapshotUrl(framing.bounds, framing.sizeInPixels)}
+        key={attempt}
+        src={`${satelliteSnapshotUrl(framing.bounds, framing.sizeInPixels)}${attempt > 1 ? `&attempt=${attempt}` : ""}`}
         alt=""
         loading="lazy"
         decoding="async"
-        onError={() => setHasSnapshotFailed(true)}
+        onLoad={() => setIsSnapshotLoaded(true)}
+        onError={() => window.setTimeout(() => setAttempt((current) => current + 1), retryDelayInMilliseconds)}
       />
       <svg viewBox={`0 0 ${boxSize} ${boxSize}`}>
         <mask id={maskId}>

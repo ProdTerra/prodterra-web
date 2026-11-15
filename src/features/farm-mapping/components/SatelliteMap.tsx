@@ -21,6 +21,8 @@ import {
 } from "../infrastructure/drawingSession";
 import type { MapView } from "../infrastructure/farmDraftStorage";
 import { createSatelliteStyleUrl } from "../infrastructure/satelliteBasemap";
+import { defaultImageryLevel, deepestServedLevel } from "../infrastructure/imageryDetail";
+import { waybackMaximumZoom } from "../infrastructure/waybackImagery";
 
 export type MapCoordinates = { longitude: number; latitude: number };
 
@@ -35,6 +37,8 @@ export type SatelliteMapHandle = {
   setLotLabels: (labels: LotLabel[]) => void;
   fitToArea: (area: Polygon) => void;
   flyTo: (coordinates: MapCoordinates, zoom?: number) => void;
+  showImagery: (tileUrl: string | null) => void;
+  setImageryDetailLevel: (level: number) => void;
   getCenter: () => MapCoordinates | null;
   startDrawing: (kind: ShapeKind) => void;
   closeShape: () => void;
@@ -51,6 +55,7 @@ type SatelliteMapProps = {
   onViewChanged: (view: MapView) => void;
   onShapeFinished: (shape: FinishedShape) => void;
   onDrawingProgress: (canClose: boolean) => void;
+  onMapTapped: (point: MapCoordinates) => void;
   label: string;
   language: string;
   handleRef: Ref<SatelliteMapHandle>;
@@ -60,6 +65,63 @@ const mapWorkerUrl = "/vendor/maplibre-gl-worker.mjs";
 
 setWorkerUrl(mapWorkerUrl);
 const farmZoom = 17;
+
+const imagerySourceId = "wayback-imagery";
+
+const baseImageryId = "base-imagery";
+
+function styleImagerySource(map: MapLibreMap): { sourceId: string; tiles: string[]; tileSize: number } | null {
+  for (const [sourceId, source] of Object.entries(map.getStyle().sources)) {
+    if (source.type === "raster" && sourceId !== baseImageryId && sourceId !== imagerySourceId && source.tiles?.length) {
+      return { sourceId, tiles: source.tiles, tileSize: source.tileSize ?? 256 };
+    }
+  }
+  return null;
+}
+
+function applyBaseImagery(map: MapLibreMap, deepestLevel: number): void {
+  if (!map.isStyleLoaded()) {
+    map.once("idle", () => applyBaseImagery(map, deepestLevel));
+    return;
+  }
+  const styleSource = styleImagerySource(map);
+  if (!styleSource) {
+    return;
+  }
+  for (const layer of map.getStyle().layers) {
+    if ("source" in layer && layer.source === styleSource.sourceId) {
+      map.setLayoutProperty(layer.id, "visibility", "none");
+    }
+  }
+  if (map.getLayer(baseImageryId)) {
+    map.removeLayer(baseImageryId);
+  }
+  if (map.getSource(baseImageryId)) {
+    map.removeSource(baseImageryId);
+  }
+  map.addSource(baseImageryId, { type: "raster", tiles: styleSource.tiles, tileSize: styleSource.tileSize, maxzoom: deepestLevel });
+  const firstLayerAbove = map.getLayer(imagerySourceId) ? imagerySourceId : map.getStyle().layers.find((layer) => layer.type === "symbol")?.id;
+  map.addLayer({ id: baseImageryId, type: "raster", source: baseImageryId }, firstLayerAbove);
+}
+
+function applyImagery(map: MapLibreMap, tileUrl: string | null): void {
+  if (!map.isStyleLoaded()) {
+    map.once("idle", () => applyImagery(map, tileUrl));
+    return;
+  }
+  if (map.getLayer(imagerySourceId)) {
+    map.removeLayer(imagerySourceId);
+  }
+  if (map.getSource(imagerySourceId)) {
+    map.removeSource(imagerySourceId);
+  }
+  if (!tileUrl) {
+    return;
+  }
+  map.addSource(imagerySourceId, { type: "raster", tiles: [tileUrl], tileSize: 256, maxzoom: waybackMaximumZoom });
+  const firstLabelLayer = map.getStyle().layers.find((layer) => layer.type === "symbol");
+  map.addLayer({ id: imagerySourceId, type: "raster", source: imagerySourceId }, firstLabelLayer?.id);
+}
 const fitPaddingInPixels = 48;
 const fitMaximumZoom = 18;
 
@@ -104,21 +166,24 @@ export default function SatelliteMap({
   onViewChanged,
   onShapeFinished,
   onDrawingProgress,
+  onMapTapped,
   label,
   language,
   handleRef,
 }: SatelliteMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageryLevelRef = useRef(defaultImageryLevel);
+  const waybackTileUrlRef = useRef<string | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const drawingRef = useRef<DrawingSession | null>(null);
   const labelMarkersRef = useRef<Marker[]>([]);
-  const callbacksRef = useRef({ onReady, onViewChanged, onShapeFinished, onDrawingProgress });
+  const callbacksRef = useRef({ onReady, onViewChanged, onShapeFinished, onDrawingProgress, onMapTapped });
   const initialViewRef = useRef(initialView);
   const initialLanguageRef = useRef(language);
 
   useEffect(() => {
-    callbacksRef.current = { onReady, onViewChanged, onShapeFinished, onDrawingProgress };
-  }, [onReady, onViewChanged, onShapeFinished, onDrawingProgress]);
+    callbacksRef.current = { onReady, onViewChanged, onShapeFinished, onDrawingProgress, onMapTapped };
+  }, [onReady, onViewChanged, onShapeFinished, onDrawingProgress, onMapTapped]);
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -126,12 +191,13 @@ export default function SatelliteMap({
     }
     const map = new MapLibreMap({
       container: containerRef.current,
-      style: createSatelliteStyleUrl(initialLanguageRef.current),
+      style: { version: 8, sources: {}, layers: [] },
       center: [initialViewRef.current.longitude, initialViewRef.current.latitude],
       zoom: initialViewRef.current.zoom,
-      maxZoom: 19,
+      maxZoom: deepestServedLevel,
       attributionControl: { compact: true },
     });
+    map.setStyle(createSatelliteStyleUrl(initialLanguageRef.current), { transformStyle: keepDrawingLayers });
     map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
     map.on("load", () => {
       drawingRef.current = createDrawingSession(map, {
@@ -141,6 +207,11 @@ export default function SatelliteMap({
       callbacksRef.current.onReady();
     });
     map.once("idle", () => collapseAttribution(map));
+    map.on("style.load", () => {
+      applyBaseImagery(map, imageryLevelRef.current);
+      applyImagery(map, waybackTileUrlRef.current);
+    });
+    map.on("click", (event) => callbacksRef.current.onMapTapped({ longitude: event.lngLat.lng, latitude: event.lngLat.lat }));
     map.on("moveend", () => {
       const center = map.getCenter();
       callbacksRef.current.onViewChanged({
@@ -150,8 +221,11 @@ export default function SatelliteMap({
       });
     });
     mapRef.current = map;
+    const resizeObserver = new ResizeObserver(() => map.resize());
+    resizeObserver.observe(containerRef.current);
 
     return () => {
+      resizeObserver.disconnect();
       labelMarkersRef.current.forEach((marker) => marker.remove());
       labelMarkersRef.current = [];
       drawingRef.current?.destroy();
@@ -198,6 +272,23 @@ export default function SatelliteMap({
       },
       flyTo: ({ longitude, latitude }, zoom = farmZoom) =>
         mapRef.current?.flyTo({ center: [longitude, latitude], zoom }),
+      showImagery: (tileUrl) => {
+        waybackTileUrlRef.current = tileUrl;
+        const map = mapRef.current;
+        if (map) {
+          applyImagery(map, tileUrl);
+        }
+      },
+      setImageryDetailLevel: (level) => {
+        if (level === imageryLevelRef.current) {
+          return;
+        }
+        imageryLevelRef.current = level;
+        const map = mapRef.current;
+        if (map) {
+          applyBaseImagery(map, level);
+        }
+      },
       getCenter: () => {
         const center = mapRef.current?.getCenter();
         return center ? { longitude: center.lng, latitude: center.lat } : null;
