@@ -4,7 +4,7 @@ import { Notice } from "@/shared/components/Notice";
 import type { DrawnShape, Lot } from "../application/farmMappingState";
 import { maximumLots } from "../domain/farmLimits";
 import { hasRoomForAnotherLot } from "../domain/freeArea";
-import type { StripOrientation } from "../domain/splitFarm";
+import type { SplitLayout } from "../domain/splitFarm";
 import { LotListItem } from "./LotListItem";
 import { SplitLotsPanel } from "./SplitLotsPanel";
 import { useAreaFormatter } from "./useAreaFormatter";
@@ -21,9 +21,9 @@ type LotsStepProps = {
   onRenameLot: (shapeId: string, name: string) => void;
   onRemoveLot: (shapeId: string) => void;
   onRedrawFarm: () => void;
-  split: { lotCount: number; orientation: StripOrientation } | null;
+  split: { lotCount: number; layout: SplitLayout } | null;
   onStartSplit: () => void;
-  onChangeSplit: (lotCount: number, orientation: StripOrientation) => void;
+  onChangeSplit: (lotCount: number, layout: SplitLayout) => void;
   onFinishSplit: () => void;
   onContinue: () => void;
 };
@@ -90,7 +90,7 @@ export function LotsStep({
       {split && (
         <SplitLotsPanel
           lotCount={split.lotCount}
-          orientation={split.orientation}
+          layout={split.layout}
           onChange={onChangeSplit}
           onDone={onFinishSplit}
         />

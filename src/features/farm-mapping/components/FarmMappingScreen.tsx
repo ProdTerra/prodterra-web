@@ -19,8 +19,8 @@ import { calculateAreaInHectares, validateLot } from "../domain/farmGeometry";
 import { maximumFarmAreaInHectares, validateFarmArea } from "../domain/farmLimits";
 import { pickLotColor } from "../domain/lotColors";
 import {
-  splitIntoEqualStrips,
-  type StripOrientation,
+  splitFarm,
+  type SplitLayout,
 } from "../domain/splitFarm";
 import type {
   FinishedShape,
@@ -114,7 +114,7 @@ export function FarmMappingScreen() {
   const [farmAreaRejection, setFarmAreaRejection] = useState<"tooLarge" | "tooSmall" | null>(null);
   const [split, setSplit] = useState<{
     lotCount: number;
-    orientation: StripOrientation;
+    layout: SplitLayout;
   } | null>(null);
   const mapRef = useRef<SatelliteMapHandle>(null);
   const [initialMapView] = useState(readInitialMapView);
@@ -240,14 +240,14 @@ export function FarmMappingScreen() {
     dispatch({ type: "lotRemoved", shapeId });
   }
 
-  function applySplit(lotCount: number, orientation: StripOrientation) {
+  function applySplit(lotCount: number, layout: SplitLayout) {
     if (!state.farmBoundary) {
       return;
     }
-    const strips = splitIntoEqualStrips(
+    const strips = splitFarm(
       state.farmBoundary.geometry,
       lotCount,
-      orientation,
+      layout,
     );
     const newLots = strips.map((geometry) => ({
       shapeId: crypto.randomUUID(),
@@ -264,13 +264,13 @@ export function FarmMappingScreen() {
       })),
     );
     dispatch({ type: "lotsReplaced", lots: newLots });
-    setSplit({ lotCount, orientation });
+    setSplit({ lotCount, layout });
   }
 
   function startSplit() {
     stopDrawing();
     setIsReplaceConfirmOpen(false);
-    applySplit(defaultSplitLotCount, "vertical");
+    applySplit(defaultSplitLotCount, "along");
   }
 
   function requestSplit() {

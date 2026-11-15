@@ -1,21 +1,27 @@
-import { Minus, Plus } from "lucide-react";
+import { Columns3, Grid2x2, Minus, Plus, Rows3, type LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
-import type { StripOrientation } from "../domain/splitFarm";
+import type { SplitLayout } from "../domain/splitFarm";
 
 export const minimumSplitLots = 2;
 export const maximumSplitLots = 20;
 
 type SplitLotsPanelProps = {
   lotCount: number;
-  orientation: StripOrientation;
-  onChange: (lotCount: number, orientation: StripOrientation) => void;
+  layout: SplitLayout;
+  onChange: (lotCount: number, layout: SplitLayout) => void;
   onDone: () => void;
 };
 
-const orientations: StripOrientation[] = ["vertical", "horizontal"];
+const layouts: SplitLayout[] = ["along", "across", "grid"];
 
-export function SplitLotsPanel({ lotCount, orientation, onChange, onDone }: SplitLotsPanelProps) {
+const iconByLayout: Record<SplitLayout, LucideIcon> = {
+  along: Rows3,
+  across: Columns3,
+  grid: Grid2x2,
+};
+
+export function SplitLotsPanel({ lotCount, layout, onChange, onDone }: SplitLotsPanelProps) {
   const translate = useTranslations("farmMapping.split");
 
   return (
@@ -29,7 +35,7 @@ export function SplitLotsPanel({ lotCount, orientation, onChange, onDone }: Spli
             type="button"
             aria-label={translate("fewer")}
             disabled={lotCount <= minimumSplitLots}
-            onClick={() => onChange(lotCount - 1, orientation)}
+            onClick={() => onChange(lotCount - 1, layout)}
             className="icon-button"
           >
             <Minus aria-hidden size={18} />
@@ -41,7 +47,7 @@ export function SplitLotsPanel({ lotCount, orientation, onChange, onDone }: Spli
             type="button"
             aria-label={translate("more")}
             disabled={lotCount >= maximumSplitLots}
-            onClick={() => onChange(lotCount + 1, orientation)}
+            onClick={() => onChange(lotCount + 1, layout)}
             className="icon-button"
           >
             <Plus aria-hidden size={18} />
@@ -50,18 +56,22 @@ export function SplitLotsPanel({ lotCount, orientation, onChange, onDone }: Spli
       </div>
 
       <div className="split-panel__row">
-        <span id="split-orientation-label">{translate("orientationLabel")}</span>
-        <div role="group" aria-labelledby="split-orientation-label" className="segmented">
-          {orientations.map((option) => (
-            <button
-              key={option}
-              type="button"
-              aria-pressed={option === orientation}
-              onClick={() => onChange(lotCount, option)}
-            >
-              {translate(option)}
-            </button>
-          ))}
+        <span id="split-layout-label">{translate("layoutLabel")}</span>
+        <div role="group" aria-labelledby="split-layout-label" className="segmented">
+          {layouts.map((option) => {
+            const Icon = iconByLayout[option];
+            return (
+              <button
+                key={option}
+                type="button"
+                aria-pressed={option === layout}
+                onClick={() => onChange(lotCount, option)}
+              >
+                <Icon aria-hidden size={16} />
+                {translate(option)}
+              </button>
+            );
+          })}
         </div>
       </div>
 
