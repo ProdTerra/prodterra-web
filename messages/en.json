@@ -144,7 +144,7 @@
       "landSource": "Land: calculated from your drawing over Esri World Imagery satellite imagery.",
       "elevationSource": "Elevation: NASADEM (NASA), terrain elevation model.",
       "climateSource": "Climate: NASA POWER, 2001–2025 averages.",
-      "estimateNote": "These are estimates from satellite data; they don't replace what you know about your farm.",
+      "estimateNote": "These values are estimates based on satellite data and do not replace the farmer's own knowledge of the farm.",
       "openSource": "Open source",
       "back": "Back to my lots",
       "continue": "Continue to my crops",
