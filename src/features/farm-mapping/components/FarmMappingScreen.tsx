@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { RotateCcw } from "lucide-react";
 import { Dialog } from "@/shared/components/Dialog";
 import { AccountMenu } from "@/features/account/components/AccountMenu";
 import { SavePlanButton } from "@/features/saved-farms/components/SavePlanButton";
@@ -127,6 +128,7 @@ export function FarmMappingScreen() {
   const [canCloseShape, setCanCloseShape] = useState(false);
   const [isRedrawConfirmOpen, setIsRedrawConfirmOpen] = useState(false);
   const [isReplaceConfirmOpen, setIsReplaceConfirmOpen] = useState(false);
+  const [isStartOverConfirmOpen, setIsStartOverConfirmOpen] = useState(false);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [farmAreaRejection, setFarmAreaRejection] = useState<"tooLarge" | "tooSmall" | null>(null);
   const [split, setSplit] = useState<{
@@ -324,6 +326,23 @@ export function FarmMappingScreen() {
     dispatch({ type: "newPlanRequested" });
   }
 
+  function startOver() {
+    stopDrawing();
+    const shapeIds = state.lots.map((lot) => lot.shapeId);
+    if (state.farmBoundary) {
+      shapeIds.push(state.farmBoundary.shapeId);
+    }
+    mapRef.current?.removeShapes(shapeIds);
+    const storage = getBrowserStorage();
+    if (storage) {
+      saveRotationPlan(storage, emptyRotationPlan);
+      forgetActiveSavedFarm(storage);
+    }
+    setSplit(null);
+    setIsStartOverConfirmOpen(false);
+    dispatch({ type: "startOverRequested" });
+  }
+
   function assignWholeFarmAsOneLot() {
     if (!state.farmBoundary) {
       return;
@@ -434,6 +453,12 @@ export function FarmMappingScreen() {
           </div>
         </header>
         <StepIndicator currentStep={state.step} />
+        {(state.step !== "locate" || state.farmBoundary !== null) && (
+          <button type="button" className="start-over" onClick={() => setIsStartOverConfirmOpen(true)}>
+            <RotateCcw aria-hidden size={14} />
+            {translate("startOver.action")}
+          </button>
+        )}
 
         {state.step === "locate" && (
           <LocateStep
@@ -570,6 +595,16 @@ export function FarmMappingScreen() {
         })}
         confirmLabel={translate("boundary.tryAgain")}
         onConfirm={() => setFarmAreaRejection(null)}
+      />
+      <Dialog
+        isOpen={isStartOverConfirmOpen}
+        tone="danger"
+        title={translate("startOver.title")}
+        description={translate("startOver.description")}
+        confirmLabel={translate("startOver.confirm")}
+        cancelLabel={translate("startOver.cancel")}
+        onConfirm={startOver}
+        onCancel={() => setIsStartOverConfirmOpen(false)}
       />
       <Dialog
         isOpen={isRedrawConfirmOpen}

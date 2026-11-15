@@ -195,6 +195,13 @@
       "close": "Cerrar",
       "noMoreDetail": "Foto de {date}: no tiene más detalle",
       "noMoreDetailHere": "Esta zona no tiene más detalle: la foto se ve ampliada"
+    },
+    "startOver": {
+      "action": "Empezar de cero",
+      "title": "¿Empezar de cero?",
+      "description": "Se borran el borde de tu finca, los lotes y la rotación, y vuelves al paso 1. Las fincas guardadas en Mis fincas no se tocan: si quieres conservar este plan, guárdalo antes.",
+      "confirm": "Borrar y empezar de cero",
+      "cancel": "Cancelar"
     }
   },
   "calendar": {
