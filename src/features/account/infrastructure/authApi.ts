@@ -24,22 +24,57 @@ export async function fetchCurrentUser(signal?: AbortSignal): Promise<AccountUse
   return ((await response.json()) as { user: AccountUser }).user;
 }
 
-export async function submitAccountForm(mode: AccountFormMode, values: AccountFormValues): Promise<AuthResult> {
-  const body = mode === "register" ? values : { email: values.email, password: values.password };
+export type PasswordResetRequestResult = { ok: true } | { ok: false; errors: AccountFieldError[] };
+
+async function postJson(path: string, body: Record<string, string>): Promise<Response> {
+  return fetch(apiUrl(path), {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
+async function toAuthResult(response: Response): Promise<AuthResult> {
+  if (!response.ok) {
+    return { ok: false, errors: await readErrors(response) };
+  }
+  return { ok: true, user: ((await response.json()) as { user: AccountUser }).user };
+}
+
+export async function submitAccountForm(
+  mode: Exclude<AccountFormMode, "forgot">,
+  values: AccountFormValues,
+  locale: string,
+): Promise<AuthResult> {
+  const body = mode === "register" ? { ...values, locale } : { email: values.email, password: values.password };
   try {
-    const response = await fetch(apiUrl(`/auth/${mode}`), {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    if (!response.ok) {
-      return { ok: false, errors: await readErrors(response) };
-    }
-    return { ok: true, user: ((await response.json()) as { user: AccountUser }).user };
+    return await toAuthResult(await postJson(`/auth/${mode}`, body));
   } catch {
     return unavailable;
   }
+}
+
+export async function requestPasswordReset(email: string, locale: string): Promise<PasswordResetRequestResult> {
+  try {
+    const response = await postJson("/auth/password/forgot", { email, locale });
+    return response.ok ? { ok: true } : { ok: false, errors: await readErrors(response) };
+  } catch {
+    return { ok: false, errors: [{ code: "unavailable" }] };
+  }
+}
+
+export async function resetPassword(token: string, password: string, locale: string): Promise<AuthResult> {
+  try {
+    return await toAuthResult(await postJson("/auth/password/reset", { token, password, locale }));
+  } catch {
+    return unavailable;
+  }
+}
+
+export function googleSignInUrl(returnTo: string, locale: string): string {
+  const parameters = new URLSearchParams({ returnTo, locale });
+  return apiUrl(`/auth/google?${parameters.toString()}`).toString();
 }
 
 export async function logOut(): Promise<void> {
