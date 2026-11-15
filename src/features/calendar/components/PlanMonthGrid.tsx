@@ -2,17 +2,18 @@
 
 import { Sprout, Wheat } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
-import { segmentsInWeek, weeksOfMonth, type GridBlock } from "../domain/monthGrid";
+import { segmentsInWeek, weeksOfMonth, type GridBlock, type GridLane } from "../domain/monthGrid";
 
 export type GridLot = { id: string; number: number; name: string; color: string };
 
 type PlanMonthGridProps = {
   monthKey: string;
-  lots: GridLot[];
+  lanes: GridLane[];
   blocks: GridBlock[];
   today: string;
   selectedDate: string | null;
   isSingleLot: boolean;
+  showsMarkers?: boolean;
   blockName: (block: GridBlock) => string;
   blockColor: (block: GridBlock) => string;
   onSelectDate: (date: string) => void;
@@ -21,7 +22,8 @@ type PlanMonthGridProps = {
 const weekdayReference = ["2024-01-01", "2024-01-02", "2024-01-03", "2024-01-04", "2024-01-05", "2024-01-06", "2024-01-07"];
 
 export function PlanMonthGrid(props: PlanMonthGridProps) {
-  const { monthKey, lots, blocks, today, selectedDate, isSingleLot } = props;
+  const { monthKey, lanes, blocks, today, selectedDate, isSingleLot } = props;
+  const showsLaneBadges = !isSingleLot && lanes.some((lane) => lane.lotNumber !== undefined);
   const translate = useTranslations("calendar.grid");
   const format = useFormatter();
   const weeks = weeksOfMonth(monthKey);
@@ -29,22 +31,27 @@ export function PlanMonthGrid(props: PlanMonthGridProps) {
     format.dateTime(new Date(`${date}T00:00:00Z`), { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
 
   return (
-    <div className="plan-grid" data-single-lot={isSingleLot || undefined} style={{ ["--lane-count" as string]: lots.length }}>
+    <div
+      className="plan-grid"
+      data-single-lot={isSingleLot || undefined}
+      data-badges={showsLaneBadges || undefined}
+      style={{ ["--lane-count" as string]: Math.max(lanes.length, 1) }}
+    >
       <div className="plan-grid__weekdays" aria-hidden>
-        {!isSingleLot && <span />}
+        {showsLaneBadges && <span />}
         {weekdayReference.map((date) => (
           <span key={date}>{format.dateTime(new Date(`${date}T00:00:00Z`), { weekday: "short", timeZone: "UTC" })}</span>
         ))}
       </div>
       {weeks.map((week) => {
-        const lanes = lots.map((lot) => segmentsInWeek(blocks.filter((block) => block.lotId === lot.id), week));
+        const weekLanes = lanes.map((lane) => segmentsInWeek(blocks.filter((block) => block.lotId === lane.id), week));
         return (
           <div key={week[0]} className="plan-grid__week">
-            {!isSingleLot && (
+            {showsLaneBadges && (
               <div className="plan-grid__lane-labels" aria-hidden>
-                {lots.map((lot) => (
-                  <span key={lot.id} className="lot-badge lot-badge--small" style={{ ["--lot-color" as string]: lot.color }}>
-                    {lot.number}
+                {lanes.map((lane) => (
+                  <span key={lane.id} className="lot-badge lot-badge--small" style={{ ["--lot-color" as string]: lane.lotColor }}>
+                    {lane.lotNumber}
                   </span>
                 ))}
               </div>
@@ -68,7 +75,7 @@ export function PlanMonthGrid(props: PlanMonthGridProps) {
                 );
               })}
               <div className="plan-grid__lanes" aria-hidden>
-                {lanes.flatMap((segments, laneIndex) =>
+                {weekLanes.flatMap((segments, laneIndex) =>
                   segments.map(({ block, firstColumn, lastColumn, startsInWeek, endsInWeek }) => {
                     const showsLabel = startsInWeek || firstColumn === 0;
                     return (
@@ -89,7 +96,8 @@ export function PlanMonthGrid(props: PlanMonthGridProps) {
                     );
                   }),
                 )}
-                {lanes.flatMap((segments, laneIndex) =>
+                {props.showsMarkers !== false &&
+                  weekLanes.flatMap((segments, laneIndex) =>
                   segments.flatMap(({ block, firstColumn, lastColumn, startsInWeek, endsInWeek }) =>
                     block.kind === "crop"
                       ? [

@@ -3409,7 +3409,8 @@ body {
   overflow: hidden;
 }
 
-.plan-grid[data-single-lot] {
+.plan-grid[data-single-lot],
+.plan-grid:not([data-badges]) {
   --gutter: 0rem;
 }
 
@@ -3423,7 +3424,7 @@ body {
   text-transform: capitalize;
 }
 
-.plan-grid[data-single-lot] .plan-grid__weekdays {
+.plan-grid:not([data-badges]) .plan-grid__weekdays {
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
@@ -3438,7 +3439,7 @@ body {
   border-bottom: 1px solid var(--color-line);
 }
 
-.plan-grid[data-single-lot] .plan-grid__week {
+.plan-grid:not([data-badges]) .plan-grid__week {
   grid-template-columns: minmax(0, 1fr);
 }
 
@@ -3605,6 +3606,9 @@ body {
 
   .plan-grid[data-single-lot] {
     --lane-height: 1.75rem;
+  }
+
+  .plan-grid:not([data-badges]) {
     --gutter: 0rem;
   }
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { segmentsInWeek, weeksOfMonth, type GridBlock } from "./monthGrid";
+import { groupByUse, segmentsInWeek, weeksOfMonth, type GridBlock } from "./monthGrid";
 
 describe("weeksOfMonth", () => {
   it("lays a month out in weeks that start on Monday, including the days around it", () => {
@@ -30,6 +30,35 @@ describe("segmentsInWeek", () => {
     expect(segmentsInWeek([potato, rest], week).map(({ block, firstColumn, lastColumn }) => [block.id, firstColumn, lastColumn])).toEqual([
       ["a", 0, 4],
       ["b", 5, 6],
+    ]);
+  });
+});
+
+describe("groupByUse", () => {
+  const block = (id: string, lotId: string, cropKey: string | null, startDate: string, endDate: string): GridBlock => ({
+    id,
+    lotId,
+    kind: cropKey ? "crop" : "rest",
+    cropKey,
+    startDate,
+    endDate,
+  });
+  const days = ["2027-01-04", "2027-01-05", "2027-01-06", "2027-01-07"];
+
+  it("makes one lane per crop or rest, with runs split where the number of lots changes", () => {
+    const grouped = groupByUse(
+      [
+        block("a", "lot-1", "potato", "2026-11-20", "2027-03-19"),
+        block("b", "lot-2", "potato", "2027-01-06", "2027-05-01"),
+        block("c", "lot-3", null, "2027-01-01", "2027-01-05"),
+      ],
+      days,
+    );
+    expect(grouped.lanes).toEqual(["crop:potato", "rest"]);
+    expect(grouped.blocks.map(({ lotId, startDate, endDate, lotCount }) => [lotId, startDate, endDate, lotCount])).toEqual([
+      ["crop:potato", "2027-01-04", "2027-01-05", 1],
+      ["crop:potato", "2027-01-06", "2027-01-07", 2],
+      ["rest", "2027-01-04", "2027-01-05", 1],
     ]);
   });
 });
