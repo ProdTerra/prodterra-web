@@ -1,7 +1,7 @@
 import { apiUrl } from "@/features/farm-mapping/infrastructure/apiClient";
 import type { AccountFieldError, AccountFormMode, AccountFormValues } from "../domain/accountForm";
 
-export type AccountUser = { id: string; name: string; email: string };
+export type AccountUser = { id: string; name: string; email: string; avatarKey: string | null };
 
 export type AuthResult = { ok: true; user: AccountUser } | { ok: false; errors: AccountFieldError[] };
 
@@ -79,4 +79,18 @@ export function googleSignInUrl(returnTo: string, locale: string): string {
 
 export async function logOut(): Promise<void> {
   await fetch(apiUrl("/auth/logout"), { method: "POST", credentials: "include" });
+}
+
+export async function updateAvatar(avatarKey: string): Promise<AccountUser | null> {
+  try {
+    const response = await fetch(apiUrl("/auth/me"), {
+      method: "PATCH",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ avatarKey }),
+    });
+    return response.ok ? ((await response.json()) as { user: AccountUser }).user : null;
+  } catch {
+    return null;
+  }
 }

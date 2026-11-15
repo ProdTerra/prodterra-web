@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- Farmer avatars: the header shows the account's farmer avatar (10 Open Peeps illustrations, CC0, stored in `public/avatars`), and "Cambiar mi granjero" in the profile menu opens a picker; accounts without one keep their initials.
 - "Continuar con Google" in the login and registration dialog; it returns to the same page and shows a plain message when Google sign in is cancelled or fails.
 - "¿Olvidaste tu contraseña?": the dialog sends a reset link by email, and the `/reset-password` page sets the new password with inline validation, signs the farmer in and leads back to the plan.
 - Saving a farm with a name the user already uses shows "Ya tienes una finca con ese nombre" under the name field.
@@ -19,6 +20,7 @@
 - Place search with the ArcGIS geocoder, the split panel with lengthwise, crosswise and grid layouts aligned to the farm's long axis.
 
 ### Changed
+- Shorter imagery credit under the lot cards: "Fotos satelitales © Esri y colaboradores".
 - Lot cards in step 4 show the satellite image of each lot (Esri World Imagery export) with the lot outline on top and the surroundings dimmed; if the image fails, the colored shape is shown as before.
 - A lot plan has no 24-month limit: it lasts as long as the farmer's crops and rests add up to (each one up to 2 years, up to 100 per lot). The strip caption reads "Tu lote mes a mes" and its scale and marks grow with the plan (every 6 months, then every year or two).
 - Lot cards in step 4 show "Listo" for a complete lot instead of repeating its crop list.

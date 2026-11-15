@@ -894,9 +894,14 @@ body {
 }
 
 .lot-cards__credit {
-  margin-top: -1rem;
-  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-top: -1.125rem;
+  font-size: 0.6875rem;
   color: var(--color-stone);
+  opacity: 0.8;
 }
 
 .lot-silhouette--satellite {

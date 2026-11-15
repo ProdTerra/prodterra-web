@@ -353,7 +353,7 @@
       "axisStart": "Inicio",
       "axisYears": "{years, plural, one {# año} other {# años}}",
       "axisMonths": "{months} meses",
-      "imageryCredit": "Imágenes satelitales: Esri, Maxar, Earthstar Geographics"
+      "imageryCredit": "Fotos satelitales © Esri y colaboradores"
     },
     "myCalendar": {
       "title": "Tu calendario",
@@ -418,6 +418,9 @@
     "passwordChangedTitle": "Cambiaste tu contraseña",
     "passwordChanged": "Ya iniciaste sesión con tu contraseña nueva.",
     "backToPlanner": "Volver a mi plan",
+    "changeAvatar": "Cambiar mi granjero",
+    "avatarTitle": "Elige tu granjero",
+    "avatarOption": "Granjero {number}",
     "errors": {
       "nameRequired": "Escribe tu nombre.",
       "nameTooLong": "El nombre puede tener hasta 80 caracteres.",
