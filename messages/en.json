@@ -348,5 +348,41 @@
       "editPlan": "Change my rotation",
       "analyze": "Analyze with NASA data"
     }
+  },
+  "account": {
+    "openLogin": "Log in",
+    "loginTitle": "Log in",
+    "registerTitle": "Create your account",
+    "intro": "With an account you can save your farms and see your calendars again whenever you want.",
+    "close": "Close",
+    "modeLabel": "I have an account or I'm new",
+    "loginTab": "I have an account",
+    "registerTab": "I'm new",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "passwordHint": "At least 8 characters.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "loginAction": "Log in",
+    "registerAction": "Create account",
+    "submitting": "One moment…",
+    "optionalNote": "You don't need an account to plan; only to save.",
+    "profileLabel": "{name}'s profile",
+    "myFarms": "My farms",
+    "logOut": "Log out",
+    "errors": {
+      "nameRequired": "Enter your name.",
+      "nameTooLong": "The name can have up to 80 characters.",
+      "invalidEmail": "Enter a valid email, for example ana@mail.com.",
+      "passwordRequired": "Enter your password.",
+      "passwordTooShort": "The password needs at least 8 characters.",
+      "passwordTooLong": "The password can have up to 128 characters.",
+      "emailTaken": "There is already an account with this email. Log in under \"I have an account\".",
+      "invalidCredentials": "The email or password don't match.",
+      "tooManyAttempts": "Too many attempts. Wait a minute and try again.",
+      "unavailable": "We couldn't connect. Check your internet connection and try again.",
+      "notAuthenticated": "Your session ended. Log in again."
+    }
   }
 }

@@ -348,5 +348,41 @@
       "editPlan": "Cambiar mi rotación",
       "analyze": "Analizar con datos de la NASA"
     }
+  },
+  "account": {
+    "openLogin": "Iniciar sesión",
+    "loginTitle": "Inicia sesión",
+    "registerTitle": "Crea tu cuenta",
+    "intro": "Con una cuenta puedes guardar tus fincas y volver a ver tus calendarios cuando quieras.",
+    "close": "Cerrar",
+    "modeLabel": "Tengo cuenta o soy nuevo",
+    "loginTab": "Ya tengo cuenta",
+    "registerTab": "Soy nuevo",
+    "nameLabel": "Nombre",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "passwordHint": "Al menos 8 caracteres.",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "loginAction": "Iniciar sesión",
+    "registerAction": "Crear cuenta",
+    "submitting": "Un momento…",
+    "optionalNote": "No hace falta una cuenta para planear; solo para guardar.",
+    "profileLabel": "Perfil de {name}",
+    "myFarms": "Mis fincas",
+    "logOut": "Cerrar sesión",
+    "errors": {
+      "nameRequired": "Escribe tu nombre.",
+      "nameTooLong": "El nombre puede tener hasta 80 caracteres.",
+      "invalidEmail": "Escribe un correo válido, por ejemplo ana@correo.com.",
+      "passwordRequired": "Escribe tu contraseña.",
+      "passwordTooShort": "La contraseña necesita al menos 8 caracteres.",
+      "passwordTooLong": "La contraseña puede tener hasta 128 caracteres.",
+      "emailTaken": "Ya hay una cuenta con este correo. Inicia sesión en «Ya tengo cuenta».",
+      "invalidCredentials": "El correo o la contraseña no coinciden.",
+      "tooManyAttempts": "Demasiados intentos. Espera un minuto e inténtalo otra vez.",
+      "unavailable": "No pudimos conectar. Revisa tu conexión a internet e inténtalo otra vez.",
+      "notAuthenticated": "Tu sesión terminó. Inicia sesión otra vez."
+    }
   }
 }
