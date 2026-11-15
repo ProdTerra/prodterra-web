@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 - 2026-11-15
+
+### Added
+- ProdTerra logo: shown before the name in every page header and used as the browser tab icon (replaces the default Next.js icon). `public/prodterra-logo-email.png` is a PNG copy for emails, since most email clients do not show SVG.
+
+### Changed
+- The language switcher shows "ES" and "EN" (full language name for screen readers and on hover) so the header fits the logo on narrow panels; below 300px the header shows only the logo.
+
 ## 0.4.0 - 2026-11-15
 
 ### Added

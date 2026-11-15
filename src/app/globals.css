@@ -126,13 +126,35 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
+  container-type: inline-size;
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 1.125rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--color-field);
+}
+
+@container (max-width: 300px) {
+  .brand__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+.brand__logo {
+  flex: none;
+  width: 1.625rem;
+  height: 1.625rem;
 }
 
 .language-switcher {
