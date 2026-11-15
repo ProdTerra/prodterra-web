@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 - 2026-11-15
 
 ### Added
 - "Editar mi perfil" in the profile menu: change the account name (with inline validation) and the farmer avatar, saved together with "Guardar cambios".
