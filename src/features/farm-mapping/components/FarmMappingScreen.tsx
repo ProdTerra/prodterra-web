@@ -57,6 +57,7 @@ import { StepIndicator } from "./StepIndicator";
 import { emptyRotationPlan } from "@/features/rotation-plan/domain/rotationPlan";
 import { saveRotationPlan } from "@/features/rotation-plan/infrastructure/rotationPlanStorage";
 import { forgetActiveSavedFarm } from "@/features/saved-farms/infrastructure/activeSavedFarmStorage";
+import { BrandName } from "@/shared/components/BrandName";
 
 const SatelliteMap = dynamic(() => import("./SatelliteMap"), { ssr: false });
 
@@ -424,7 +425,9 @@ export function FarmMappingScreen() {
       <section className="farm-mapping__panel" data-step={state.step}>
         {!isFormStep && <PanelSheetHandle isExpanded={isPanelExpanded} onChange={setIsPanelExpanded} />}
         <header className="panel-header">
-          <span className="brand">ProdTerra</span>
+          <span className="brand">
+            <BrandName />
+          </span>
           <div className="panel-header__actions">
             <LanguageSwitcher />
             <AccountMenu />

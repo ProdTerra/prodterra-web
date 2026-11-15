@@ -11,6 +11,7 @@ import { validateNewPassword, type AccountField, type AccountFieldError, type Ne
 import { resetPassword } from "../infrastructure/authApi";
 import { AccountTextField } from "./AccountTextField";
 import { useSession } from "./SessionProvider";
+import { BrandName } from "@/shared/components/BrandName";
 
 const tokenPattern = /^[A-Za-z0-9_-]{43}$/;
 
@@ -67,7 +68,7 @@ export function ResetPasswordScreen({ token }: { token: string }) {
     <main className="farms-screen reset-password">
       <header className="panel-header farms-screen__header">
         <Link href="/" className="brand">
-          ProdTerra
+          <BrandName />
         </Link>
         <div className="panel-header__actions">
           <LanguageSwitcher />

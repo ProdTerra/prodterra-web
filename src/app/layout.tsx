@@ -17,6 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: translate("title"),
     description: translate("description"),
+    icons: { icon: "/prodterra-logo.svg" },
   };
 }
 

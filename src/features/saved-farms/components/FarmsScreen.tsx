@@ -14,6 +14,7 @@ import { getBrowserStorage } from "@/shared/infrastructure/browserStorage";
 import type { SavedFarmSummary } from "../domain/savedFarm";
 import { openSavedFarmInPlanner } from "../infrastructure/activeSavedFarmStorage";
 import { deleteSavedFarm, getSavedFarm, listSavedFarms, SavedFarmsError, type SavedFarmsFailure } from "../infrastructure/savedFarmsApi";
+import { BrandName } from "@/shared/components/BrandName";
 
 type FarmsState = { status: "loading" } | { status: "ready"; farms: SavedFarmSummary[] } | { status: "failed"; reason: SavedFarmsFailure };
 
@@ -84,7 +85,7 @@ export function FarmsScreen() {
     <main className="farms-screen">
       <header className="panel-header farms-screen__header">
         <Link href="/" className="brand">
-          ProdTerra
+          <BrandName />
         </Link>
         <div className="panel-header__actions">
           <LanguageSwitcher />

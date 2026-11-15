@@ -21,11 +21,13 @@ export function LanguageSwitcher() {
           key={locale}
           type="button"
           lang={locale}
+          aria-label={translate(locale)}
+          title={translate(locale)}
           aria-pressed={locale === currentLocale}
           disabled={isSwitching}
           onClick={() => switchLocale(locale)}
         >
-          {translate(locale)}
+          {locale.toUpperCase()}
         </button>
       ))}
     </div>
