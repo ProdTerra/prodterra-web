@@ -169,3 +169,23 @@ describe("moving to the crops step", () => {
     expect(back.lots).toHaveLength(1);
   });
 });
+
+describe("moving to the calendar step", () => {
+  const cropsStep = farmMappingReducer(
+    farmMappingReducer(stateWithBoundary, { type: "lotAccepted", shapeId: "lot-a", geometry, areaInHectares: 0.5 }),
+    { type: "lotsConfirmed" },
+  );
+
+  it("goes to the calendar once the crops are confirmed", () => {
+    expect(farmMappingReducer(cropsStep, { type: "cropsConfirmed" }).step).toBe("calendar");
+  });
+
+  it("returns to the crops step from the calendar", () => {
+    const calendar = farmMappingReducer(cropsStep, { type: "cropsConfirmed" });
+    expect(farmMappingReducer(calendar, { type: "cropsEditRequested" }).step).toBe("crops");
+  });
+
+  it("does not jump to the calendar from another step", () => {
+    expect(farmMappingReducer(stateWithBoundary, { type: "cropsConfirmed" }).step).toBe("lots");
+  });
+});

@@ -2,7 +2,7 @@ import type { Polygon } from "geojson";
 import type { LotValidation } from "../domain/farmGeometry";
 import { pickLotColor } from "../domain/lotColors";
 
-export type FarmMappingStep = "locate" | "boundary" | "lots" | "crops";
+export type FarmMappingStep = "locate" | "boundary" | "lots" | "crops" | "calendar";
 
 export type DrawnShape = {
   shapeId: string;
@@ -45,7 +45,9 @@ export type FarmMappingAction =
   | { type: "draftRestored"; draft: FarmMappingState }
   | { type: "lotsReplaced"; lots: DrawnShape[] }
   | { type: "lotsConfirmed" }
-  | { type: "lotsEditRequested" };
+  | { type: "lotsEditRequested" }
+  | { type: "cropsConfirmed" }
+  | { type: "cropsEditRequested" };
 
 export const initialFarmMappingState: FarmMappingState = {
   step: "locate",
@@ -109,6 +111,10 @@ export function farmMappingReducer(
       return state.lots.length > 0 ? { ...state, step: "crops" } : state;
     case "lotsEditRequested":
       return { ...state, step: "lots" };
+    case "cropsConfirmed":
+      return state.step === "crops" ? { ...state, step: "calendar" } : state;
+    case "cropsEditRequested":
+      return { ...state, step: "crops" };
     case "draftRestored":
       return { ...action.draft, rejection: null };
   }

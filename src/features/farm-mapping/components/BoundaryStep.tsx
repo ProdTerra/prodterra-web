@@ -1,5 +1,6 @@
-import { Check, PenLine, Undo2, X } from "lucide-react";
+import { Check, MapPin, PenLine, Undo2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 
 type BoundaryStepProps = {
   isDrawing: boolean;
@@ -28,9 +29,9 @@ export function BoundaryStep({
       <p className="step-hint">{translate("hint")}</p>
 
       {isDrawing && !canCloseShape && (
-        <p id="boundary-close-requirement" className="notice">
+        <Notice tone="info" id="boundary-close-requirement">
           {translate("closeRequirement")}
-        </p>
+        </Notice>
       )}
 
       <div className="step-actions">
@@ -50,7 +51,7 @@ export function BoundaryStep({
               <Undo2 aria-hidden size={18} />
               {translate("undo")}
             </button>
-            <button type="button" onClick={onCancelDrawing} className="button button--quiet">
+            <button type="button" onClick={onCancelDrawing} className="button button--secondary">
               <X aria-hidden size={18} />
               {translate("cancel")}
             </button>
@@ -61,7 +62,8 @@ export function BoundaryStep({
               <PenLine aria-hidden size={18} />
               {translate("start")}
             </button>
-            <button type="button" onClick={onChangeLocation} className="button button--quiet">
+            <button type="button" onClick={onChangeLocation} className="button button--secondary">
+              <MapPin aria-hidden size={18} />
               {translate("changeLocation")}
             </button>
           </>
