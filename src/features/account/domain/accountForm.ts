@@ -11,6 +11,7 @@ export type AccountErrorCode =
   | "invalidCredentials"
   | "tooManyAttempts"
   | "passwordMismatch"
+  | "nothingToUpdate"
   | "invalidResetLink"
   | "googleUnavailable"
   | "googleCancelled"

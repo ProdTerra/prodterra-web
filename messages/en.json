@@ -422,9 +422,12 @@
     "passwordChangedTitle": "You changed your password",
     "passwordChanged": "You are signed in with your new password.",
     "backToPlanner": "Back to my plan",
-    "changeAvatar": "Change my farmer",
-    "avatarTitle": "Choose your farmer",
+    "avatarTitle": "Your farmer",
     "avatarOption": "Farmer {number}",
+    "editProfile": "Edit my profile",
+    "profileTitle": "Your profile",
+    "saveProfile": "Save changes",
+    "cancel": "Cancel",
     "errors": {
       "nameRequired": "Enter your name.",
       "nameTooLong": "The name can have up to 80 characters.",
@@ -441,7 +444,8 @@
       "invalidResetLink": "This link expired or was already used.",
       "googleUnavailable": "Google sign in is not available yet. Use your email and password.",
       "googleCancelled": "You cancelled Google sign in. Try again or use your email.",
-      "googleFailed": "We could not sign you in with Google. Try again or use your email."
+      "googleFailed": "We could not sign you in with Google. Try again or use your email.",
+      "nothingToUpdate": "There is nothing to save."
     }
   },
   "savedFarms": {

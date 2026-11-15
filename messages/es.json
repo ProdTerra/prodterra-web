@@ -422,9 +422,12 @@
     "passwordChangedTitle": "Cambiaste tu contraseña",
     "passwordChanged": "Ya iniciaste sesión con tu contraseña nueva.",
     "backToPlanner": "Volver a mi plan",
-    "changeAvatar": "Cambiar mi granjero",
-    "avatarTitle": "Elige tu granjero",
+    "avatarTitle": "Tu granjero",
     "avatarOption": "Granjero {number}",
+    "editProfile": "Editar mi perfil",
+    "profileTitle": "Tu perfil",
+    "saveProfile": "Guardar cambios",
+    "cancel": "Cancelar",
     "errors": {
       "nameRequired": "Escribe tu nombre.",
       "nameTooLong": "El nombre puede tener hasta 80 caracteres.",
@@ -441,7 +444,8 @@
       "invalidResetLink": "Este enlace venció o ya se usó.",
       "googleUnavailable": "El acceso con Google todavía no está disponible. Usa tu correo y contraseña.",
       "googleCancelled": "Cancelaste el acceso con Google. Puedes intentarlo otra vez o usar tu correo.",
-      "googleFailed": "No pudimos iniciar sesión con Google. Inténtalo otra vez o usa tu correo."
+      "googleFailed": "No pudimos iniciar sesión con Google. Inténtalo otra vez o usa tu correo.",
+      "nothingToUpdate": "No hay cambios para guardar."
     }
   },
   "savedFarms": {

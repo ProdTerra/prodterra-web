@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- "Editar mi perfil" in the profile menu: change the account name (with inline validation) and the farmer avatar, saved together with "Guardar cambios".
 - Illustrated icons for the 10 catalog crops (papa, cebolla, zanahoria, repollo, lechuga, chayote, tomate, brócoli, coliflor, fresa) in the crop picker, the previous use choices and the timeline blocks; new catalog crops fall back to a sprout icon.
 - Farmer avatars: the header shows the account's farmer avatar (10 Open Peeps illustrations, CC0, stored in `public/avatars`), and "Cambiar mi granjero" in the profile menu opens a picker; accounts without one keep their initials.
 - "Continuar con Google" in the login and registration dialog; it returns to the same page and shows a plain message when Google sign in is cancelled or fails.

@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
 import { initialsOf } from "../domain/accountForm";
 import { avatarImagePath } from "../domain/avatar";
-import { AvatarPickerDialog } from "./AvatarPickerDialog";
+import { ProfileDialog } from "./ProfileDialog";
 import { useSession } from "./SessionProvider";
 
 export function AccountMenu() {
@@ -86,7 +86,7 @@ export function AccountMenu() {
             className="account-menu__item"
           >
             <UserRoundPen aria-hidden size={18} />
-            {translate("changeAvatar")}
+            {translate("editProfile")}
           </button>
           <Link role="menuitem" href="/farms" onClick={() => setIsOpen(false)} className="account-menu__item">
             <FolderOpen aria-hidden size={18} />
@@ -106,7 +106,7 @@ export function AccountMenu() {
           </button>
         </div>
       )}
-      <AvatarPickerDialog isOpen={isPickerOpen} onClose={() => setIsPickerOpen(false)} />
+      {isPickerOpen && <ProfileDialog onClose={() => setIsPickerOpen(false)} />}
     </div>
   );
 }

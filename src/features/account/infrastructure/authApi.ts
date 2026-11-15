@@ -81,16 +81,17 @@ export async function logOut(): Promise<void> {
   await fetch(apiUrl("/auth/logout"), { method: "POST", credentials: "include" });
 }
 
-export async function updateAvatar(avatarKey: string): Promise<AccountUser | null> {
+export async function updateProfile(changes: { name: string; avatarKey: string | null }): Promise<AuthResult> {
+  const body = changes.avatarKey ? changes : { name: changes.name };
   try {
     const response = await fetch(apiUrl("/auth/me"), {
       method: "PATCH",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ avatarKey }),
+      body: JSON.stringify(body),
     });
-    return response.ok ? ((await response.json()) as { user: AccountUser }).user : null;
+    return await toAuthResult(response);
   } catch {
-    return null;
+    return unavailable;
   }
 }
