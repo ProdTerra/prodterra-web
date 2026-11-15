@@ -190,4 +190,14 @@ describe("moving through the rotation steps", () => {
     expect(fresh.lots).toEqual([]);
     expect(fresh.lastLotNumber).toBe(0);
   });
+
+  it("starts over from step 1 without the farm, the lots or the lot count", () => {
+    const withLot = farmMappingReducer(stateWithBoundary, { type: "lotsReplaced", lots: [{ shapeId: "lot-a", geometry, areaInHectares: 2.4 }] });
+    const analysis = { ...withLot, step: "analysis" as const, rejection: { reason: "outsideFarm" as const } };
+
+    const fresh = farmMappingReducer(analysis, { type: "startOverRequested" });
+
+    expect(fresh).toEqual(initialFarmMappingState);
+    expect(fresh).not.toBe(initialFarmMappingState);
+  });
 });
