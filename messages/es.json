@@ -179,7 +179,9 @@
       "gridElevationRow": "Altura de la zona que mide NASA POWER (~50 km)",
       "adjustmentRow": "Ajuste a las temperaturas",
       "adjustmentExplanation": "La finca está {difference} más {direction, select, colder {arriba} other {abajo}} que esa zona. El aire cambia 6,5 °C por cada 1.000 m de altura (U.S. Standard Atmosphere 1976)."
-    }
+    },
+    "showMorePanel": "Ver más del panel",
+    "showMoreMap": "Ver más del mapa"
   },
   "calendar": {
     "title": "Tu plan y el recomendado",

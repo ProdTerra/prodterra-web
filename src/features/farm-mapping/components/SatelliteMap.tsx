@@ -153,8 +153,11 @@ export default function SatelliteMap({
       });
     });
     mapRef.current = map;
+    const resizeObserver = new ResizeObserver(() => map.resize());
+    resizeObserver.observe(containerRef.current);
 
     return () => {
+      resizeObserver.disconnect();
       labelMarkersRef.current.forEach((marker) => marker.remove());
       labelMarkersRef.current = [];
       drawingRef.current?.destroy();

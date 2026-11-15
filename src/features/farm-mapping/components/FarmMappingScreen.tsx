@@ -48,6 +48,7 @@ import type {
   MapCoordinates,
   SatelliteMapHandle,
 } from "./SatelliteMap";
+import { PanelSheetHandle } from "./PanelSheetHandle";
 import { StepIndicator } from "./StepIndicator";
 
 const SatelliteMap = dynamic(() => import("./SatelliteMap"), { ssr: false });
@@ -125,6 +126,7 @@ export function FarmMappingScreen() {
   const [initialMapView] = useState(readInitialMapView);
   const [mapCenter, setMapCenter] = useState<MapCoordinates>(initialMapView);
   const [isMapReady, setIsMapReady] = useState(false);
+  const [isPanelExpanded, setIsPanelExpanded] = useState(false);
   const screenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -354,8 +356,14 @@ export function FarmMappingScreen() {
   }
 
   return (
-    <div ref={screenRef} className="farm-mapping" data-layout={isFormStep ? "form" : "map"}>
+    <div
+      ref={screenRef}
+      className="farm-mapping"
+      data-layout={isFormStep ? "form" : "map"}
+      data-sheet={!isFormStep && isPanelExpanded ? "expanded" : undefined}
+    >
       <section className="farm-mapping__panel" data-step={state.step}>
+        {!isFormStep && <PanelSheetHandle isExpanded={isPanelExpanded} onChange={setIsPanelExpanded} />}
         <header className="panel-header">
           <span className="brand">ProdTerra</span>
           <div className="panel-header__actions">

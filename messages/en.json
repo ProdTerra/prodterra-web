@@ -179,7 +179,9 @@
       "gridElevationRow": "Elevation of the area NASA POWER measures (~50 km)",
       "adjustmentRow": "Adjustment to temperatures",
       "adjustmentExplanation": "The farm is {difference} {direction, select, colder {higher} other {lower}} than that area. Air changes 6.5 °C for every 1,000 m of elevation (U.S. Standard Atmosphere 1976)."
-    }
+    },
+    "showMorePanel": "Show more of the panel",
+    "showMoreMap": "Show more of the map"
   },
   "calendar": {
     "title": "Your plan and the recommended one",
