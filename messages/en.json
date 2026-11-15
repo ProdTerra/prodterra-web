@@ -192,7 +192,8 @@
       "latest": "The most recent",
       "noOthers": "There are no other photos of this place.",
       "close": "Close",
-      "noMoreDetail": "{date} photo: no more detail"
+      "noMoreDetail": "{date} photo: no more detail",
+      "noMoreDetailHere": "This area has no more detail: the photo is enlarged"
     }
   },
   "calendar": {
