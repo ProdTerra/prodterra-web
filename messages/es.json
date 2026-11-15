@@ -120,7 +120,7 @@
       "elevationTile": "Altura",
       "elevationDetail": "De {minimum} a {maximum}",
       "temperatureTile": "Temperatura",
-      "temperatureValue": "{minimum}–{maximum} °C",
+      "temperatureValue": "de {minimum} a {maximum} °C",
       "temperatureDetail": "Noches de hasta {value} °C",
       "temperatureBand": {
         "cold": "Frío todo el año",

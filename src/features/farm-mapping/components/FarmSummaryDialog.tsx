@@ -56,7 +56,7 @@ function useSummaryFormatters() {
   return {
     meters: (value: number) => `${format.number(value, { useGrouping: "always" })} m`,
     decimal: (value: number) => format.number(value, { maximumFractionDigits: 1 }),
-    whole: (value: number) => format.number(Math.round(value)),
+    whole: (value: number) => format.number(Math.round(value)).replace("-", "\u2212"),
     monthName: (month: number) =>
       format.dateTime(new Date(Date.UTC(2026, month - 1, 15)), { month: "long", timeZone: "UTC" }),
   };
