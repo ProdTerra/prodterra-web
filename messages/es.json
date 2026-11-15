@@ -233,7 +233,7 @@
       "drought": "Sin riego faltan unos {value} litros de agua por m².",
       "irrigation": "Regar unos {value} litros por m² este mes.",
       "waterExcess": "Llueven unos {value} litros por m² más de lo que el cultivo aguanta: revisar el drenaje.",
-      "pest": "Vigilar {pest}: el clima de este mes la favorece."
+      "pest": "Vigilar {pest}: el cultivo está fuera de su clima ideal este mes."
     },
     "openLotPlan": "Ver el plan de {lot}",
     "lotPlan": {
@@ -291,7 +291,8 @@
         "drought": "Riega unos {value} L/m² o espera las lluvias",
         "irrigation": "Riega unos {value} L/m² este mes",
         "waterExcess": "Revisa el drenaje del lote",
-        "pest": "Vigila {pest}"
+        "pest": "Vigila {pest}",
+        "pests": "Vigila plagas y enfermedades: {pests}"
       },
       "cause": {
         "frost": "Noches de hasta {value} °C",
@@ -299,7 +300,7 @@
         "drought": "Sin riego le falta agua este mes",
         "irrigation": "La lluvia del mes no alcanza",
         "waterExcess": "Llueven unos {value} L/m² de más",
-        "pest": "El clima de este mes la favorece"
+        "pest": "El cultivo está fuera de su clima ideal este mes"
       },
       "lotGroup": "Lotes {numbers}",
       "temperatureLabel": "Temperatura",
@@ -324,10 +325,12 @@
         "drought": "Falta de agua",
         "irrigation": "Hace falta riego",
         "waterExcess": "Exceso de lluvia",
-        "pest": "{pest}"
+        "pest": "{pest}",
+        "pests": "Plagas y enfermedades"
       },
       "quietLots": "{count, plural, one {Lote {numbers}} other {Lotes {numbers}}}",
-      "altitudeOutOfRange": "{crop} no suele darse a la altura de este lote."
+      "altitudeOutOfRange": "{crop} no suele darse a la altura de este lote.",
+      "pestListMore": "{names} y {count} más"
     },
     "newPlan": {
       "action": "Crear un nuevo plan",

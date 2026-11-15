@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Changed
+- Pest and disease alarms of a lot are shown as one line ("Vigila plagas y enfermedades: Áfido, Agrotis sp, Alternaria solani y 10 más") with the cause "El cultivo está fuera de su clima ideal este mes", and count as one alarm in the month summary and the lane badges.
+
 ### Fixed
 - On wide screens the calendars use more of the width (up to 96rem) and "Recomendado" keeps the month panel on the right, with the legend and the day detail under the grid, so there is less scrolling.
 

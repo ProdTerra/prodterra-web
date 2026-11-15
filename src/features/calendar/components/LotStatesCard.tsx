@@ -6,6 +6,7 @@ import { splitQuietLots } from "../domain/monthSummary";
 import type { MonthStatus, PlanAlert } from "../infrastructure/plansApi";
 import type { GridLot } from "./PlanMonthGrid";
 import { StatusLabel } from "./StatusLabel";
+import { groupPestAlerts, type PestsAlert } from "../domain/alertDisplay";
 import type { AlertText } from "./useAlertText";
 
 export type LotMonthState = {
@@ -21,7 +22,7 @@ type LotGroup = Omit<LotMonthState, "lot"> & { lots: GridLot[] };
 type LotStatesCardProps = {
   monthTitle: string;
   lotStates: LotMonthState[];
-  alertText: (alert: PlanAlert) => AlertText;
+  alertText: (alert: PlanAlert | PestsAlert) => AlertText;
 };
 
 function groupSimilarStates(states: LotMonthState[], shouldGroup: boolean): LotGroup[] {
@@ -82,7 +83,7 @@ export function LotStatesCard({ monthTitle, lotStates, alertText }: LotStatesCar
               )}
               {alerts.length > 0 && (
                 <ul className="lot-state__alerts">
-                  {sortAlerts(alerts).map((alert, index) => {
+                  {groupPestAlerts(sortAlerts(alerts)).map((alert, index) => {
                     const text = alertText(alert);
                     return (
                       <li key={`${alert.type}-${index}`} data-level={alert.level}>

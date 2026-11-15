@@ -1,4 +1,5 @@
 import type { PlanAlert } from "../infrastructure/plansApi";
+import { countAlarms } from "./alertDisplay";
 import { compareAlerts, sortAlerts } from "./monthInsights";
 
 export type LotAlerts<Lot> = { lot: Lot; alerts: PlanAlert[] };
@@ -16,7 +17,10 @@ export function summarizeMonth<Lot>(states: LotAlerts<Lot>[]): MonthSummary<Lot>
   const sortedBySeverity = [...lotAlerts].sort((first, second) => compareAlerts(first.alert, second.alert));
   return {
     riskCount: lotAlerts.filter(({ alert }) => alert.level === "risk").length,
-    watchCount: lotAlerts.filter(({ alert }) => alert.level === "watch").length,
+    watchCount: states.reduce(
+      (total, { alerts }) => total + countAlarms(alerts.filter((alert) => alert.level === "watch")),
+      0,
+    ),
     mostSevere: sortedBySeverity[0] ?? null,
   };
 }

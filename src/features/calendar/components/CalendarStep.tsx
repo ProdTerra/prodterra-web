@@ -23,6 +23,7 @@ import { MonthInsights, type LotMonthState } from "./MonthInsights";
 import { PlanMonthGrid, type GridLot } from "./PlanMonthGrid";
 import type { EvaluatedRotation, MonthStatus } from "../infrastructure/plansApi";
 import { useCalendarLabels } from "./useCalendarLabels";
+import { countAlarms } from "../domain/alertDisplay";
 import { useRotationEvaluation } from "./useRotationEvaluation";
 
 type CalendarStepProps = {
@@ -138,7 +139,7 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
         cropKey: month?.cropKey ?? null,
         isRest: month?.phase === "rest",
         status: month?.status ?? null,
-        alarmCount: month?.alerts.length ?? 0,
+        alarmCount: countAlarms(month?.alerts ?? []),
       };
     }),
   );
