@@ -49,10 +49,18 @@ describe("rotationPlanReducer", () => {
     expect(rotationOf(copied, "a")).toEqual(rotationOf(potatoThenRest, "a"));
   });
 
-  it("forgets lots that no longer exist and restores a saved plan", () => {
+  it("keeps the start date while some planned lots remain", () => {
+    const kept = apply([{ type: "lotsChanged", lotIds: [...Object.keys(potatoThenRest.lots), "z"] }], potatoThenRest);
+    expect(kept.startDate).toBe("2026-11-14");
+    expect(kept.lots).toEqual(potatoThenRest.lots);
+  });
+
+  it("starts a new plan without the old start date when none of the planned lots remain", () => {
     const pruned = apply([{ type: "lotsChanged", lotIds: ["z"] }], potatoThenRest);
-    expect(pruned.lots).toEqual({});
-    expect(pruned.startDate).toBe("2026-11-14");
+    expect(pruned).toEqual({ startDate: null, lots: {} });
+  });
+
+  it("restores a saved plan", () => {
     expect(apply([{ type: "planRestored", plan: potatoThenRest }])).toEqual(potatoThenRest);
   });
 });
