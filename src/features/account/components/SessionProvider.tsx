@@ -32,6 +32,7 @@ type SessionValue = {
   openAuthDialog: (afterSignIn?: () => void) => void;
   closeAuthDialog: () => void;
   signedIn: (user: AccountUser) => void;
+  updatedUser: (user: AccountUser) => void;
   signOut: () => Promise<void>;
 };
 
@@ -95,6 +96,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         setIsAuthDialogOpen(false);
       },
       signedIn,
+      updatedUser: setUser,
       signOut,
     }),
     [status, user, isAuthDialogOpen, authDialogRequest, signedIn, signOut],

@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, CalendarDays, Copy, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Copy, RotateCcw, Satellite } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, type Dispatch } from "react";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
@@ -84,7 +84,10 @@ export function RotationScreen({ lots, plan, startDate, dispatch, onChangeStartD
           />
         ))}
       </section>
-      <p className="lot-cards__credit">{translate("imageryCredit")}</p>
+      <p className="lot-cards__credit">
+        <Satellite aria-hidden size={12} />
+        {translate("imageryCredit")}
+      </p>
 
       <section aria-labelledby="rotation-editor-title" className="crops-step__form">
         <h2 id="rotation-editor-title" className="crops-step__form-title">

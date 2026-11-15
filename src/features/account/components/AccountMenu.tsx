@@ -1,16 +1,19 @@
 "use client";
 
-import { FolderOpen, LogIn, LogOut } from "lucide-react";
+import { FolderOpen, LogIn, LogOut, UserRoundPen } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
 import { initialsOf } from "../domain/accountForm";
+import { avatarImagePath } from "../domain/avatar";
+import { AvatarPickerDialog } from "./AvatarPickerDialog";
 import { useSession } from "./SessionProvider";
 
 export function AccountMenu() {
   const translate = useTranslations("account");
   const { status, user, openAuthDialog, signOut } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
   const menuId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +63,12 @@ export function AccountMenu() {
         onClick={() => setIsOpen((open) => !open)}
         className="account-avatar"
       >
-        {initialsOf(user.name)}
+        {user.avatarKey ? (
+          // eslint-disable-next-line @next/next/no-img-element -- small static SVG avatars
+          <img src={avatarImagePath(user.avatarKey)} alt="" width={40} height={40} className="account-avatar__image" />
+        ) : (
+          initialsOf(user.name)
+        )}
       </button>
       {isOpen && (
         <div id={menuId} role="menu" className="account-menu__panel">
@@ -68,6 +76,18 @@ export function AccountMenu() {
             <strong>{user.name}</strong>
             <span>{user.email}</span>
           </div>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              setIsOpen(false);
+              setIsPickerOpen(true);
+            }}
+            className="account-menu__item"
+          >
+            <UserRoundPen aria-hidden size={18} />
+            {translate("changeAvatar")}
+          </button>
           <Link role="menuitem" href="/farms" onClick={() => setIsOpen(false)} className="account-menu__item">
             <FolderOpen aria-hidden size={18} />
             {translate("myFarms")}
@@ -86,6 +106,7 @@ export function AccountMenu() {
           </button>
         </div>
       )}
+      <AvatarPickerDialog isOpen={isPickerOpen} onClose={() => setIsPickerOpen(false)} />
     </div>
   );
 }
