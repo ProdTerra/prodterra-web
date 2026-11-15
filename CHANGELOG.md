@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- Recomendado step, month panel: a summary line on top with the number of risks and things to watch and the most serious alarm with its lot ("2 riesgos · 4 atención · Lo más grave: Heladas en Lote 2"); climate rows with word, number and unit, plus a small bar showing the month's rain and humidity against the normal range; "Puede helar" only when the minimum drops below 2 °C.
+- Lot statuses always show an icon shape with the word (check Bien, triangle Atención, octagon Riesgo). Lots with alarms come first, most serious first, each alarm with the action and then the cause; lots without alarms collapse into one line ("Lotes 3, 4 y 5 · Bien").
+- The month grid shows, at the start of each lot lane, the status icon and the number of alarms of the month (lanes grouped by crop add up their lots). Shown from 600px wide; the step "Tu calendario" is unchanged.
+- The warning "{cultivo} no suele darse a la altura de este lote" now appears on the lot card.
+
+### Removed
+- The "Comparar los dos planes" dialog; the "Tu plan / Recomendado" switch is the comparison.
+
 ## 0.6.0 - 2026-11-15
 
 ### Added
