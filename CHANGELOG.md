@@ -8,9 +8,14 @@
 - Copy one lot's rotation to every lot, lot cards that say what is missing, and "Ver mi calendario" enabled only when every lot is complete.
 - Farmer calendar without climate data: month navigation over the plan, one row per lot colored by crop, rest drawn with a pattern, sowing and harvest markers, a legend and the dates of each lot.
 - The rotation plan is kept in the browser under `prodterra.rotationPlan`.
+- Recommended step: the farmer's rotation and a recommended one from `POST /plans/evaluate`, colored by NASA climate risk, with exact sowing and harvest days, monthly alarms and a per-lot comparison with rotation warnings and reasons.
+- Optional accounts: "Iniciar sesión" or the profile avatar in the header from the first step, a login and registration dialog with inline field validation that never leaves the current step, and a profile menu with "Mis fincas" and "Cerrar sesión".
+- "Guardar mi plan" on the recommended step (asks to log in only when needed) and the "Mis fincas" page to open or delete saved farms.
+- "Descargar PDF" on both calendars with a print layout of every month and the dates of each block.
+- Place search with the ArcGIS geocoder, the split panel with lengthwise, crosswise and grid layouts aligned to the farm's long axis.
 
 ### Changed
-- The flow now has six steps: locate, boundary, lots, your rotation, your calendar and recommended. The recommended step reads the rotation plan until the plan evaluation endpoint exists.
+- The flow now has six steps: locate, boundary, lots, your rotation, your calendar and recommended. The recommended step evaluates the whole rotation plan.
 
 ### Removed
 - The old crops step and its `prodterra.lotPlantings` storage.
