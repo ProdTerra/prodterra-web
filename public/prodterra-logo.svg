@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="205 205 850 850" role="img" aria-label="ProdTerra">
+  <g stroke="#fff" stroke-linejoin="round" paint-order="stroke">
+    <path d="M415 280h470a40 40 0 0 1 40 40v432H355V340a60 60 0 0 1 60-60z" fill="#2d5034" stroke="none"/>
+    <path d="M415 280h470a40 40 0 0 1 40 40v63H355v-43a60 60 0 0 1 60-60z" fill="#3c6544" stroke="none"/>
+    <rect x="385" y="383" width="510" height="339" rx="10" fill="#fff" stroke="none"/>
+    <rect x="473" y="220" width="46" height="112" rx="23" fill="#2d5034" stroke-width="36"/>
+    <rect x="760" y="220" width="46" height="112" rx="23" fill="#2d5034" stroke-width="36"/>
+    <g fill="#a0b49a" stroke="none">
+      <rect x="425" y="423" width="63" height="65" rx="11"/>
+      <rect x="516" y="423" width="63" height="65" rx="11"/>
+      <rect x="608" y="423" width="63" height="65" rx="11"/>
+      <rect x="700" y="423" width="63" height="65" rx="11"/>
+      <rect x="792" y="423" width="63" height="65" rx="11"/>
+      <rect x="608" y="517" width="63" height="65" rx="11"/>
+      <rect x="792" y="517" width="63" height="65" rx="11"/>
+      <rect x="608" y="610" width="63" height="65" rx="11"/>
+    </g>
+    <rect x="693" y="508" width="79" height="80" rx="12" fill="#6a9a52" stroke="none"/>
+    <path d="M714 568c-3-27 15-42 39-43 2 26-14 42-39 43z" fill="#fff" stroke="none"/>
+    <path d="M718 563l22-24" fill="none" stroke="#6a9a52" stroke-width="5" stroke-linecap="round"/>
+
+    <rect x="255" y="525" width="325" height="435" rx="50" fill="#2d5034" stroke-width="44"/>
+    <rect x="285" y="555" width="267" height="375" rx="22" fill="#fff" stroke="none"/>
+    <g fill="#a0b49a" stroke="none">
+      <rect x="417" y="621" width="107" height="20" rx="10"/>
+      <rect x="417" y="738" width="107" height="20" rx="10"/>
+      <rect x="417" y="846" width="107" height="20" rx="10"/>
+    </g>
+    <g stroke="none">
+      <ellipse cx="357" cy="617" rx="19" ry="34" transform="rotate(20 357 617)" fill="#c3bc5a"/>
+      <g fill="#fff">
+        <circle cx="352" cy="604" r="3.5"/><circle cx="365" cy="610" r="3.5"/>
+        <circle cx="348" cy="619" r="3.5"/><circle cx="361" cy="625" r="3.5"/>
+        <circle cx="356" cy="639" r="3.5"/>
+      </g>
+      <path d="M318 624c18 8 24 34 12 60-14-16-20-38-12-60z" fill="#6a9a52"/>
+      <path d="M392 640c-14-8-36-2-48 22-6 12-8 20-6 24 26 0 48-20 54-46z" fill="#6a9a52"/>
+      <circle cx="352" cy="757" r="40" fill="#c64a42"/>
+      <path d="M352 714l7 13 15-3-9 12 12 9-16 1-9 10-9-10-16-1 12-9-9-12 15 3z" fill="#4f8a3f"/>
+      <path d="M318 885c0-26 46-28 52-56 6-12 22-8 18 8-8 36-34 58-60 61-8 0-10-6-10-13z" fill="#6a9a52"/>
+      <path d="M332 880c10-10 22-14 30-24" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+    </g>
+
+    <path d="M852 746c-82 4-115-48-117-114 66-4 112 30 120 86 2 14 1 22-3 28z" fill="#3c6544" stroke-width="24"/>
+    <path d="M876 726c-8-88 40-146 132-150 6 90-44 146-132 150z" fill="#3c6544" stroke-width="24"/>
+    <path d="M832 722c14 8 24 30 22 66" fill="none" stroke="#2d5034" stroke-width="18" stroke-linecap="round"/>
+    <path d="M878 728c-6 16-8 34-4 58" fill="none" stroke="#2d5034" stroke-width="18" stroke-linecap="round"/>
+
+    <path d="M560 985c36-22 46-52 45-95 116-88 250-112 413-115v50c-176 4-300 50-420 180z" fill="#79a05a" stroke-width="26"/>
+    <path d="M625 1022c104-120 230-166 390-170l-12 40c-150 6-220 44-281 150-30 0-66-8-97-20z" fill="#3c6544" stroke-width="20"/>
+    <path d="M768 1042c58-62 130-104 222-120-50 74-122 114-222 120z" fill="#79a05a" stroke-width="20"/>
+  </g>
+</svg>
