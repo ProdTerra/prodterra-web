@@ -272,6 +272,20 @@
         "shorterThanReference": "{crop} dura {weeks} semanas; su ciclo de referencia es de {referenceWeeks} semanas.",
         "altitudeOutOfRange": "{crop} no suele darse a la altura de este lote."
       }
+    },
+    "grid": {
+      "sowing": "Siembra",
+      "harvest": "Cosecha",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "planStart": "Inicio del plan",
+      "lotFilter": "Ver",
+      "allLots": "Todos los lotes",
+      "pickDay": "Toca un día para ver qué pasa ese día en cada lote.",
+      "dayOfBlock": "{name}: día {day} de {total}",
+      "free": "Sin plan ese día",
+      "sowingToday": "Este día se siembra",
+      "harvestToday": "Este día se cosecha"
     }
   },
   "rotationPlan": {

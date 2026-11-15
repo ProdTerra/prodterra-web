@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- "Tu calendario" is a Google Calendar style month grid: weeks from Monday, crop bars that run across the days and wrap at each week with the crop name, one fixed lane per lot (lot number on the left), a "Ver" selector to show all lots or one lot with larger bars, sowing and harvest marks, month chips and "Inicio del plan". Tapping a day shows each lot on that day ("Papa: día 49 de 120").
+
 ## 0.3.0 - 2026-11-15
 
 ### Added

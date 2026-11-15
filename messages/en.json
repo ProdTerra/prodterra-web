@@ -272,6 +272,20 @@
         "shorterThanReference": "{crop} lasts {weeks} weeks; its reference cycle is {referenceWeeks} weeks.",
         "altitudeOutOfRange": "{crop} doesn't usually grow at this lot's elevation."
       }
+    },
+    "grid": {
+      "sowing": "Sowing",
+      "harvest": "Harvest",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "planStart": "Plan start",
+      "lotFilter": "Show",
+      "allLots": "All lots",
+      "pickDay": "Tap a day to see what happens on each lot.",
+      "dayOfBlock": "{name}: day {day} of {total}",
+      "free": "No plan that day",
+      "sowingToday": "Sowing on this day",
+      "harvestToday": "Harvest on this day"
     }
   },
   "rotationPlan": {

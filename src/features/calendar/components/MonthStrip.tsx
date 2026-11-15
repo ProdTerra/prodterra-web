@@ -8,14 +8,16 @@ type MonthStripProps = {
   monthName: (monthKey: string) => string;
   shortMonthName: (monthKey: string) => string;
   onSelect: (index: number) => void;
+  showsHeader?: boolean;
 };
 
-export function MonthStrip({ months, selectedIndex, monthName, shortMonthName, onSelect }: MonthStripProps) {
+export function MonthStrip({ months, selectedIndex, monthName, shortMonthName, onSelect, showsHeader = true }: MonthStripProps) {
   const translate = useTranslations("calendar");
   const selected = months[selectedIndex];
 
   return (
     <div className="month-strip">
+      {showsHeader && (
       <div className="month-strip__current">
         <button
           type="button"
@@ -39,6 +41,7 @@ export function MonthStrip({ months, selectedIndex, monthName, shortMonthName, o
           <ChevronRight aria-hidden size={20} />
         </button>
       </div>
+      )}
       <div role="tablist" aria-label={translate("monthsLabel")} className="month-strip__chips">
         {months.map((month, index) => (
           <button
