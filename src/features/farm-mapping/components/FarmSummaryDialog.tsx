@@ -125,6 +125,44 @@ function ClimateOverview({ profile, landTile }: { profile: LotClimateProfile; la
   );
 }
 
+function ElevationAdjustment({ profile }: { profile: LotClimateProfile }) {
+  const translate = useTranslations("farmMapping.summary");
+  const format = useFormatter();
+  const formatters = useSummaryFormatters();
+  const correction = profile.temperatureCorrectionInCelsius;
+  const signedCorrection = `${correction > 0 ? "+" : correction < 0 ? "\u2212" : ""}${format.number(Math.abs(correction), {
+    maximumFractionDigits: 1,
+  })} °C`;
+  const difference = Math.abs(profile.elevation.meanInMeters - profile.climateGridElevationInMeters);
+
+  return (
+    <div className="elevation-adjustment">
+      <strong>{translate("adjustmentTitle")}</strong>
+      <dl>
+        <div>
+          <dt>{translate("farmElevationRow")}</dt>
+          <dd>{formatters.meters(profile.elevation.meanInMeters)}</dd>
+        </div>
+        <div>
+          <dt>{translate("gridElevationRow")}</dt>
+          <dd>{formatters.meters(profile.climateGridElevationInMeters)}</dd>
+        </div>
+        <div>
+          <dt>{translate("adjustmentRow")}</dt>
+          <dd>{signedCorrection}</dd>
+        </div>
+      </dl>
+      <p>
+        {translate("adjustmentExplanation", {
+          difference: formatters.meters(difference),
+          direction: correction < 0 ? "colder" : "warmer",
+        })}{" "}
+        <SourceLink href={standardAtmosphereUrl} label={translate("lapseRateSource")} />
+      </p>
+    </div>
+  );
+}
+
 export function FarmSummaryDialog({
   isOpen,
   farmBoundary,
@@ -135,7 +173,6 @@ export function FarmSummaryDialog({
 }: FarmSummaryDialogProps) {
   const translate = useTranslations("farmMapping.summary");
   const formatArea = useAreaFormatter();
-  const formatters = useSummaryFormatters();
   const titleId = useId();
   const dialogProps = useModalDialog(isOpen, onClose);
   const { state, retry } = useFarmClimateProfile(farmBoundary, isOpen);
@@ -190,13 +227,7 @@ export function FarmSummaryDialog({
                   {translate("climateSource")} <SourceLink href={nasaPowerUrl} label={translate("openSource")} />
                 </li>
                 <li>
-                  {translate("altitudeAdjustment", {
-                    gridElevation: formatters.meters(state.profile.climateGridElevationInMeters),
-                    farmElevation: formatters.meters(state.profile.elevation.meanInMeters),
-                    direction: state.profile.temperatureCorrectionInCelsius < 0 ? "colder" : "warmer",
-                    correction: formatters.decimal(Math.abs(state.profile.temperatureCorrectionInCelsius)),
-                  })}{" "}
-                  <SourceLink href={standardAtmosphereUrl} label={translate("lapseRateSource")} />
+                  <ElevationAdjustment profile={state.profile} />
                 </li>
               </>
             )}
