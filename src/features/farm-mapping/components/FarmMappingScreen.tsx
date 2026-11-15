@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { Dialog } from "@/shared/components/Dialog";
+import { CalendarStep } from "@/features/calendar/components/CalendarStep";
 import { CropsStep } from "@/features/lot-plantings/components/CropsStep";
 import { LanguageSwitcher } from "@/shared/components/LanguageSwitcher";
 import {
@@ -311,7 +312,7 @@ export function FarmMappingScreen() {
     };
   }
 
-  const isCropsStep = state.step === "crops";
+  const isCropsStep = state.step === "crops" || state.step === "calendar";
   const rejectionMessage = state.rejection
     ? describeRejection(state.rejection)
     : null;
@@ -372,10 +373,14 @@ export function FarmMappingScreen() {
             }}
           />
         )}
+        {state.step === "calendar" && (
+          <CalendarStep lots={state.lots} onEditCrops={() => dispatch({ type: "cropsEditRequested" })} />
+        )}
         {state.step === "crops" && (
           <CropsStep
             lots={state.lots}
             onEditLots={() => dispatch({ type: "lotsEditRequested" })}
+            onContinue={() => dispatch({ type: "cropsConfirmed" })}
           />
         )}
       </section>

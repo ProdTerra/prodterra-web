@@ -15,7 +15,8 @@
       "locate": "Ubica tu finca",
       "boundary": "Marca el borde",
       "lots": "Divide en lotes",
-      "crops": "Tus cultivos"
+      "crops": "Tus cultivos",
+      "calendar": "Tu calendario"
     },
     "locate": {
       "title": "¿Dónde está tu finca?",
@@ -190,7 +191,77 @@
       "nextLot": "Siguiente lote",
       "catalogLoading": "Cargando los cultivos…",
       "catalogFailed": "No se pudieron cargar los cultivos. Revisa que la API esté encendida.",
-      "retry": "Intentar otra vez"
+      "retry": "Intentar otra vez",
+      "seeCalendar": "Ver mi calendario"
+    }
+  },
+  "calendar": {
+    "title": "Tu calendario",
+    "hint": "Cómo se ve cada lote los próximos 12 meses. Cada día está pintado según su estado.",
+    "loading": "Armando el plan con datos de la NASA…",
+    "failed": "No se pudo armar el plan. Revisa que la API esté encendida e inténtalo otra vez.",
+    "retry": "Intentar otra vez",
+    "demoNotice": "Este calendario usa datos de prueba para los rangos de los cultivos y las plagas.",
+    "previousMonth": "Mes anterior",
+    "nextMonth": "Mes siguiente",
+    "monthsLabel": "Meses del plan",
+    "legendLabel": "Qué significa cada color",
+    "statusOk": "Bien",
+    "statusWatch": "Vigilar",
+    "statusRisk": "Riesgo",
+    "sowing": "Siembra",
+    "harvest": "Cosecha",
+    "free": "Libre",
+    "recommendedSuffix": "{crop} (recomendado)",
+    "lotsGridLabel": "Estado de cada lote por día en {month}",
+    "dayHeader": "Día {day}",
+    "rowSummary": "{lot}: {crop}, {status, select, ok {todo bien} watch {vigilar} other {riesgo}} este mes",
+    "alarmsTitle": "Alarmas de {month}",
+    "alarmsEmpty": "Ningún lote necesita atención este mes.",
+    "alarm": {
+      "frost": "Noches de hasta {value} °C: riesgo de helada.",
+      "temperature": "Temperatura promedio de {value} °C, fuera de lo que soporta el cultivo.",
+      "drought": "Sin riego faltan unos {value} litros de agua por m².",
+      "irrigation": "Regar unos {value} litros por m² este mes.",
+      "pest": "Vigilar {pest}: el clima de este mes la favorece."
+    },
+    "openLotPlan": "Ver el plan de {lot}",
+    "editCrops": "Cambiar mis cultivos",
+    "lotPlan": {
+      "title": "Plan de {lot}",
+      "elevation": "Altura del lote: {value}",
+      "now": "Ahora",
+      "nowCrop": "{crop}, cosecha estimada en {month}",
+      "nowFallow": "En descanso",
+      "estimatedCycle": "No tenemos el ciclo de este cultivo; se estimó en 3 meses.",
+      "next": "Siguiente cultivo recomendado",
+      "nextCrop": "{crop}: siembra en {sow}, cosecha en {harvest}",
+      "why": "Por qué",
+      "alternatives": "Otras opciones",
+      "noClimate": "No hay datos de clima para este lote.",
+      "close": "Cerrar"
+    },
+    "reason": {
+      "sameFamily": "Es de la misma familia que el cultivo anterior; eso favorece plagas y enfermedades del suelo.",
+      "differentFamily": "Es de otra familia que el cultivo anterior.",
+      "sameNutrient": "Gasta el mismo nutriente principal ({nutrient}) que el cultivo anterior.",
+      "differentNutrient": "Usa sobre todo otro nutriente ({nutrient}), así el suelo se recupera.",
+      "highAfterHighDemand": "Es otro cultivo exigente seguido.",
+      "restAfterHighDemand": "Exige menos al suelo después de un cultivo exigente.",
+      "afterRest": "El suelo viene de descansar.",
+      "unknownHistory": "No se sabe qué hubo antes, así que la rotación no se pudo revisar.",
+      "altitudeOutOfRange": "No se da bien a la altura de este lote.",
+      "climateFit": "El clima le sirve {suitable} de {total} meses del ciclo.",
+      "pestMonths": "El clima favorece plagas en {months, plural, one {# mes} other {# meses}} del ciclo.",
+      "waitForBetterMonth": "Conviene esperar {months, plural, one {# mes} other {# meses}} para sembrar, cuando el clima le sirve mejor."
+    },
+    "nutrient": {
+      "N": "nitrógeno",
+      "P": "fósforo",
+      "K": "potasio",
+      "Ca": "calcio",
+      "Mg": "magnesio",
+      "S": "azufre"
     }
   }
 }

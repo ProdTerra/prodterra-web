@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, ArrowRight, CalendarDays, Copy } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useReducer, useState } from "react";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
@@ -17,11 +18,12 @@ import { useCropCatalog } from "./useCropCatalog";
 type CropsStepProps = {
   lots: Lot[];
   onEditLots: () => void;
+  onContinue: () => void;
 };
 
 const emptyPlantings = {};
 
-export function CropsStep({ lots, onEditLots }: CropsStepProps) {
+export function CropsStep({ lots, onEditLots, onContinue }: CropsStepProps) {
   const translate = useTranslations("farmMapping");
   const locale = useLocale();
   const formatArea = useAreaFormatter();
@@ -81,6 +83,13 @@ export function CropsStep({ lots, onEditLots }: CropsStepProps) {
         </p>
       </header>
 
+      {completedCount === lots.length && (
+        <button type="button" onClick={onContinue} className="button button--primary crops-step__continue">
+          <CalendarDays aria-hidden size={18} />
+          {translate("crops.seeCalendar")}
+        </button>
+      )}
+
       <section aria-label={translate("crops.lotsLabel")} className="lot-cards">
         {lots.map((lot) => (
           <LotCard
@@ -128,6 +137,7 @@ export function CropsStep({ lots, onEditLots }: CropsStepProps) {
             {lots.length > 1 && (
               <button type="button" onClick={() => setSelectedShapeId(nextLot.shapeId)} className="button button--primary">
                 {translate("crops.nextLot")}
+                <ArrowRight aria-hidden size={18} />
               </button>
             )}
             {lots.length > 1 && (
@@ -136,10 +146,12 @@ export function CropsStep({ lots, onEditLots }: CropsStepProps) {
                 onClick={() => dispatch({ type: "appliedToAllLots", fromShapeId: selectedLot.shapeId, shapeIds })}
                 className="button button--outline"
               >
+                <Copy aria-hidden size={18} />
                 {translate("crops.applyToAll")}
               </button>
             )}
-            <button type="button" onClick={onEditLots} className="button button--quiet">
+            <button type="button" onClick={onEditLots} className="button button--secondary">
+              <ArrowLeft aria-hidden size={18} />
               {translate("crops.editLots")}
             </button>
           </div>

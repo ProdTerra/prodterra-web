@@ -15,7 +15,8 @@
       "locate": "Find your farm",
       "boundary": "Mark the edge",
       "lots": "Split into lots",
-      "crops": "Your crops"
+      "crops": "Your crops",
+      "calendar": "Your calendar"
     },
     "locate": {
       "title": "Where is your farm?",
@@ -190,7 +191,77 @@
       "nextLot": "Next lot",
       "catalogLoading": "Loading crops…",
       "catalogFailed": "Crops couldn't be loaded. Check that the API is running.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "seeCalendar": "See my calendar"
+    }
+  },
+  "calendar": {
+    "title": "Your calendar",
+    "hint": "How each lot looks over the next 12 months. Every day is painted by its status.",
+    "loading": "Building the plan with NASA data…",
+    "failed": "The plan couldn't be built. Check that the API is running and try again.",
+    "retry": "Try again",
+    "demoNotice": "This calendar uses test data for crop and pest ranges.",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "monthsLabel": "Plan months",
+    "legendLabel": "What each color means",
+    "statusOk": "Fine",
+    "statusWatch": "Watch",
+    "statusRisk": "Risk",
+    "sowing": "Sowing",
+    "harvest": "Harvest",
+    "free": "Free",
+    "recommendedSuffix": "{crop} (recommended)",
+    "lotsGridLabel": "Status of each lot per day in {month}",
+    "dayHeader": "Day {day}",
+    "rowSummary": "{lot}: {crop}, {status, select, ok {all fine} watch {watch} other {risk}} this month",
+    "alarmsTitle": "Alarms for {month}",
+    "alarmsEmpty": "No lot needs attention this month.",
+    "alarm": {
+      "frost": "Nights down to {value} °C: frost risk.",
+      "temperature": "Average temperature of {value} °C, outside what the crop tolerates.",
+      "drought": "Without irrigation about {value} liters of water per m² are missing.",
+      "irrigation": "Irrigate about {value} liters per m² this month.",
+      "pest": "Watch for {pest}: this month's weather favors it."
+    },
+    "openLotPlan": "Open the plan for {lot}",
+    "editCrops": "Change my crops",
+    "lotPlan": {
+      "title": "Plan for {lot}",
+      "elevation": "Lot elevation: {value}",
+      "now": "Now",
+      "nowCrop": "{crop}, estimated harvest in {month}",
+      "nowFallow": "Resting",
+      "estimatedCycle": "We don't have this crop's cycle; it was estimated at 3 months.",
+      "next": "Recommended next crop",
+      "nextCrop": "{crop}: sow in {sow}, harvest in {harvest}",
+      "why": "Why",
+      "alternatives": "Other options",
+      "noClimate": "There is no climate data for this lot.",
+      "close": "Close"
+    },
+    "reason": {
+      "sameFamily": "It belongs to the same family as the previous crop, which favors soil pests and diseases.",
+      "differentFamily": "It belongs to a different family than the previous crop.",
+      "sameNutrient": "It uses the same main nutrient ({nutrient}) as the previous crop.",
+      "differentNutrient": "It mainly uses another nutrient ({nutrient}), so the soil recovers.",
+      "highAfterHighDemand": "It is another demanding crop in a row.",
+      "restAfterHighDemand": "It asks less of the soil after a demanding crop.",
+      "afterRest": "The soil comes from a rest period.",
+      "unknownHistory": "We don't know what was there before, so rotation couldn't be checked.",
+      "altitudeOutOfRange": "It doesn't grow well at this lot's elevation.",
+      "climateFit": "The climate suits it {suitable} of {total} months of the cycle.",
+      "pestMonths": "The weather favors pests in {months, plural, one {# month} other {# months}} of the cycle.",
+      "waitForBetterMonth": "It is better to wait {months, plural, one {# month} other {# months}} to sow, when the weather suits it better."
+    },
+    "nutrient": {
+      "N": "nitrogen",
+      "P": "phosphorus",
+      "K": "potassium",
+      "Ca": "calcium",
+      "Mg": "magnesium",
+      "S": "sulfur"
     }
   }
 }
