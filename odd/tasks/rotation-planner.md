@@ -32,9 +32,9 @@ Branches: one `feature/<stage>` per stage from develop, signed commits, PR into 
 | ID | Specs | Stage | Repo | Route | Status | Commit / PR |
 |---|---|---|---|---|---|---|
 | T0 | S3 | Crop cycle days for all 10 crops in model and demo seed; rerun dev seed | api | inline | done | api PR #1 (0bc4fd7) |
-| T1 | S1 | Planning start step with date picker and validations | web | inline | pending | |
-| T2 | S2 | Rotation timeline builder per lot (domain + UI) | web | inline | pending | |
-| T3 | S4 | Farmer calendar without climate | web | inline | pending | |
+| T1 | S1 | Planning start step with date picker and validations | web | inline | done | 7798104, 3329c8e |
+| T2 | S2 | Rotation timeline builder per lot (domain + UI) | web | inline | done | 7798104, 3329c8e |
+| T3 | S4 | Farmer calendar without climate | web | inline | done | 3329c8e |
 | T4 | S5 | POST /plans/evaluate + recommended vs farmer calendar | api+web | inline | pending | |
 | T5 | S6 | Accounts API: users, argon2, httpOnly session cookie, throttling (Risk item 2, 5) | api | inline + verifier | pending | |
 | T6 | S7 | Session UI: avatar/login, dialog without leaving flow, profile dropdown | web | inline | pending | |
@@ -47,3 +47,5 @@ Branches: one `feature/<stage>` per stage from develop, signed commits, PR into 
 - L1 (2026-11-14, user, verbatim excerpt): "Esta app es par aayudarle a planificar rotaciones eficientemente a los granjerons ... puedes genrar un plan estructurado para hacer esto spor stages en aouto pilot ?"
 - L2 (2026-11-14, user): "ok si todo el plan debes hace ren auto no voy a estar ... puedes firmar PGP por muchas horas, tienes full autorizaicon de corre los seed, al final acutalmente sta todo en develop, no merges a main pero si has comits y prs rpeiriodicos develop"
 - L3 Decisions: the duplicated "¿Qué siembras en cada lote?" is read as one step (the timeline). PDF via print stylesheet and the browser's save-as-PDF (no new dependency). Sessions as opaque tokens stored in Mongo behind an httpOnly SameSite=Lax cookie; app and api share the site prodterra.earth. Seeds run only against the development database, never `production`. UX checklist lives in agent memory `prodterra-ux-lessons`.
+- L4 (2026-11-14, user via coordinator, verbatim): "no gastes tiempo con tantas pruebas" and "enfócate en UX UI y validaciones de forms".
+- L5 T1-T3 evidence: RED observed for the domain tests (missing modules) and the reducer test, then GREEN. Commits 7798104 (domain, reducer, storage) and 3329c8e (steps, UI, lot-plantings removal). Checks: npm test 80 passed in 18 files; npx tsc --noEmit clean; npm run lint clean; npm run build skipped at the user's request. Playwright screenshots at 390x844 and 1440x900 (start date, rotation editor with crop, rest and a changed crop, farmer calendar) show no horizontal overflow. Decisions: "today" is the farmer's local calendar day, then all date math runs in UTC; copying a rotation copies previous use, irrigation and blocks; drafts saved on the removed crops/calendar steps reopen at the plan step. Next: T4.
