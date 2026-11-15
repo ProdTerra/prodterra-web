@@ -1,7 +1,7 @@
 import type { RotationBlock } from "./rotationPlan";
 
 export const minimumBlockDays = 1;
-export const maximumBlockDays = 730;
+export const maximumBlockDays = 3650;
 export const maximumBlocksPerLot = 100;
 export const defaultCropDays = 90;
 export const defaultRestDays = 28;

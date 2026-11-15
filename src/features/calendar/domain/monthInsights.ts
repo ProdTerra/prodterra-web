@@ -7,10 +7,10 @@ export type ClimateDescription = {
   hasFrostNights: boolean;
 };
 
-const dryMonthInMillimeters = 30;
-const wetMonthInMillimeters = 150;
-const highHumidityInPercent = 80;
-const lowHumidityInPercent = 50;
+export const dryMonthInMillimeters = 30;
+export const wetMonthInMillimeters = 150;
+export const highHumidityInPercent = 80;
+export const lowHumidityInPercent = 50;
 const frostThresholdInCelsius = 2;
 
 function daysInMonth(monthKey: string): number {
@@ -38,11 +38,13 @@ const alertOrder: Record<PlanAlert["type"], number> = {
   pest: 5,
 };
 
+export function compareAlerts(first: PlanAlert, second: PlanAlert): number {
+  if (first.level !== second.level) {
+    return first.level === "risk" ? -1 : 1;
+  }
+  return alertOrder[first.type] - alertOrder[second.type];
+}
+
 export function sortAlerts(alerts: PlanAlert[]): PlanAlert[] {
-  return [...alerts].sort((first, second) => {
-    if (first.level !== second.level) {
-      return first.level === "risk" ? -1 : 1;
-    }
-    return alertOrder[first.type] - alertOrder[second.type];
-  });
+  return [...alerts].sort(compareAlerts);
 }

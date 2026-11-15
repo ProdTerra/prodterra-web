@@ -233,7 +233,7 @@
       "drought": "Sin riego faltan unos {value} litros de agua por m².",
       "irrigation": "Regar unos {value} litros por m² este mes.",
       "waterExcess": "Llueven unos {value} litros por m² más de lo que el cultivo aguanta: revisar el drenaje.",
-      "pest": "Vigilar {pest}: el clima de este mes la favorece."
+      "pest": "Vigilar {pest}: el cultivo está fuera de su clima ideal este mes."
     },
     "openLotPlan": "Ver el plan de {lot}",
     "lotPlan": {
@@ -242,45 +242,11 @@
       "noClimate": "No hay datos de clima para este lote.",
       "close": "Cerrar"
     },
-    "reason": {
-      "sameFamily": "Es de la misma familia que el cultivo anterior; eso favorece plagas y enfermedades del suelo.",
-      "differentFamily": "Es de otra familia que el cultivo anterior.",
-      "sameNutrient": "Gasta el mismo nutriente principal ({nutrient}) que el cultivo anterior.",
-      "differentNutrient": "Usa sobre todo otro nutriente ({nutrient}), así el suelo se recupera.",
-      "highAfterHighDemand": "Es otro cultivo exigente seguido.",
-      "restAfterHighDemand": "Exige menos al suelo después de un cultivo exigente.",
-      "afterRest": "El suelo viene de descansar.",
-      "unknownHistory": "No se sabe qué hubo antes, así que la rotación no se pudo revisar.",
-      "altitudeOutOfRange": "No se da bien a la altura de este lote.",
-      "climateFit": "El clima le sirve {suitable} de {total} meses del ciclo.",
-      "pestMonths": "El clima favorece plagas en {months, plural, one {# mes} other {# meses}} del ciclo.",
-      "waitForBetterMonth": "Conviene esperar {months, plural, one {# mes} other {# meses}} para sembrar, cuando el clima le sirve mejor."
-    },
-    "nutrient": {
-      "N": "nitrógeno",
-      "P": "fósforo",
-      "K": "potasio",
-      "Ca": "calcio",
-      "Mg": "magnesio",
-      "S": "azufre"
-    },
     "backToMyCalendar": "Volver a mi calendario",
     "variantLabel": "Qué calendario ver",
     "variantFarmer": "Tu plan",
     "variantRecommended": "Recomendado",
     "rest": "Descanso",
-    "comparison": {
-      "title": "{lot}: tu plan y el recomendado",
-      "riskMonths": "{count, plural, =0 {Sin meses de riesgo} one {# mes de riesgo} other {# meses de riesgo}}",
-      "watchMonths": "{count, plural, =0 {nada que vigilar} one {# mes para vigilar} other {# meses para vigilar}}",
-      "dates": "{start} a {end}",
-      "noWarnings": "La rotación no tiene problemas.",
-      "warning": {
-        "sameFamilyInARow": "{crop} va después de otro cultivo de la misma familia; eso favorece plagas y cansa el suelo.",
-        "shorterThanReference": "{crop} dura {weeks} semanas; su ciclo de referencia es de {referenceWeeks} semanas.",
-        "altitudeOutOfRange": "{crop} no suele darse a la altura de este lote."
-      }
-    },
     "grid": {
       "sowing": "Siembra",
       "harvest": "Cosecha",
@@ -295,33 +261,28 @@
       "sowingToday": "Este día se siembra",
       "harvestToday": "Este día se cosecha",
       "lotCount": "{count, plural, one {# lote} other {# lotes}}",
-      "lotNumbers": "Lotes {numbers}{more, plural, =0 {} other { y # más}}"
+      "lotNumbers": "Lotes {numbers}{more, plural, =0 {} other { y # más}}",
+      "laneStatus": "{status}, {count, plural, =0 {sin alarmas} one {# alarma} other {# alarmas}}"
     },
     "insights": {
       "climateTitle": "Clima típico de {month}",
       "climateNote": "Promedio de años anteriores para tu finca (NASA POWER). No es un pronóstico.",
-      "temperature": "Entre {min} y {max} °C",
-      "frostNights": "Noches con posible helada",
-      "rain": "Unos {value} mm en el mes",
       "rainLevel": {
         "dry": "Mes seco",
         "normal": "Lluvia normal",
         "wet": "Mes lluvioso"
       },
-      "humidity": "{value} % de humedad",
       "humidityLevel": {
         "low": "Aire seco",
         "normal": "Humedad normal",
         "high": "Humedad alta: favorece hongos"
       },
-      "sun": "{value} kWh/m² de sol al día",
       "lotsTitle": "Tus lotes en {month}",
       "status": {
         "ok": "Bien",
         "watch": "Atención",
         "risk": "Riesgo"
       },
-      "compare": "Comparar los dos planes",
       "free": "Sin cultivo",
       "rest": "Descanso",
       "action": {
@@ -330,7 +291,8 @@
         "drought": "Riega unos {value} L/m² o espera las lluvias",
         "irrigation": "Riega unos {value} L/m² este mes",
         "waterExcess": "Revisa el drenaje del lote",
-        "pest": "Vigila {pest}"
+        "pest": "Vigila {pest}",
+        "pests": "Vigila plagas y enfermedades: {pests}"
       },
       "cause": {
         "frost": "Noches de hasta {value} °C",
@@ -338,11 +300,37 @@
         "drought": "Sin riego le falta agua este mes",
         "irrigation": "La lluvia del mes no alcanza",
         "waterExcess": "Llueven unos {value} L/m² de más",
-        "pest": "El clima de este mes la favorece"
+        "pest": "El cultivo está fuera de su clima ideal este mes"
       },
-      "showQuietLots": "Ver los otros {count} lotes sin alarmas",
-      "hideQuietLots": "Ocultar los lotes sin alarmas",
-      "lotGroup": "Lotes {numbers}"
+      "lotGroup": "Lotes {numbers}",
+      "temperatureLabel": "Temperatura",
+      "temperatureRange": "{min} a {max} °C",
+      "frostPossible": "Puede helar",
+      "rainAmount": "{value} mm en el mes",
+      "humidityAmount": "{value} % de humedad",
+      "sunLabel": "Sol",
+      "sunAmount": "{value} kWh/m² al día",
+      "rainGauge": "Lluvia del mes: {value} mm. Menos de {low} mm es mes seco y más de {high} mm es mes lluvioso.",
+      "humidityGauge": "Humedad: {value} %. Menos de {low} % es aire seco y más de {high} % favorece hongos.",
+      "gaugeNote": "La barra muestra el mes frente a lo normal (zona clara).",
+      "summary": {
+        "riskCount": "{count, plural, one {# riesgo} other {# riesgos}}",
+        "watchCount": "{count} atención",
+        "mostSevere": "Lo más grave: {alarm} en {lot}",
+        "calm": "Sin alarmas este mes"
+      },
+      "alarmName": {
+        "frost": "Heladas",
+        "temperature": "Mucho frío o calor",
+        "drought": "Falta de agua",
+        "irrigation": "Hace falta riego",
+        "waterExcess": "Exceso de lluvia",
+        "pest": "{pest}",
+        "pests": "Plagas y enfermedades"
+      },
+      "quietLots": "{count, plural, one {Lote {numbers}} other {Lotes {numbers}}}",
+      "altitudeOutOfRange": "{crop} no suele darse a la altura de este lote.",
+      "pestListMore": "{names} y {count} más"
     },
     "newPlan": {
       "action": "Crear un nuevo plan",

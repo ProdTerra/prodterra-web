@@ -882,6 +882,10 @@ body {
   padding: 1.5rem 1rem 3rem;
 }
 
+.farm-mapping[data-layout="form"] .farm-mapping__panel:is([data-step="myCalendar"], [data-step="analysis"]) {
+  max-width: 96rem;
+}
+
 @media (min-width: 900px) {
   .farm-mapping[data-layout="form"] .farm-mapping__panel {
     padding: 2rem 2.5rem 4rem;
@@ -3056,79 +3060,6 @@ body {
   color: var(--color-paper);
 }
 
-.lot-comparison {
-  display: grid;
-  gap: 1rem;
-}
-
-@media (min-width: 720px) {
-  .lot-comparison {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.lot-comparison__column {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  border: 1px solid var(--color-line);
-  border-radius: 1rem;
-}
-
-.lot-comparison__column h3 {
-  font-size: 1.0625rem;
-  font-weight: 700;
-}
-
-.lot-comparison__counts {
-  font-size: 0.875rem;
-  color: var(--color-stone);
-}
-
-.lot-comparison__blocks {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-}
-
-.lot-comparison__blocks > li {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-  padding-left: 0.75rem;
-  border-left: 3px solid var(--color-field);
-}
-
-.lot-comparison__blocks > li[data-kind="rest"] {
-  border-left-color: var(--color-line);
-}
-
-.lot-comparison__blocks > li > span {
-  font-size: 0.875rem;
-  color: var(--color-stone);
-}
-
-.lot-comparison__warnings {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #5c4600;
-}
-
-.lot-comparison__warnings li,
-.lot-comparison__clean {
-  display: flex;
-  gap: 0.5rem;
-  align-items: flex-start;
-  font-size: 0.875rem;
-}
-
-.lot-comparison__clean {
-  color: var(--status-ok-strong);
-}
-
 .calendar-step__actions {
   display: flex;
   flex-wrap: wrap;
@@ -3490,6 +3421,51 @@ body {
   background: var(--color-mineral);
 }
 
+.plan-grid__lane-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: var(--lane-height);
+}
+
+.lane-status {
+  display: none;
+  align-items: center;
+  gap: 0.125rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.lane-status[data-status="ok"] {
+  color: var(--status-ok-strong);
+}
+
+.lane-status[data-status="watch"] {
+  color: var(--status-watch-strong);
+}
+
+.lane-status[data-status="risk"] {
+  color: var(--status-risk-strong);
+}
+
+.plan-grid[data-status-only] {
+  --gutter: 0rem;
+}
+
+.plan-grid[data-status-only] .plan-grid__lane-labels,
+.plan-grid[data-status-only] .plan-grid__weekdays > span:first-child {
+  display: none;
+}
+
+.plan-grid[data-status-only] .plan-grid__weekdays {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.plan-grid[data-status-only] .plan-grid__week {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .plan-grid__lane-labels .lot-badge {
   width: var(--lane-height);
   height: var(--lane-height);
@@ -3644,6 +3620,34 @@ body {
     --gutter: 0rem;
   }
 
+  .plan-grid[data-statuses] {
+    --gutter: 3.5rem;
+  }
+
+  .plan-grid[data-status-only] {
+    --gutter: 2.25rem;
+  }
+
+  .plan-grid[data-status-only] .plan-grid__lane-labels {
+    display: grid;
+  }
+
+  .plan-grid[data-status-only] .plan-grid__weekdays {
+    grid-template-columns: var(--gutter) repeat(7, minmax(0, 1fr));
+  }
+
+  .plan-grid[data-status-only] .plan-grid__weekdays > span:first-child {
+    display: block;
+  }
+
+  .plan-grid[data-status-only] .plan-grid__week {
+    grid-template-columns: var(--gutter) minmax(0, 1fr);
+  }
+
+  .lane-status {
+    display: inline-flex;
+  }
+
   .plan-grid__bar-label {
     display: block;
   }
@@ -3656,7 +3660,6 @@ body {
     width: 1.125rem;
     height: 1.125rem;
     font-size: 0.625rem;
-    transform: translateY(calc((var(--lane-height) - 1.125rem) / 2));
   }
 
   .plan-grid__day {
@@ -3715,8 +3718,21 @@ body {
 
 @media (min-width: 1100px) {
   .calendar-layout {
-    grid-template-columns: minmax(0, 1fr) 20rem;
+    grid-template-columns: minmax(0, 1fr) 22rem;
   }
+}
+
+@media (min-width: 1500px) {
+  .calendar-layout {
+    grid-template-columns: minmax(0, 1fr) 26rem;
+  }
+}
+
+.calendar-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
 }
 
 .calendar-side {
@@ -3805,31 +3821,78 @@ body {
 }
 
 .climate-card__facts {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
 }
 
-.climate-card__facts li {
+.climate-fact {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.625rem;
   color: var(--color-stone);
 }
 
-.climate-card__facts li > span {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.8125rem;
+.climate-fact > svg {
+  flex: none;
+  margin-top: 0.125rem;
 }
 
-.climate-card__facts strong {
+.climate-fact__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.climate-fact__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+.climate-fact__head strong {
   font-size: 0.9375rem;
   color: var(--color-ink);
 }
 
-.climate-card__facts [data-tone="risk"] {
-  color: #b42318;
-  font-weight: 600;
+.climate-fact__warning {
+  align-self: flex-start;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-danger-soft);
+  color: var(--status-risk-strong);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.climate-gauge {
+  position: relative;
+  display: block;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-mineral);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+}
+
+.climate-gauge__normal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: #dff1e2;
+  box-shadow: inset 0 0 0 1px var(--status-ok);
+}
+
+.climate-gauge__value {
+  position: absolute;
+  top: -0.25rem;
+  width: 0.25rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: var(--color-ink);
+  transform: translateX(-50%);
 }
 
 .lot-states {
@@ -3918,14 +3981,65 @@ body {
   color: var(--color-stone);
 }
 
-.lot-state__compare {
+.lot-state__note {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-left: 2rem;
+  font-size: 0.875rem;
+  color: var(--status-watch-strong);
+}
+
+.lot-state__note svg {
+  flex: none;
+  margin-top: 0.125rem;
+}
+
+.lot-state__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  max-width: 50%;
+}
+
+.lot-state--quiet .lot-state__name {
+  font-size: 0.875rem;
+}
+
+.month-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.875rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 1rem;
+  background: var(--color-paper);
+  font-size: 0.9375rem;
+}
+
+.month-summary__count {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  align-self: flex-start;
-  min-height: 2.25rem;
-  margin-left: 2rem;
-  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.month-summary__count[data-status="ok"] {
+  color: var(--status-ok-strong);
+}
+
+.month-summary__count[data-status="watch"] {
+  color: var(--status-watch-strong);
+}
+
+.month-summary__count[data-status="risk"] {
+  color: var(--status-risk-strong);
+}
+
+.month-summary__worst {
+  flex-basis: 100%;
+  color: var(--color-ink);
 }
 
 .farmer-calendar .step-hint {

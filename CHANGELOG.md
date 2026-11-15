@@ -2,11 +2,24 @@
 
 ## Unreleased
 
+### Added
+- Illustrated icons and fixed colors for the crops of the real catalog: eggplant, cilantro, sweet pepper, avocado, cassava, sugarcane, coffee and maize.
+
 ### Changed
 - "Descargar PDF" in "Tu calendario" and "Recomendado" opens a dialog instead of the browser print view: choose the calendar (Tu calendario / Recomendado; Recomendado only from its step), the whole plan or a range of months ("6 meses → 6 páginas"), the paper size (Letter by default in the US, Canada, Mexico, Costa Rica, Panama, Colombia, Venezuela, the Philippines and Chile; A4 elsewhere) and up to 5 lots ("Máximo 5 lotes por PDF para que se lean bien. Exporta otro PDF para los demás lotes."; with more lots the riskiest 5 are preselected for Recomendado). The PDF has one landscape page per month that looks like the screen: month grid from Monday with weekends shaded, one lane per lot, crop bars with the crop name, ▲ sowing and ■ harvest, rest drawn dashed, readable in black and white; Recomendado adds the typical climate of the month and each lot's status (icon and word) with its alarms, and the footer carries the legend, the NASA POWER note and "Página N de M". The PDF library (@react-pdf/renderer 4.9.0) and the Instrument Sans font files (OFL, in `public/fonts`) load only when a PDF is generated.
+- Pest and disease alarms of a lot are shown as one line ("Vigila plagas y enfermedades: Áfido, Agrotis sp, Alternaria solani y 10 más") with the cause "El cultivo está fuera de su clima ideal este mes", and count as one alarm in the month summary and the lane badges.
+- A rotation block can last up to 10 years (was 2), so permanent crops such as avocado fit.
+- Recomendado step, month panel: a summary line on top with the number of risks and things to watch and the most serious alarm with its lot ("2 riesgos · 4 atención · Lo más grave: Heladas en Lote 2"); climate rows with word, number and unit, plus a small bar showing the month's rain and humidity against the normal range; "Puede helar" only when the minimum drops below 2 °C.
+- Lot statuses always show an icon shape with the word (check Bien, triangle Atención, octagon Riesgo). Lots with alarms come first, most serious first, each alarm with the action and then the cause; lots without alarms collapse into one line ("Lotes 3, 4 y 5 · Bien").
+- The month grid shows, at the start of each lot lane, the status icon and the number of alarms of the month (lanes grouped by crop add up their lots). Shown from 600px wide; the step "Tu calendario" is unchanged.
+- The warning "{cultivo} no suele darse a la altura de este lote" now appears on the lot card.
+
+### Fixed
+- On wide screens the calendars use more of the width (up to 96rem) and "Recomendado" keeps the month panel on the right, with the legend and the day detail under the grid, so there is less scrolling.
 
 ### Removed
 - The printable table report and its print styles.
+- The "Comparar los dos planes" dialog; the "Tu plan / Recomendado" switch is the comparison.
 
 ## 0.6.0 - 2026-11-15
 

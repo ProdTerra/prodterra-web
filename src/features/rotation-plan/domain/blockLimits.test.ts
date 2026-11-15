@@ -5,10 +5,11 @@ import type { RotationBlock } from "./rotationPlan";
 const rest = (durationInDays: number): RotationBlock => ({ id: String(durationInDays), kind: "rest", durationInDays });
 
 describe("block limits", () => {
-  it("keeps every block between 1 day and 2 years", () => {
+  it("keeps every block between 1 day and 10 years, so a 5-year avocado fits", () => {
     expect(clampBlockDuration(0)).toBe(1);
     expect(clampBlockDuration(3)).toBe(3);
-    expect(clampBlockDuration(900)).toBe(730);
+    expect(clampBlockDuration(1825)).toBe(1825);
+    expect(clampBlockDuration(4000)).toBe(3650);
     expect(durationForNewBlock(120)).toBe(120);
   });
 

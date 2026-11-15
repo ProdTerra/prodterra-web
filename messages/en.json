@@ -233,7 +233,7 @@
       "drought": "Without irrigation about {value} liters of water per m² are missing.",
       "irrigation": "Irrigate about {value} liters per m² this month.",
       "waterExcess": "About {value} liters per m² more rain than the crop tolerates: check the drainage.",
-      "pest": "Watch for {pest}: this month's weather favors it."
+      "pest": "Watch for {pest}: the crop is outside its ideal climate this month."
     },
     "openLotPlan": "Open the plan for {lot}",
     "lotPlan": {
@@ -242,45 +242,11 @@
       "noClimate": "There is no climate data for this lot.",
       "close": "Close"
     },
-    "reason": {
-      "sameFamily": "It belongs to the same family as the previous crop, which favors soil pests and diseases.",
-      "differentFamily": "It belongs to a different family than the previous crop.",
-      "sameNutrient": "It uses the same main nutrient ({nutrient}) as the previous crop.",
-      "differentNutrient": "It mainly uses another nutrient ({nutrient}), so the soil recovers.",
-      "highAfterHighDemand": "It is another demanding crop in a row.",
-      "restAfterHighDemand": "It asks less of the soil after a demanding crop.",
-      "afterRest": "The soil comes from a rest period.",
-      "unknownHistory": "We don't know what was there before, so rotation couldn't be checked.",
-      "altitudeOutOfRange": "It doesn't grow well at this lot's elevation.",
-      "climateFit": "The climate suits it {suitable} of {total} months of the cycle.",
-      "pestMonths": "The weather favors pests in {months, plural, one {# month} other {# months}} of the cycle.",
-      "waitForBetterMonth": "It is better to wait {months, plural, one {# month} other {# months}} to sow, when the weather suits it better."
-    },
-    "nutrient": {
-      "N": "nitrogen",
-      "P": "phosphorus",
-      "K": "potassium",
-      "Ca": "calcium",
-      "Mg": "magnesium",
-      "S": "sulfur"
-    },
     "backToMyCalendar": "Back to my calendar",
     "variantLabel": "Which calendar to show",
     "variantFarmer": "Your plan",
     "variantRecommended": "Recommended",
     "rest": "Rest",
-    "comparison": {
-      "title": "{lot}: your plan and the recommended one",
-      "riskMonths": "{count, plural, =0 {No risky months} one {# risky month} other {# risky months}}",
-      "watchMonths": "{count, plural, =0 {nothing to watch} one {# month to watch} other {# months to watch}}",
-      "dates": "{start} to {end}",
-      "noWarnings": "The rotation has no problems.",
-      "warning": {
-        "sameFamilyInARow": "{crop} follows another crop of the same family; that helps pests and tires the soil.",
-        "shorterThanReference": "{crop} lasts {weeks} weeks; its reference cycle is {referenceWeeks} weeks.",
-        "altitudeOutOfRange": "{crop} doesn't usually grow at this lot's elevation."
-      }
-    },
     "grid": {
       "sowing": "Sowing",
       "harvest": "Harvest",
@@ -295,33 +261,28 @@
       "sowingToday": "Sowing on this day",
       "harvestToday": "Harvest on this day",
       "lotCount": "{count, plural, one {# lot} other {# lots}}",
-      "lotNumbers": "Lots {numbers}{more, plural, =0 {} other { and # more}}"
+      "lotNumbers": "Lots {numbers}{more, plural, =0 {} other { and # more}}",
+      "laneStatus": "{status}, {count, plural, =0 {no alarms} one {# alarm} other {# alarms}}"
     },
     "insights": {
       "climateTitle": "Typical climate in {month}",
       "climateNote": "Average of past years for your farm (NASA POWER). It is not a forecast.",
-      "temperature": "Between {min} and {max} °C",
-      "frostNights": "Possible frost at night",
-      "rain": "About {value} mm in the month",
       "rainLevel": {
         "dry": "Dry month",
         "normal": "Normal rain",
         "wet": "Rainy month"
       },
-      "humidity": "{value} % humidity",
       "humidityLevel": {
         "low": "Dry air",
         "normal": "Normal humidity",
         "high": "High humidity: helps fungi"
       },
-      "sun": "{value} kWh/m² of sun per day",
       "lotsTitle": "Your lots in {month}",
       "status": {
         "ok": "Good",
         "watch": "Watch",
         "risk": "Risk"
       },
-      "compare": "Compare both plans",
       "free": "No crop",
       "rest": "Rest",
       "action": {
@@ -330,7 +291,8 @@
         "drought": "Irrigate about {value} L/m² or wait for the rains",
         "irrigation": "Irrigate about {value} L/m² this month",
         "waterExcess": "Check the lot drainage",
-        "pest": "Watch for {pest}"
+        "pest": "Watch for {pest}",
+        "pests": "Watch for pests and diseases: {pests}"
       },
       "cause": {
         "frost": "Nights down to {value} °C",
@@ -338,11 +300,37 @@
         "drought": "Without irrigation it lacks water this month",
         "irrigation": "The month's rain is not enough",
         "waterExcess": "About {value} L/m² too much rain",
-        "pest": "This month's weather favors it"
+        "pest": "The crop is outside its ideal climate this month"
       },
-      "showQuietLots": "Show the other {count} lots without alarms",
-      "hideQuietLots": "Hide the lots without alarms",
-      "lotGroup": "Lots {numbers}"
+      "lotGroup": "Lots {numbers}",
+      "temperatureLabel": "Temperature",
+      "temperatureRange": "{min} to {max} °C",
+      "frostPossible": "Frost possible",
+      "rainAmount": "{value} mm in the month",
+      "humidityAmount": "{value} % humidity",
+      "sunLabel": "Sun",
+      "sunAmount": "{value} kWh/m² per day",
+      "rainGauge": "Rain in the month: {value} mm. Under {low} mm is a dry month and over {high} mm is a rainy month.",
+      "humidityGauge": "Humidity: {value} %. Under {low} % is dry air and over {high} % helps fungi.",
+      "gaugeNote": "The bar shows the month against what is normal (light zone).",
+      "summary": {
+        "riskCount": "{count, plural, one {# risk} other {# risks}}",
+        "watchCount": "{count} to watch",
+        "mostSevere": "Most serious: {alarm} on {lot}",
+        "calm": "No alarms this month"
+      },
+      "alarmName": {
+        "frost": "Frost",
+        "temperature": "Too cold or too hot",
+        "drought": "Lack of water",
+        "irrigation": "Irrigation needed",
+        "waterExcess": "Too much rain",
+        "pest": "{pest}",
+        "pests": "Pests and diseases"
+      },
+      "quietLots": "{count, plural, one {Lot {numbers}} other {Lots {numbers}}}",
+      "altitudeOutOfRange": "{crop} doesn't usually grow at this lot's elevation.",
+      "pestListMore": "{names} and {count} more"
     },
     "newPlan": {
       "action": "Create a new plan",

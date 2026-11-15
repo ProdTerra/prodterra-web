@@ -2,7 +2,9 @@
 
 import { Sprout, Wheat } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
+import type { LaneStatus } from "../domain/laneStatus";
 import { segmentsInWeek, weeksOfMonth, type GridBlock, type GridLane } from "../domain/monthGrid";
+import { statusIcons } from "./statusIcons";
 
 export type GridLot = { id: string; number: number; name: string; color: string };
 
@@ -14,6 +16,7 @@ type PlanMonthGridProps = {
   selectedDate: string | null;
   isSingleLot: boolean;
   showsMarkers?: boolean;
+  laneStatuses?: Record<string, LaneStatus>;
   blockName: (block: GridBlock) => string;
   blockColor: (block: GridBlock) => string;
   onSelectDate: (date: string) => void;
@@ -21,9 +24,27 @@ type PlanMonthGridProps = {
 
 const weekdayReference = ["2024-01-01", "2024-01-02", "2024-01-03", "2024-01-04", "2024-01-05", "2024-01-06", "2024-01-07"];
 
+function LaneStatusBadge({ laneStatus }: { laneStatus: LaneStatus }) {
+  const translate = useTranslations("calendar.grid");
+  const translateStatus = useTranslations("calendar.insights.status");
+  const StatusIcon = statusIcons[laneStatus.status];
+  return (
+    <span
+      className="lane-status"
+      data-status={laneStatus.status}
+      title={translate("laneStatus", { status: translateStatus(laneStatus.status), count: laneStatus.alarmCount })}
+    >
+      <StatusIcon size={12} />
+      {laneStatus.alarmCount > 0 && laneStatus.alarmCount}
+    </span>
+  );
+}
+
 export function PlanMonthGrid(props: PlanMonthGridProps) {
-  const { monthKey, lanes, blocks, today, selectedDate, isSingleLot } = props;
-  const showsLaneBadges = !isSingleLot && lanes.some((lane) => lane.lotNumber !== undefined);
+  const { monthKey, lanes, blocks, today, selectedDate, isSingleLot, laneStatuses } = props;
+  const hasLotNumbers = lanes.some((lane) => lane.lotNumber !== undefined);
+  const showsLaneStatuses = !isSingleLot && laneStatuses !== undefined && lanes.some((lane) => laneStatuses[lane.id]);
+  const showsLaneBadges = !isSingleLot && (hasLotNumbers || showsLaneStatuses);
   const translate = useTranslations("calendar.grid");
   const format = useFormatter();
   const weeks = weeksOfMonth(monthKey);
@@ -35,6 +56,8 @@ export function PlanMonthGrid(props: PlanMonthGridProps) {
       className="plan-grid"
       data-single-lot={isSingleLot || undefined}
       data-badges={showsLaneBadges || undefined}
+      data-statuses={showsLaneStatuses || undefined}
+      data-status-only={(showsLaneStatuses && !hasLotNumbers) || undefined}
       style={{ ["--lane-count" as string]: Math.max(lanes.length, 1) }}
     >
       <div className="plan-grid__weekdays" aria-hidden>
@@ -50,8 +73,13 @@ export function PlanMonthGrid(props: PlanMonthGridProps) {
             {showsLaneBadges && (
               <div className="plan-grid__lane-labels" aria-hidden>
                 {lanes.map((lane) => (
-                  <span key={lane.id} className="lot-badge lot-badge--small" style={{ ["--lot-color" as string]: lane.lotColor }}>
-                    {lane.lotNumber}
+                  <span key={lane.id} className="plan-grid__lane-label">
+                    {lane.lotNumber !== undefined && (
+                      <span className="lot-badge lot-badge--small" style={{ ["--lot-color" as string]: lane.lotColor }}>
+                        {lane.lotNumber}
+                      </span>
+                    )}
+                    {showsLaneStatuses && laneStatuses?.[lane.id] && <LaneStatusBadge laneStatus={laneStatuses[lane.id]} />}
                   </span>
                 ))}
               </div>

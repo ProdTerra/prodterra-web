@@ -34,3 +34,10 @@ export function toLotPlans(evaluation: RotationEvaluation, variant: PlanVariant)
 export function allMonths(plans: LotPlan[]): string[] {
   return [...new Set(plans.flatMap((plan) => plan.months.map((month) => month.month)))].sort();
 }
+
+export function hasAltitudeWarning(rotation: EvaluatedRotation | null, cropKey: string | null): boolean {
+  if (!rotation || !cropKey) {
+    return false;
+  }
+  return rotation.warnings.some((warning) => warning.type === "altitudeOutOfRange" && warning.cropKey === cropKey);
+}
