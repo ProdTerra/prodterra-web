@@ -129,11 +129,10 @@
         "warm": "Warm all year"
       },
       "humidityBand": {
-        "veryHumid": "Very humid ({value} %)",
-        "humid": "Humid ({value} %)",
-        "dry": "Dry ({value} %)"
+        "veryHumid": "Very humid",
+        "humid": "Humid",
+        "dry": "Dry"
       },
-      "sunlight": "Sun: {value} kWh/m² a day",
       "rainTitle": "Rain per month",
       "rainUnit": "mm a day",
       "rainChartLabel": "Average rain per month. Least rain in {driestMonth} ({driestValue} mm a day), most rain in {wettestMonth} ({wettestValue} mm a day).",
@@ -142,13 +141,23 @@
       "wettest": "Wettest",
       "monthHeader": "Month",
       "sourcesTitle": "Where does this data come from?",
-      "landSource": "Land: calculated from your drawing over Esri satellite imagery.",
+      "landSource": "Land: calculated from your drawing over Esri World Imagery satellite imagery.",
       "elevationSource": "Elevation: NASADEM (NASA), terrain elevation model.",
-      "climateSource": "Climate: NASA POWER, 2001–2025 averages. Temperatures adjusted {correction} °C for your farm's elevation.",
+      "climateSource": "Climate: NASA POWER, 2001–2025 averages.",
       "estimateNote": "These are estimates from satellite data; they don't replace what you know about your farm.",
       "openSource": "Open source",
       "back": "Back to my lots",
-      "continue": "Continue to my crops"
+      "continue": "Continue to my crops",
+      "sunlightBand": {
+        "low": "Little sun",
+        "moderate": "Moderate sun",
+        "high": "Plenty of sun"
+      },
+      "humidityStat": "Average humidity",
+      "sunlightStat": "Average sunlight",
+      "percentValue": "{value} %",
+      "sunlightValue": "{value} kWh/m² a day",
+      "altitudeAdjustment": "Elevation adjustment: NASA measures the climate of a wide area whose average elevation is {gridElevation}. Your farm is at {farmElevation}. Because air cools about 6.5 °C for every 1,000 m you climb, we {direction, select, colder {subtract} other {add}} {correction} °C {direction, select, colder {from} other {to}} NASA's temperatures."
     },
     "crops": {
       "title": "What do you grow in each lot?",

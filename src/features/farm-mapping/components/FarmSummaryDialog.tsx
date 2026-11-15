@@ -6,7 +6,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { useId, type ReactNode } from "react";
 import { useModalDialog } from "@/shared/components/useModalDialog";
 import type { Lot } from "../application/farmMappingState";
-import { describeHumidity, describeTemperature } from "../domain/climateDescriptors";
+import { describeHumidity, describeSunlight, describeTemperature } from "../domain/climateDescriptors";
 import { summarizeClimate } from "../domain/climateSummary";
 import type { LotClimateProfile } from "../infrastructure/climateProfileApi";
 import { RainByMonthChart } from "./RainByMonthChart";
@@ -15,6 +15,7 @@ import { useFarmClimateProfile } from "./useFarmClimateProfile";
 
 const nasademUrl = "https://planetarycomputer.microsoft.com/dataset/nasadem";
 const nasaPowerUrl = "https://power.larc.nasa.gov";
+const esriWorldImageryUrl = "https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9";
 
 type FarmSummaryDialogProps = {
   isOpen: boolean;
@@ -66,6 +67,7 @@ function ClimateOverview({ profile, landTile }: { profile: LotClimateProfile; la
   const summary = summarizeClimate(profile.months);
   const temperatureBand = describeTemperature(summary.coldestMonth.valueInCelsius, summary.warmestMonth.valueInCelsius);
   const humidityBand = describeHumidity(summary.averageHumidityInPercent);
+  const sunlightBand = describeSunlight(summary.averageSolarRadiation);
 
   return (
     <>
@@ -98,13 +100,24 @@ function ClimateOverview({ profile, landTile }: { profile: LotClimateProfile; la
         </li>
         <li>
           <Droplets aria-hidden size={14} />
-          {translate(`humidityBand.${humidityBand}`, { value: formatters.whole(summary.averageHumidityInPercent) })}
+          {translate(`humidityBand.${humidityBand}`)}
         </li>
         <li>
           <Sun aria-hidden size={14} />
-          {translate("sunlight", { value: formatters.decimal(summary.averageSolarRadiation) })}
+          {translate(`sunlightBand.${sunlightBand}`)}
         </li>
       </ul>
+
+      <dl className="mini-stats">
+        <div>
+          <dt>{translate("humidityStat")}</dt>
+          <dd>{translate("percentValue", { value: formatters.whole(summary.averageHumidityInPercent) })}</dd>
+        </div>
+        <div>
+          <dt>{translate("sunlightStat")}</dt>
+          <dd>{translate("sunlightValue", { value: formatters.decimal(summary.averageSolarRadiation) })}</dd>
+        </div>
+      </dl>
 
       <RainByMonthChart
         months={profile.months}
@@ -169,17 +182,26 @@ export function FarmSummaryDialog({
         <details className="summary-sources">
           <summary>{translate("sourcesTitle")}</summary>
           <ul>
-            <li>{translate("landSource")}</li>
+            <li>
+              {translate("landSource")} <SourceLink href={esriWorldImageryUrl} label={translate("openSource")} />
+            </li>
             <li>
               {translate("elevationSource")} <SourceLink href={nasademUrl} label={translate("openSource")} />
             </li>
             {state.status === "ready" && (
-              <li>
-                {translate("climateSource", {
-                  correction: formatters.decimal(state.profile.temperatureCorrectionInCelsius),
-                })}{" "}
-                <SourceLink href={nasaPowerUrl} label={translate("openSource")} />
-              </li>
+              <>
+                <li>
+                  {translate("climateSource")} <SourceLink href={nasaPowerUrl} label={translate("openSource")} />
+                </li>
+                <li>
+                  {translate("altitudeAdjustment", {
+                    gridElevation: formatters.meters(state.profile.climateGridElevationInMeters),
+                    farmElevation: formatters.meters(state.profile.elevation.meanInMeters),
+                    direction: state.profile.temperatureCorrectionInCelsius < 0 ? "colder" : "warmer",
+                    correction: formatters.decimal(Math.abs(state.profile.temperatureCorrectionInCelsius)),
+                  })}
+                </li>
+              </>
             )}
             <li>{translate("estimateNote")}</li>
           </ul>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { describeHumidity, describeTemperature } from "./climateDescriptors";
+import { describeHumidity, describeSunlight, describeTemperature } from "./climateDescriptors";
 
 describe("describeTemperature", () => {
   it("names the yearly temperature band from the monthly means", () => {
@@ -19,5 +19,13 @@ describe("describeHumidity", () => {
     expect(describeHumidity(89.5)).toBe("veryHumid");
     expect(describeHumidity(78)).toBe("humid");
     expect(describeHumidity(60)).toBe("dry");
+  });
+});
+
+describe("describeSunlight", () => {
+  it("names how much sun the farm gets", () => {
+    expect(describeSunlight(3)).toBe("low");
+    expect(describeSunlight(4.4)).toBe("moderate");
+    expect(describeSunlight(5.6)).toBe("high");
   });
 });

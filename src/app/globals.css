@@ -1165,3 +1165,25 @@ body {
     grid-column: span 2;
   }
 }
+
+.mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.mini-stats > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.mini-stats dt {
+  color: var(--color-stone);
+}
+
+.mini-stats dd {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}

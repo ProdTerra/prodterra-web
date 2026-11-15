@@ -129,11 +129,10 @@
         "warm": "Cálido todo el año"
       },
       "humidityBand": {
-        "veryHumid": "Muy húmedo ({value} %)",
-        "humid": "Húmedo ({value} %)",
-        "dry": "Seco ({value} %)"
+        "veryHumid": "Muy húmedo",
+        "humid": "Húmedo",
+        "dry": "Seco"
       },
-      "sunlight": "Sol: {value} kWh/m² al día",
       "rainTitle": "Lluvia por mes",
       "rainUnit": "mm al día",
       "rainChartLabel": "Lluvia promedio por mes. Menos lluvia en {driestMonth} ({driestValue} mm al día), más lluvia en {wettestMonth} ({wettestValue} mm al día).",
@@ -142,13 +141,23 @@
       "wettest": "Más lluvioso",
       "monthHeader": "Mes",
       "sourcesTitle": "¿De dónde salen estos datos?",
-      "landSource": "Terreno: calculado con tu dibujo sobre la imagen satelital de Esri.",
+      "landSource": "Terreno: calculado con tu dibujo sobre la imagen satelital World Imagery de Esri.",
       "elevationSource": "Altura: NASADEM (NASA), modelo de elevación del terreno.",
-      "climateSource": "Clima: NASA POWER, promedios de 2001 a 2025. Las temperaturas se ajustaron {correction} °C por la altura de tu finca.",
+      "climateSource": "Clima: NASA POWER, promedios de 2001 a 2025.",
       "estimateNote": "Son estimaciones a partir de datos satelitales; no reemplazan lo que tú conoces de tu finca.",
       "openSource": "Ver fuente",
       "back": "Volver a mis lotes",
-      "continue": "Continuar a mis cultivos"
+      "continue": "Continuar a mis cultivos",
+      "sunlightBand": {
+        "low": "Poco sol",
+        "moderate": "Sol moderado",
+        "high": "Mucho sol"
+      },
+      "humidityStat": "Humedad promedio",
+      "sunlightStat": "Sol promedio",
+      "percentValue": "{value} %",
+      "sunlightValue": "{value} kWh/m² al día",
+      "altitudeAdjustment": "Ajuste por altura: la NASA mide el clima de una zona amplia cuya altura promedio es {gridElevation}. Tu finca está a {farmElevation}. Como el aire se enfría unos 6,5 °C por cada 1.000 m de subida, a las temperaturas de la NASA les {direction, select, colder {restamos} other {sumamos}} {correction} °C."
     },
     "crops": {
       "title": "¿Qué siembras en cada lote?",
