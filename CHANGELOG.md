@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Added
+- Illustrated icons and fixed colors for the crops of the real catalog: eggplant, cilantro, sweet pepper, avocado, cassava, sugarcane, coffee and maize.
+
+### Changed
+- A rotation block can last up to 10 years (was 2), so permanent crops such as avocado fit.
+
 ### Changed
 - Recomendado step, month panel: a summary line on top with the number of risks and things to watch and the most serious alarm with its lot ("2 riesgos · 4 atención · Lo más grave: Heladas en Lote 2"); climate rows with word, number and unit, plus a small bar showing the month's rain and humidity against the normal range; "Puede helar" only when the minimum drops below 2 °C.
 - Lot statuses always show an icon shape with the word (check Bien, triangle Atención, octagon Riesgo). Lots with alarms come first, most serious first, each alarm with the action and then the cause; lots without alarms collapse into one line ("Lotes 3, 4 y 5 · Bien").
