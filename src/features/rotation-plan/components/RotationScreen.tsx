@@ -31,7 +31,7 @@ export function RotationScreen({ lots, plan, startDate, dispatch, onChangeStartD
   const formatArea = useAreaFormatter();
   const { shortDate } = usePlanFormat();
   const cropNames = useCropNames();
-  const lotStatus = useLotStatus(cropNames.cropName);
+  const lotStatus = useLotStatus();
   const [selectedLotId, setSelectedLotId] = useState(lots[0]?.shapeId ?? null);
   const [isCopyConfirmOpen, setIsCopyConfirmOpen] = useState(false);
   const lotIds = lots.map((lot) => lot.shapeId);
