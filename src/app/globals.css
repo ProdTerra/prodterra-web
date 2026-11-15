@@ -2745,3 +2745,17 @@ body {
     font-size: 9pt;
   }
 }
+
+.farm-mapping[data-layout="form"] .farm-mapping__panel:is([data-step="plan"], [data-step="myCalendar"]) {
+  padding-bottom: 0;
+}
+
+.farm-mapping__panel > .start-date,
+.farm-mapping__panel > .rotation-step,
+.farm-mapping__panel > .farmer-calendar {
+  flex: 1 0 auto;
+}
+
+.plan-footer--sticky {
+  margin-top: auto;
+}
