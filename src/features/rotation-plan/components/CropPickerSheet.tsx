@@ -1,10 +1,11 @@
 "use client";
 
-import { CirclePause, CircleHelp, Search, Sprout, X } from "lucide-react";
+import { CirclePause, CircleHelp, Search, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
 import { useModalDialog } from "@/shared/components/useModalDialog";
 import { searchCrops } from "../domain/cropSearch";
+import { CropIcon } from "./CropIcon";
 
 export type PickerCrop = { key: string; name: string; usualDays: string | null };
 export type PickerExtra = { value: string; label: string; kind: "rest" | "unknown" };
@@ -40,7 +41,7 @@ function CropPickerContent({ title, crops, suggestedKeys, extras, onChoose, onCl
   const cropButton = (crop: PickerCrop) => (
     <li key={crop.key}>
       <button type="button" onClick={() => onChoose(crop.key)} className="add-sheet__option">
-        <Sprout aria-hidden size={20} />
+        <CropIcon cropKey={crop.key} size={28} />
         <span>{crop.name}</span>
         {crop.usualDays && <span className="add-sheet__usual">{crop.usualDays}</span>}
       </button>
