@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import type { PestsAlert } from "../domain/alertDisplay";
 import type { PlanAlert } from "../infrastructure/plansApi";
 
 type NumberFormatters = {
@@ -9,10 +10,18 @@ type NumberFormatters = {
 
 export type AlertText = { name: string; action: string; cause: string };
 
+const shownPestNames = 3;
+
 export function useAlertText({ decimal, whole, pestName }: NumberFormatters) {
   const translate = useTranslations("calendar.insights");
 
-  return function alertText(alert: PlanAlert): AlertText {
+  function pestList(pestKeys: string[]): string {
+    const names = pestKeys.slice(0, shownPestNames).map(pestName).join(", ");
+    const hiddenCount = pestKeys.length - shownPestNames;
+    return hiddenCount > 0 ? translate("pestListMore", { names, count: hiddenCount }) : names;
+  }
+
+  return function alertText(alert: PlanAlert | PestsAlert): AlertText {
     switch (alert.type) {
       case "frost":
         return {
@@ -48,6 +57,12 @@ export function useAlertText({ decimal, whole, pestName }: NumberFormatters) {
         return {
           name: translate("alarmName.pest", { pest: pestName(alert.pestKey) }),
           action: translate("action.pest", { pest: pestName(alert.pestKey) }),
+          cause: translate("cause.pest"),
+        };
+      case "pests":
+        return {
+          name: translate("alarmName.pests"),
+          action: translate("action.pests", { pests: pestList(alert.pestKeys) }),
           cause: translate("cause.pest"),
         };
     }

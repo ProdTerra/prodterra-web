@@ -32,4 +32,13 @@ describe("splitQuietLots", () => {
     expect(needsAttention.map((state) => state.name)).toEqual(["freezing", "watching", "highUp"]);
     expect(quiet.map((state) => state.name)).toEqual(["calm"]);
   });
+
+  it("counts the pests of one lot as a single watch alarm", () => {
+    const pests: PlanAlert[] = [
+      { type: "pest", level: "watch", pestKey: "late-blight" },
+      { type: "pest", level: "watch", pestKey: "whitefly" },
+    ];
+
+    expect(summarizeMonth([{ lot: "Lote 1", alerts: pests }]).watchCount).toBe(1);
+  });
 });

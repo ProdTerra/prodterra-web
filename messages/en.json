@@ -233,7 +233,7 @@
       "drought": "Without irrigation about {value} liters of water per m² are missing.",
       "irrigation": "Irrigate about {value} liters per m² this month.",
       "waterExcess": "About {value} liters per m² more rain than the crop tolerates: check the drainage.",
-      "pest": "Watch for {pest}: this month's weather favors it."
+      "pest": "Watch for {pest}: the crop is outside its ideal climate this month."
     },
     "openLotPlan": "Open the plan for {lot}",
     "lotPlan": {
@@ -291,7 +291,8 @@
         "drought": "Irrigate about {value} L/m² or wait for the rains",
         "irrigation": "Irrigate about {value} L/m² this month",
         "waterExcess": "Check the lot drainage",
-        "pest": "Watch for {pest}"
+        "pest": "Watch for {pest}",
+        "pests": "Watch for pests and diseases: {pests}"
       },
       "cause": {
         "frost": "Nights down to {value} °C",
@@ -299,7 +300,7 @@
         "drought": "Without irrigation it lacks water this month",
         "irrigation": "The month's rain is not enough",
         "waterExcess": "About {value} L/m² too much rain",
-        "pest": "This month's weather favors it"
+        "pest": "The crop is outside its ideal climate this month"
       },
       "lotGroup": "Lots {numbers}",
       "temperatureLabel": "Temperature",
@@ -324,10 +325,12 @@
         "drought": "Lack of water",
         "irrigation": "Irrigation needed",
         "waterExcess": "Too much rain",
-        "pest": "{pest}"
+        "pest": "{pest}",
+        "pests": "Pests and diseases"
       },
       "quietLots": "{count, plural, one {Lot {numbers}} other {Lots {numbers}}}",
-      "altitudeOutOfRange": "{crop} doesn't usually grow at this lot's elevation."
+      "altitudeOutOfRange": "{crop} doesn't usually grow at this lot's elevation.",
+      "pestListMore": "{names} and {count} more"
     },
     "newPlan": {
       "action": "Create a new plan",
