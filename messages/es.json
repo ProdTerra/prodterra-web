@@ -391,5 +391,43 @@
       "unavailable": "No pudimos conectar. Revisa tu conexión a internet e inténtalo otra vez.",
       "notAuthenticated": "Tu sesión terminó. Inicia sesión otra vez."
     }
+  },
+  "savedFarms": {
+    "saveAction": "Guardar mi plan",
+    "defaultName": "Mi finca",
+    "dialogTitle": "Guardar en Mis fincas",
+    "dialogDescription": "Guarda la finca, sus lotes y la rotación para verlos o cambiarlos después.",
+    "nameLabel": "Nombre de la finca",
+    "nameHint": "Por ejemplo: Finca La Esperanza.",
+    "cancel": "Cancelar",
+    "confirmSave": "Guardar",
+    "saving": "Guardando…",
+    "saved": "Guardaste «{name}».",
+    "goToFarms": "Ver Mis fincas",
+    "errors": {
+      "nameRequired": "Escribe un nombre para la finca.",
+      "nameTooLong": "El nombre puede tener hasta 80 caracteres.",
+      "notAuthenticated": "Tu sesión terminó. Inicia sesión otra vez para guardar.",
+      "notFound": "No encontramos esa finca. Puede que se haya borrado.",
+      "unavailable": "No pudimos conectar. Revisa tu conexión a internet e inténtalo otra vez."
+    },
+    "pageTitle": "Mis fincas",
+    "pageHint": "Las fincas que guardaste, con su rotación y su análisis.",
+    "backToPlanner": "Volver al planificador",
+    "loading": "Buscando tus fincas…",
+    "emptyTitle": "Todavía no tienes fincas guardadas",
+    "empty": "Planea una finca y toca «Guardar mi plan» al final para verla aquí.",
+    "planFarm": "Planear una finca",
+    "loginTitle": "Inicia sesión para ver tus fincas",
+    "loginHint": "Tus fincas se guardan en tu cuenta.",
+    "lots": "{count, plural, one {# lote} other {# lotes}}",
+    "updated": "Guardada el {date}",
+    "open": "Abrir",
+    "delete": "Borrar",
+    "deleteTitle": "¿Borrar «{name}»?",
+    "deleteDescription": "Se borrará la finca guardada con su rotación. Lo que tienes abierto en el planificador no cambia.",
+    "deleteConfirm": "Borrar finca",
+    "deleteCancel": "Conservarla",
+    "retry": "Intentar otra vez"
   }
 }

@@ -3,7 +3,7 @@
 import { ArrowLeft, RotateCcw, Sparkles, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
 import { useSavedRotationPlan } from "@/features/rotation-plan/components/useRotationPlan";
@@ -21,9 +21,10 @@ import { useRotationEvaluation } from "./useRotationEvaluation";
 type CalendarStepProps = {
   lots: Lot[];
   onBack: () => void;
+  actions?: ReactNode;
 };
 
-export function CalendarStep({ lots, onBack }: CalendarStepProps) {
+export function CalendarStep({ lots, onBack, actions }: CalendarStepProps) {
   const translate = useTranslations("calendar");
   const translateLots = useTranslations("farmMapping.lots");
   const plan = useSavedRotationPlan(lots.map((lot) => lot.shapeId));
@@ -51,10 +52,13 @@ export function CalendarStep({ lots, onBack }: CalendarStepProps) {
           <h1 className="step-title">{translate("title")}</h1>
           <p className="step-hint">{translate("hint")}</p>
         </div>
-        <button type="button" onClick={onBack} className="button button--secondary">
-          <ArrowLeft aria-hidden size={18} />
-          {translate("backToMyCalendar")}
-        </button>
+        <div className="calendar-step__actions">
+          <button type="button" onClick={onBack} className="button button--secondary">
+            <ArrowLeft aria-hidden size={18} />
+            {translate("backToMyCalendar")}
+          </button>
+          {actions}
+        </div>
       </header>
 
       {state.status === "loading" && (
