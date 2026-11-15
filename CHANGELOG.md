@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Fixed
+- On wide screens the calendars use more of the width (up to 96rem) and "Recomendado" keeps the month panel on the right, with the legend and the day detail under the grid, so there is less scrolling.
+
 ### Added
 - Illustrated icons and fixed colors for the crops of the real catalog: eggplant, cilantro, sweet pepper, avocado, cassava, sugarcane, coffee and maize.
 

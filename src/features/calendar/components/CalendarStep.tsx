@@ -207,28 +207,19 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
             onSelectLot={setSelectedLotId}
           />
           <div className="calendar-layout">
-            <PlanMonthGrid
-              monthKey={selectedMonth}
-              lanes={layout?.lanes ?? []}
-              blocks={layout?.blocks ?? []}
-              today={`${todayKey}-${String(today.getDate()).padStart(2, "0")}`}
-              selectedDate={selectedDate}
-              isSingleLot={visibleLots.length === 1}
-              showsMarkers={!layoutIsGrouped}
-              laneStatuses={laneStatuses}
-              blockName={layoutBlockName}
-              blockColor={gridBlockColor}
-              onSelectDate={setSelectedDate}
-            />
-            <div className="calendar-side">
-              <MonthInsights
+            <div className="calendar-main">
+              <PlanMonthGrid
                 monthKey={selectedMonth}
-                monthTitle={labels.monthName(selectedMonth)}
-                climate={monthClimate}
-                lotStates={lotStates}
-                decimal={labels.decimal}
-                whole={labels.whole}
-                pestName={labels.pestName}
+                lanes={layout?.lanes ?? []}
+                blocks={layout?.blocks ?? []}
+                today={`${todayKey}-${String(today.getDate()).padStart(2, "0")}`}
+                selectedDate={selectedDate}
+                isSingleLot={visibleLots.length === 1}
+                showsMarkers={!layoutIsGrouped}
+                laneStatuses={laneStatuses}
+                blockName={layoutBlockName}
+                blockColor={gridBlockColor}
+                onSelectDate={setSelectedDate}
               />
               <div className="calendar-card">
                 <CropLegend
@@ -243,6 +234,17 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
               <div className="calendar-card">
                 <DayDetail date={selectedDate} lots={visibleLots} blocks={gridBlocks} blockName={gridBlockName} blockColor={gridBlockColor} />
               </div>
+            </div>
+            <div className="calendar-side">
+              <MonthInsights
+                monthKey={selectedMonth}
+                monthTitle={labels.monthName(selectedMonth)}
+                climate={monthClimate}
+                lotStates={lotStates}
+                decimal={labels.decimal}
+                whole={labels.whole}
+                pestName={labels.pestName}
+              />
             </div>
           </div>
         </>
