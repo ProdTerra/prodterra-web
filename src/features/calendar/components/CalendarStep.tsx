@@ -1,7 +1,8 @@
 "use client";
 
-import { ArrowLeft, FlaskConical } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 import { useState } from "react";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
@@ -59,26 +60,18 @@ export function CalendarStep({ lots, onEditCrops }: CalendarStepProps) {
       </header>
 
       {state.status === "loading" && (
-        <p role="status" className="notice">
-          {translate("loading")}
-        </p>
+        <Notice tone="loading">{translate("loading")}</Notice>
       )}
       {state.status === "failed" && (
-        <div role="alert" className="notice notice--error">
-          <p>{translate("failed")}</p>
-          <button type="button" onClick={retry} className="button button--secondary">
-            {translate("retry")}
-          </button>
-        </div>
+        <Notice tone="error" action={{ label: translate("retry"), onClick: retry }}>
+          {translate("failed")}
+        </Notice>
       )}
 
       {plans && selectedMonth && (
         <>
           {plans.usesDemoData && (
-            <p className="demo-notice">
-              <FlaskConical aria-hidden size={16} />
-              {translate("demoNotice")}
-            </p>
+            <Notice tone="demo">{translate("demoNotice")}</Notice>
           )}
           <MonthStrip
             months={months}

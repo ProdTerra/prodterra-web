@@ -2,6 +2,7 @@
 
 import { ArrowLeft, ArrowRight, CalendarDays, Copy } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 import { useEffect, useReducer, useState } from "react";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
@@ -114,14 +115,11 @@ export function CropsStep({ lots, onEditLots, onContinue }: CropsStepProps) {
             {translate("crops.answersFor", { name: nameOf(selectedLot) })}
           </h2>
 
-          {catalog.status === "loading" && <p role="status" className="notice">{translate("crops.catalogLoading")}</p>}
+          {catalog.status === "loading" && <Notice tone="loading">{translate("crops.catalogLoading")}</Notice>}
           {catalog.status === "failed" && (
-            <div role="alert" className="notice notice--error">
-              <p>{translate("crops.catalogFailed")}</p>
-              <button type="button" onClick={retry} className="button button--quiet">
-                {translate("crops.retry")}
-              </button>
-            </div>
+            <Notice tone="error" action={{ label: translate("crops.retry"), onClick: retry }}>
+              {translate("crops.catalogFailed")}
+            </Notice>
           )}
           {catalog.status === "ready" && (
             <LotPlantingForm

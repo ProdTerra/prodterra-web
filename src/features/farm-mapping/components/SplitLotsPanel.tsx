@@ -1,5 +1,6 @@
 import { Minus, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 import type { StripOrientation } from "../domain/splitFarm";
 
 export const minimumSplitLots = 2;
@@ -64,7 +65,7 @@ export function SplitLotsPanel({ lotCount, orientation, onChange, onDone }: Spli
         </div>
       </div>
 
-      <p className="notice">{translate("hint")}</p>
+      <Notice tone="info">{translate("hint")}</Notice>
       <button type="button" onClick={onDone} className="button button--primary">
         {translate("done")}
       </button>

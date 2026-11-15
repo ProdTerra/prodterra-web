@@ -1,5 +1,6 @@
 import { Check, Columns3, Plus, Undo2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 import type { DrawnShape, Lot } from "../application/farmMappingState";
 import { hasRoomForAnotherLot } from "../domain/freeArea";
 import type { StripOrientation } from "../domain/splitFarm";
@@ -68,7 +69,7 @@ export function LotsStep({
       </div>
 
       {lots.length === 0 ? (
-        <p className="notice">{translate("empty")}</p>
+        <Notice tone="info">{translate("empty")}</Notice>
       ) : (
         <ul className="lot-list">
           {lots.map((lot) => (
@@ -92,15 +93,15 @@ export function LotsStep({
       )}
 
       {isDrawing && !canCloseShape && (
-        <p id="lot-close-requirement" className="notice">
+        <Notice tone="info" id="lot-close-requirement">
           {translate("closeRequirement")}
-        </p>
+        </Notice>
       )}
 
       {!canAddLot && !isDrawing && split === null && (
-        <p id="farm-full-notice" className="notice">
+        <Notice tone="success" id="farm-full-notice">
           {translate("farmFull")}
-        </p>
+        </Notice>
       )}
 
       <div className="step-actions" hidden={split !== null}>

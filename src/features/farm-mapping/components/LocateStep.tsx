@@ -2,6 +2,7 @@
 
 import { LocateFixed, MapPin, Search } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 import { useState, type FormEvent } from "react";
 import { requestCurrentPosition } from "../infrastructure/currentPosition";
 import { searchPlaces, type PlaceResult } from "../infrastructure/placeSearch";
@@ -94,8 +95,8 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
           ))}
         </ul>
       )}
-      {searchStatus === "empty" && <p role="status" className="notice">{translate("noResults")}</p>}
-      {searchStatus === "failed" && <p role="alert" className="notice notice--error">{translate("searchFailed")}</p>}
+      {searchStatus === "empty" && <Notice tone="info">{translate("noResults")}</Notice>}
+      {searchStatus === "failed" && <Notice tone="error">{translate("searchFailed")}</Notice>}
 
       <button
         type="button"
@@ -106,10 +107,8 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
         <LocateFixed aria-hidden size={18} />
         {locatingStatus === "locating" ? translate("locating") : translate("useMyLocation")}
       </button>
-      {locatingStatus === "denied" && <p role="alert" className="notice notice--error">{translate("locationDenied")}</p>}
-      {locatingStatus === "unavailable" && (
-        <p role="alert" className="notice notice--error">{translate("locationUnavailable")}</p>
-      )}
+      {locatingStatus === "denied" && <Notice tone="error">{translate("locationDenied")}</Notice>}
+      {locatingStatus === "unavailable" && <Notice tone="error">{translate("locationUnavailable")}</Notice>}
 
       <div className="step-actions">
         <button type="button" onClick={onConfirm} className="button button--primary">

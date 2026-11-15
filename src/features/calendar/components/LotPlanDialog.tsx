@@ -2,6 +2,7 @@
 
 import { Check, CircleAlert, Minus, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 import { useId } from "react";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { useModalDialog } from "@/shared/components/useModalDialog";
@@ -69,7 +70,7 @@ export function LotPlanDialog({ lot, plan, lotName, cropName, monthName, whole, 
           </header>
 
           {!plan.climateAvailable ? (
-            <p className="notice notice--error">{translate("lotPlan.noClimate")}</p>
+            <Notice tone="error">{translate("lotPlan.noClimate")}</Notice>
           ) : (
             <>
               <section className="lot-plan__section">
@@ -82,7 +83,7 @@ export function LotPlanDialog({ lot, plan, lotName, cropName, monthName, whole, 
                       })
                     : translate("lotPlan.nowFallow")}
                 </p>
-                {plan.currentCrop?.cycleIsEstimated && <p className="notice">{translate("lotPlan.estimatedCycle")}</p>}
+                {plan.currentCrop?.cycleIsEstimated && <Notice tone="warning">{translate("lotPlan.estimatedCycle")}</Notice>}
               </section>
 
               {plan.nextCrop && (

@@ -1,5 +1,6 @@
 import { Check, PenLine, Undo2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 
 type BoundaryStepProps = {
   isDrawing: boolean;
@@ -28,9 +29,9 @@ export function BoundaryStep({
       <p className="step-hint">{translate("hint")}</p>
 
       {isDrawing && !canCloseShape && (
-        <p id="boundary-close-requirement" className="notice">
+        <Notice tone="info" id="boundary-close-requirement">
           {translate("closeRequirement")}
-        </p>
+        </Notice>
       )}
 
       <div className="step-actions">

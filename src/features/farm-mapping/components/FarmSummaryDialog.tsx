@@ -3,6 +3,7 @@
 import { Droplets, ExternalLink, Mountain, Ruler, Sun, Thermometer } from "lucide-react";
 import type { Polygon } from "geojson";
 import { useFormatter, useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 import { useId, type ReactNode } from "react";
 import { useModalDialog } from "@/shared/components/useModalDialog";
 import type { Lot } from "../application/farmMappingState";
@@ -198,17 +199,12 @@ export function FarmSummaryDialog({
         {state.status !== "ready" && <div className="stat-tiles">{landTile}</div>}
 
         {state.status === "loading" && (
-          <p role="status" className="notice">
-            {translate("loading")}
-          </p>
+          <Notice tone="loading">{translate("loading")}</Notice>
         )}
         {state.status === "failed" && (
-          <div role="alert" className="notice notice--error">
-            <p>{translate("failed")}</p>
-            <button type="button" onClick={retry} className="button button--quiet">
-              {translate("retry")}
-            </button>
-          </div>
+          <Notice tone="error" action={{ label: translate("retry"), onClick: retry }}>
+            {translate("failed")}
+          </Notice>
         )}
         {state.status === "ready" && <ClimateOverview profile={state.profile} landTile={landTile} />}
 
