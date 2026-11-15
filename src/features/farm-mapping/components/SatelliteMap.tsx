@@ -35,6 +35,7 @@ export type SatelliteMapHandle = {
   setLotLabels: (labels: LotLabel[]) => void;
   fitToArea: (area: Polygon) => void;
   flyTo: (coordinates: MapCoordinates, zoom?: number) => void;
+  showImagery: (tileUrl: string | null) => void;
   getCenter: () => MapCoordinates | null;
   startDrawing: (kind: ShapeKind) => void;
   closeShape: () => void;
@@ -61,6 +62,26 @@ const mapWorkerUrl = "/vendor/maplibre-gl-worker.mjs";
 
 setWorkerUrl(mapWorkerUrl);
 const farmZoom = 17;
+const imagerySourceId = "wayback-imagery";
+
+function applyImagery(map: MapLibreMap, tileUrl: string | null): void {
+  if (!map.isStyleLoaded()) {
+    map.once("idle", () => applyImagery(map, tileUrl));
+    return;
+  }
+  if (map.getLayer(imagerySourceId)) {
+    map.removeLayer(imagerySourceId);
+  }
+  if (map.getSource(imagerySourceId)) {
+    map.removeSource(imagerySourceId);
+  }
+  if (!tileUrl) {
+    return;
+  }
+  map.addSource(imagerySourceId, { type: "raster", tiles: [tileUrl], tileSize: 256, maxzoom: 19 });
+  const firstLabelLayer = map.getStyle().layers.find((layer) => layer.type === "symbol");
+  map.addLayer({ id: imagerySourceId, type: "raster", source: imagerySourceId }, firstLabelLayer?.id);
+}
 const fitPaddingInPixels = 48;
 const fitMaximumZoom = 18;
 
@@ -204,6 +225,12 @@ export default function SatelliteMap({
       },
       flyTo: ({ longitude, latitude }, zoom = farmZoom) =>
         mapRef.current?.flyTo({ center: [longitude, latitude], zoom }),
+      showImagery: (tileUrl) => {
+        const map = mapRef.current;
+        if (map) {
+          applyImagery(map, tileUrl);
+        }
+      },
       getCenter: () => {
         const center = mapRef.current?.getCenter();
         return center ? { longitude: center.lng, latitude: center.lat } : null;

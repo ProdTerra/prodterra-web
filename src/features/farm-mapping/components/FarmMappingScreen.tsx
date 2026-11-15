@@ -48,7 +48,10 @@ import type {
   MapCoordinates,
   SatelliteMapHandle,
 } from "./SatelliteMap";
+import { ImageryPicker } from "./ImageryPicker";
 import { PanelSheetHandle } from "./PanelSheetHandle";
+import { loadImageryChoice, saveImageryChoice } from "../infrastructure/imageryChoiceStorage";
+import type { WaybackRelease } from "../infrastructure/waybackImagery";
 import { StepIndicator } from "./StepIndicator";
 
 const SatelliteMap = dynamic(() => import("./SatelliteMap"), { ssr: false });
@@ -127,6 +130,7 @@ export function FarmMappingScreen() {
   const [mapCenter, setMapCenter] = useState<MapCoordinates>(initialMapView);
   const [isMapReady, setIsMapReady] = useState(false);
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
+  const [imageryRelease, setImageryRelease] = useState<WaybackRelease | null>(null);
   const screenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -155,9 +159,23 @@ export function FarmMappingScreen() {
     }
   }, [state]);
 
+  function chooseImagery(release: WaybackRelease | null) {
+    setImageryRelease(release);
+    mapRef.current?.showImagery(release?.tileUrl ?? null);
+    const storage = getBrowserStorage();
+    if (storage) {
+      saveImageryChoice(storage, release);
+    }
+  }
+
   function handleMapReady() {
     setIsMapReady(true);
     const storage = getBrowserStorage();
+    const savedImagery = storage && loadImageryChoice(storage);
+    if (savedImagery) {
+      setImageryRelease(savedImagery);
+      mapRef.current?.showImagery(savedImagery.tileUrl);
+    }
     const draft = storage && loadFarmDraft(storage);
     if (draft) {
       mapRef.current?.restoreShapes(toRestorableShapes(draft));
@@ -460,6 +478,9 @@ export function FarmMappingScreen() {
             data-subtle={state.step !== "locate" || undefined}
           />
           {isMapReady && <MapPositionChip center={mapCenter} />}
+          {isMapReady && (
+            <ImageryPicker selected={imageryRelease} getCenter={() => mapRef.current?.getCenter() ?? null} onSelect={chooseImagery} />
+          )}
           {drawingKind && (
             <p role="status" className="map-hint">
               {drawingKind === "farm"
