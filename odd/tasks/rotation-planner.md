@@ -35,12 +35,12 @@ Branches: one `feature/<stage>` per stage from develop, signed commits, PR into 
 | T1 | S1 | Planning start step with date picker and validations | web | inline | done | 7798104, 3329c8e |
 | T2 | S2 | Rotation timeline builder per lot (domain + UI) | web | inline | done | 7798104, 3329c8e |
 | T3 | S4 | Farmer calendar without climate | web | inline | done | 3329c8e |
-| T4 | S5 | POST /plans/evaluate + recommended vs farmer calendar | api+web | inline | pending | |
-| T5 | S6 | Accounts API: users, argon2, httpOnly session cookie, throttling (Risk item 2, 5) | api | inline + verifier | pending | |
-| T6 | S7 | Session UI: avatar/login, dialog without leaving flow, profile dropdown | web | inline | pending | |
-| T7 | S6 | Saved farms and plans per user, "Mis fincas" page (Risk item 1, 2) | api+web | inline + verifier | pending | |
-| T8 | S8 | Print/PDF views of both calendars | web | inline | pending | |
-| T9 | S9 | READMEs, CHANGELOG, i18n, final screenshots pass | both | inline | pending | |
+| T4 | S5 | POST /plans/evaluate + recommended vs farmer calendar | api+web | inline | done | api PR #4 (834215c), web feature/rotation-analysis (dec7d3e) |
+| T5 | S6 | Accounts API: users, argon2, httpOnly session cookie, throttling (Risk item 2, 5) | api | inline + verifier | done | api PR #2 (41197da) |
+| T6 | S7 | Session UI: avatar/login, dialog without leaving flow, profile dropdown | web | inline | done | web feature/session-ui (b04da01) |
+| T7 | S6 | Saved farms and plans per user, "Mis fincas" page (Risk item 1, 2) | api+web | inline + verifier | done | api PR #3 (0d1eb18), web feature/saved-farms-ui (c330737) |
+| T8 | S8 | Print/PDF views of both calendars | web | inline | done | web feature/calendar-pdf (e2e0d20) |
+| T9 | S9 | READMEs, CHANGELOG, i18n, final screenshots pass | both | inline | done | api docs/readme (69adde0), web docs/rotation-planner |
 
 ## Log
 
@@ -49,3 +49,4 @@ Branches: one `feature/<stage>` per stage from develop, signed commits, PR into 
 - L3 Decisions: the duplicated "¿Qué siembras en cada lote?" is read as one step (the timeline). PDF via print stylesheet and the browser's save-as-PDF (no new dependency). Sessions as opaque tokens stored in Mongo behind an httpOnly SameSite=Lax cookie; app and api share the site prodterra.earth. Seeds run only against the development database, never `production`. UX checklist lives in agent memory `prodterra-ux-lessons`.
 - L4 (2026-11-14, user via coordinator, verbatim): "no gastes tiempo con tantas pruebas" and "enfócate en UX UI y validaciones de forms".
 - L5 T1-T3 evidence: RED observed for the domain tests (missing modules) and the reducer test, then GREEN. Commits 7798104 (domain, reducer, storage) and 3329c8e (steps, UI, lot-plantings removal). Checks: npm test 80 passed in 18 files; npx tsc --noEmit clean; npm run lint clean; npm run build skipped at the user's request. Playwright screenshots at 390x844 and 1440x900 (start date, rotation editor with crop, rest and a changed crop, farmer calendar) show no horizontal overflow. Decisions: "today" is the farmer's local calendar day, then all date math runs in UTC; copying a rotation copies previous use, irrigation and blocks; drafts saved on the removed crops/calendar steps reopen at the plan step. Next: T4.
+- L5 (2026-11-15) User asked for fewer tests and tokens, no more subagents, focus on UX/UI and form validation, and to merge PRs into develop. Remaining stages were done inline. Evidence: web 86 unit tests, API 82 unit + 17 e2e at the last full runs; browser flows checked with Playwright (registration, save, My farms, reopen, both PDFs). Open items for the user: Render needs `NODE_ENV=production` and `DB_NAME=production` (and the production catalog seeded) before a release; lettuce and chayote cycles still lack an official source.
