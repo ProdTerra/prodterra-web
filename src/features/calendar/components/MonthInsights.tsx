@@ -2,6 +2,8 @@
 
 import { CircleCheck, Cloud, Droplets, GitCompareArrows, OctagonAlert, Sun, Thermometer, TriangleAlert } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { maximumLotLanes } from "../domain/monthGrid";
 import { describeClimate, sortAlerts } from "../domain/monthInsights";
 import type { MonthClimate, MonthStatus, PlanAlert } from "../infrastructure/plansApi";
 import type { GridLot } from "./PlanMonthGrid";
@@ -20,11 +22,37 @@ type MonthInsightsProps = {
 };
 
 const statusIcons = { ok: CircleCheck, watch: TriangleAlert, risk: OctagonAlert };
+const statusRank: Record<MonthStatus, number> = { risk: 0, watch: 1, ok: 2 };
+
+type LotGroup = { lots: GridLot[]; useLabel: string; status: MonthStatus | null; alerts: PlanAlert[] };
+
+function groupSimilarStates(states: LotMonthState[], shouldGroup: boolean): LotGroup[] {
+  if (!shouldGroup) {
+    return states.map(({ lot, ...rest }) => ({ lots: [lot], ...rest }));
+  }
+  const groups = new Map<string, LotGroup>();
+  for (const { lot, useLabel, status, alerts } of states) {
+    const key = JSON.stringify([useLabel, status, sortAlerts(alerts)]);
+    const group = groups.get(key);
+    if (group) {
+      group.lots.push(lot);
+    } else {
+      groups.set(key, { lots: [lot], useLabel, status, alerts });
+    }
+  }
+  return [...groups.values()];
+}
 
 export function MonthInsights(props: MonthInsightsProps) {
   const translate = useTranslations("calendar.insights");
   const { climate, decimal, whole } = props;
   const description = climate ? describeClimate(climate, props.monthKey) : null;
+  const [showsQuietLots, setShowsQuietLots] = useState(false);
+  const sortedStates = [...props.lotStates].sort((first, second) => statusRank[first.status ?? "ok"] - statusRank[second.status ?? "ok"]);
+  const isLongList = sortedStates.length > maximumLotLanes;
+  const quietStates = sortedStates.filter((state) => state.alerts.length === 0);
+  const visibleStates = isLongList && !showsQuietLots ? sortedStates.filter((state) => state.alerts.length > 0) : sortedStates;
+  const shownGroups = groupSimilarStates(visibleStates, isLongList);
 
   function alertText(alert: PlanAlert): { action: string; cause: string } {
     switch (alert.type) {
@@ -90,16 +118,17 @@ export function MonthInsights(props: MonthInsightsProps) {
           {translate("lotsTitle", { month: props.monthTitle })}
         </h3>
         <ul className="lot-states">
-          {props.lotStates.map(({ lot, useLabel, status, alerts }) => {
+          {shownGroups.map(({ lots, useLabel, status, alerts }) => {
             const StatusIcon = status ? statusIcons[status] : null;
+            const lot = lots[0];
             return (
               <li key={lot.id} className="lot-state">
                 <div className="lot-state__head">
                   <span aria-hidden className="lot-badge lot-badge--small" style={{ ["--lot-color" as string]: lot.color }}>
-                    {lot.number}
+                    {lots.length > 1 ? lots.length : lot.number}
                   </span>
                   <span className="lot-state__name">
-                    <strong>{lot.name}</strong>
+                    <strong>{lots.length > 1 ? translate("lotGroup", { numbers: lots.map((member) => member.number).join(", ") }) : lot.name}</strong>
                     <span>{useLabel}</span>
                   </span>
                   {status && StatusIcon && (
@@ -122,14 +151,21 @@ export function MonthInsights(props: MonthInsightsProps) {
                     })}
                   </ul>
                 )}
-                <button type="button" onClick={() => props.onCompare(lot.id)} className="link-button lot-state__compare">
-                  <GitCompareArrows aria-hidden size={16} />
-                  {translate("compare")}
-                </button>
+                {lots.length === 1 && (
+                  <button type="button" onClick={() => props.onCompare(lot.id)} className="link-button lot-state__compare">
+                    <GitCompareArrows aria-hidden size={16} />
+                    {translate("compare")}
+                  </button>
+                )}
               </li>
             );
           })}
         </ul>
+        {isLongList && quietStates.length > 0 && (
+          <button type="button" onClick={() => setShowsQuietLots((current) => !current)} className="button button--secondary button--small">
+            {translate(showsQuietLots ? "hideQuietLots" : "showQuietLots", { count: quietStates.length })}
+          </button>
+        )}
       </section>
     </>
   );

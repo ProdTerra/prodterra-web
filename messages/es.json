@@ -285,7 +285,9 @@
       "dayOfBlock": "{name}: día {day} de {total}",
       "free": "Sin plan ese día",
       "sowingToday": "Este día se siembra",
-      "harvestToday": "Este día se cosecha"
+      "harvestToday": "Este día se cosecha",
+      "lotCount": "{count, plural, one {# lote} other {# lotes}}",
+      "lotNumbers": "Lotes {numbers}{more, plural, =0 {} other { y # más}}"
     },
     "insights": {
       "climateTitle": "Clima típico de {month}",
@@ -329,7 +331,10 @@
         "irrigation": "La lluvia del mes no alcanza",
         "waterExcess": "Llueven unos {value} L/m² de más",
         "pest": "El clima de este mes la favorece"
-      }
+      },
+      "showQuietLots": "Ver los otros {count} lotes sin alarmas",
+      "hideQuietLots": "Ocultar los lotes sin alarmas",
+      "lotGroup": "Lotes {numbers}"
     }
   },
   "rotationPlan": {

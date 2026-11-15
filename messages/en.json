@@ -285,7 +285,9 @@
       "dayOfBlock": "{name}: day {day} of {total}",
       "free": "No plan that day",
       "sowingToday": "Sowing on this day",
-      "harvestToday": "Harvest on this day"
+      "harvestToday": "Harvest on this day",
+      "lotCount": "{count, plural, one {# lot} other {# lots}}",
+      "lotNumbers": "Lots {numbers}{more, plural, =0 {} other { and # more}}"
     },
     "insights": {
       "climateTitle": "Typical climate in {month}",
@@ -329,7 +331,10 @@
         "irrigation": "The month's rain is not enough",
         "waterExcess": "About {value} L/m² too much rain",
         "pest": "This month's weather favors it"
-      }
+      },
+      "showQuietLots": "Show the other {count} lots without alarms",
+      "hideQuietLots": "Hide the lots without alarms",
+      "lotGroup": "Lots {numbers}"
     }
   },
   "rotationPlan": {

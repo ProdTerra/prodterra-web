@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+- Both calendars scale to many lots: with more than 5 lots, "Todos los lotes" groups the grid by crop ("Papa · 30 lotes", split where the number of lots changes), the day detail groups lots by crop with their numbers, and the analysis lists lots with alarms first, merges lots with the same alarms ("Lotes 1, 2, 3") and folds the rest into "Ver los otros N lotes sin alarmas".
+- Removed the month chips row (the arrows and "Inicio del plan" cover it) and the "Fechas de cada lote" list; the analysis now shows the crop color legend.
+
 ### Fixed
 - The hints under "Tu calendario" and "Recomendado" use the available width (up to 70 characters) instead of wrapping at 48.
 
