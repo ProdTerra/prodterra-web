@@ -15,6 +15,7 @@
 - The warning "{cultivo} no suele darse a la altura de este lote" now appears on the lot card.
 
 ### Fixed
+- Phones: the four actions of "Recomendado" sit in two columns instead of four rows. Desktop: the month panel stays beside the grid while scrolling.
 - On wide screens the calendars use more of the width (up to 96rem) and "Recomendado" keeps the month panel on the right, with the legend and the day detail under the grid, so there is less scrolling.
 
 ### Removed
