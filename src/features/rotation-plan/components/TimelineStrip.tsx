@@ -1,23 +1,36 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import { maximumPlanDays } from "../domain/blockLimits";
+import { fromIsoDate } from "../domain/planDates";
 import type { ScheduledBlock } from "../domain/rotationSchedule";
 
 type TimelineStripProps = {
+  startDate: string;
   schedule: ScheduledBlock[];
   selectedBlockId: string | null;
   blockName: (scheduled: ScheduledBlock) => string;
   blockColor: (scheduled: ScheduledBlock) => string;
-  remainingLabel: string;
   onSelect: (blockId: string) => void;
 };
 
-export function TimelineStrip({ schedule, selectedBlockId, blockName, blockColor, remainingLabel, onSelect }: TimelineStripProps) {
+const monthsBetweenTicks = 6;
+const totalMonths = 24;
+
+function monthTick(startDate: string, monthsAhead: number): Date {
+  const start = fromIsoDate(startDate);
+  return new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + monthsAhead, 1));
+}
+
+export function TimelineStrip({ startDate, schedule, selectedBlockId, blockName, blockColor, onSelect }: TimelineStripProps) {
   const translate = useTranslations("rotationPlan.rotation");
+  const format = useFormatter();
+  const usedDays = schedule.reduce((sum, item) => sum + item.block.durationInDays, 0);
+  const ticks = Array.from({ length: totalMonths / monthsBetweenTicks + 1 }, (_, index) => index * monthsBetweenTicks);
 
   return (
-    <div className="timeline-strip">
+    <figure className="timeline-strip">
+      <figcaption className="timeline-strip__caption">{translate("stripCaption")}</figcaption>
       <div className="timeline-strip__bar">
         {schedule.map((scheduled) => (
           <button
@@ -28,15 +41,22 @@ export function TimelineStrip({ schedule, selectedBlockId, blockName, blockColor
             onClick={() => onSelect(scheduled.block.id)}
             className="timeline-strip__segment"
             data-kind={scheduled.block.kind}
-            style={{
-              ["--block-color" as string]: blockColor(scheduled),
-              flexGrow: scheduled.block.durationInDays,
-            }}
-          />
+            style={{ ["--block-color" as string]: blockColor(scheduled), flexGrow: scheduled.block.durationInDays }}
+          >
+            <span aria-hidden>{blockName(scheduled)}</span>
+          </button>
         ))}
-        <span aria-hidden className="timeline-strip__free" style={{ flexGrow: Math.max(0, maximumPlanDays - schedule.reduce((sum, item) => sum + item.block.durationInDays, 0)) }} />
+        {usedDays < maximumPlanDays && (
+          <span aria-hidden className="timeline-strip__free" style={{ flexGrow: maximumPlanDays - usedDays }} />
+        )}
       </div>
-      <p className="timeline-strip__remaining">{remainingLabel}</p>
-    </div>
+      <div aria-hidden className="timeline-strip__axis">
+        {ticks.map((months) => (
+          <span key={months} style={{ left: `${(months / totalMonths) * 100}%` }}>
+            {format.dateTime(monthTick(startDate, months), { month: "short", year: "2-digit", timeZone: "UTC" })}
+          </span>
+        ))}
+      </div>
+    </figure>
   );
 }

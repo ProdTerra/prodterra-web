@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useState, type Dispatch } from "react";
 import type { RotationPlanAction } from "../application/rotationPlanState";
 import { restBlockColor } from "../domain/cropColors";
-import { canAddBlock, longestDurationFor, remainingDays } from "../domain/blockLimits";
+import { canAddBlock, longestDurationFor } from "../domain/blockLimits";
 import type { LotRotation, PreviousUse, RotationBlock } from "../domain/rotationPlan";
 import { scheduleBlocks, type ScheduledBlock } from "../domain/rotationSchedule";
 import { AddBlockSheet, type AddBlockChoice } from "./AddBlockSheet";
@@ -53,7 +53,6 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
   const { blocks } = rotation;
   const schedule = scheduleBlocks(startDate, blocks);
   const hasRoom = canAddBlock(blocks);
-  const freeDays = remainingDays(blocks);
   const blockName = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropNames.cropName(block.cropKey) : translate("rest"));
   const blockColor = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropColors.get(block.cropKey) ?? restBlockColor : restBlockColor);
   const dayCount = (days: number) => translate("dayCount", { days });
@@ -120,11 +119,11 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
           {translate("timelineTitle")}
         </h3>
         <TimelineStrip
+          startDate={startDate}
           schedule={schedule}
           selectedBlockId={expandedBlockId}
           blockName={blockName}
           blockColor={blockColor}
-          remainingLabel={hasRoom ? translate("remaining", { time: freeDays < 31 ? dayCount(freeDays) : translate("monthCount", { months: Math.floor(freeDays / 30.44) }) }) : translate("planFull")}
           onSelect={selectFromStrip}
         />
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={dropBlock}>
