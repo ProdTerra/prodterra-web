@@ -24,6 +24,7 @@
       "searchLabel": "Search for a place",
       "searchPlaceholder": "E.g. Tierra Blanca, Cartago",
       "searchAction": "Search",
+      "clearSearch": "Clear search",
       "searching": "Searching…",
       "noResults": "We couldn't find that place. Try the name of the town or district.",
       "searchFailed": "Search didn't work. Check your connection and try again.",

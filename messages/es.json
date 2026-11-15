@@ -24,6 +24,7 @@
       "searchLabel": "Buscar un lugar",
       "searchPlaceholder": "Ej.: Tierra Blanca, Cartago",
       "searchAction": "Buscar",
+      "clearSearch": "Borrar búsqueda",
       "searching": "Buscando…",
       "noResults": "No encontramos ese lugar. Prueba con el nombre del pueblo o del distrito.",
       "searchFailed": "No se pudo buscar. Revisa tu conexión e inténtalo otra vez.",

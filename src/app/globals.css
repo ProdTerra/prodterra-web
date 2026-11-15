@@ -252,6 +252,27 @@ body {
   outline: none;
 }
 
+.search-form__input::-webkit-search-cancel-button,
+.search-form__input::-webkit-search-decoration {
+  appearance: none;
+}
+
+.search-form__clear {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.25rem;
+  border-radius: 999px;
+  color: var(--color-stone);
+}
+
+.search-form__clear:hover {
+  background: var(--color-mineral);
+  color: var(--color-ink);
+}
+
 .place-results {
   display: flex;
   flex-direction: column;
