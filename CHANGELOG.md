@@ -19,6 +19,7 @@
 - Place search with the ArcGIS geocoder, the split panel with lengthwise, crosswise and grid layouts aligned to the farm's long axis.
 
 ### Changed
+- A lot plan has no 24-month limit: it lasts as long as the farmer's crops and rests add up to (each one up to 2 years, up to 100 per lot). The strip caption reads "Tu lote mes a mes" and its scale and marks grow with the plan (every 6 months, then every year or two).
 - Lot cards in step 4 show "Listo" for a complete lot instead of repeating its crop list.
 - The 24-month strip shows thin dashed guides with a small notch at 6 meses, 1 año and 18 meses, so each mark lines up with the crops on the bar.
 - The 24-month strip marks Inicio, 6 meses, 1 año, 18 meses and 2 años with the month and full year (only Inicio, 1 año and 2 años on phones), and "Usar N días" sits next to the duration field.

@@ -1,7 +1,6 @@
 "use client";
 
 import { useFormatter, useTranslations } from "next-intl";
-import { maximumPlanDays } from "../domain/blockLimits";
 import { fromIsoDate } from "../domain/planDates";
 import type { ScheduledBlock } from "../domain/rotationSchedule";
 
@@ -14,19 +13,41 @@ type TimelineStripProps = {
   onSelect: (blockId: string) => void;
 };
 
-const monthsBetweenTicks = 6;
-const totalMonths = 24;
+const averageDaysPerMonth = 30.44;
+const shortestSpanInMonths = 12;
 
 function monthTick(startDate: string, monthsAhead: number): Date {
   const start = fromIsoDate(startDate);
   return new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + monthsAhead, 1));
 }
 
+function tickStepInMonths(spanInMonths: number): number {
+  if (spanInMonths <= 24) {
+    return 6;
+  }
+  return spanInMonths <= 60 ? 12 : 24;
+}
+
+export function stripSpanInMonths(usedDays: number): number {
+  const usedMonths = usedDays / averageDaysPerMonth;
+  const step = tickStepInMonths(Math.max(shortestSpanInMonths, usedMonths));
+  return Math.max(shortestSpanInMonths, Math.ceil(usedMonths / step) * step);
+}
+
 export function TimelineStrip({ startDate, schedule, selectedBlockId, blockName, blockColor, onSelect }: TimelineStripProps) {
   const translate = useTranslations("rotationPlan.rotation");
   const format = useFormatter();
   const usedDays = schedule.reduce((sum, item) => sum + item.block.durationInDays, 0);
-  const ticks = Array.from({ length: totalMonths / monthsBetweenTicks + 1 }, (_, index) => index * monthsBetweenTicks);
+  const spanInMonths = stripSpanInMonths(usedDays);
+  const spanInDays = spanInMonths * averageDaysPerMonth;
+  const step = tickStepInMonths(spanInMonths);
+  const ticks = Array.from({ length: spanInMonths / step + 1 }, (_, index) => index * step);
+  const tickLabel = (months: number) =>
+    months === 0
+      ? translate("axisStart")
+      : months % 12 === 0
+        ? translate("axisYears", { years: months / 12 })
+        : translate("axisMonths", { months });
 
   return (
     <figure className="timeline-strip">
@@ -47,20 +68,20 @@ export function TimelineStrip({ startDate, schedule, selectedBlockId, blockName,
               <span aria-hidden>{blockName(scheduled)}</span>
             </button>
           ))}
-          {usedDays < maximumPlanDays && (
-            <span aria-hidden className="timeline-strip__free" style={{ flexGrow: maximumPlanDays - usedDays }} />
+          {usedDays < spanInDays && (
+            <span aria-hidden className="timeline-strip__free" style={{ flexGrow: spanInDays - usedDays }} />
           )}
         </div>
         <div aria-hidden className="timeline-strip__ticks">
           {ticks.map((months) => (
-            <span key={months} style={{ left: `${(months / totalMonths) * 100}%` }} />
+            <span key={months} style={{ left: `${(months / spanInMonths) * 100}%` }} />
           ))}
         </div>
       </div>
       <div aria-hidden className="timeline-strip__axis">
         {ticks.map((months) => (
-          <span key={months} style={{ left: `${(months / totalMonths) * 100}%` }}>
-            <strong>{translate("axisMark", { months })}</strong>
+          <span key={months} style={{ left: `${(months / spanInMonths) * 100}%` }}>
+            <strong>{tickLabel(months)}</strong>
             {format.dateTime(monthTick(startDate, months), { month: "short", year: "numeric", timeZone: "UTC" })}
           </span>
         ))}

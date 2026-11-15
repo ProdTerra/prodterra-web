@@ -301,8 +301,6 @@
       "addRest": "Add rest",
       "cropPickerLabel": "Which crop will you plant?",
       "cancelPicker": "Cancel",
-      "noRoomTitle": "This lot's plan is full",
-      "noRoom": "It already reaches 24 months. Shorten or remove something to add more.",
       "durationLabel": "Duration of {name} in {unit}",
       "shorter": "Subtract one ({unit})",
       "longer": "Add one ({unit})",
@@ -332,7 +330,7 @@
         "weeks": "weeks",
         "months": "months"
       },
-      "limitReached": "Reached the maximum: a lot plan lasts up to 24 months.",
+      "limitReached": "Each crop or rest lasts 2 years at most.",
       "useUsual": "Use {duration}",
       "blockActions": "Options for {name}",
       "moveUp": "Move up",
@@ -351,8 +349,10 @@
       "restDates": "From {start} to {end}",
       "cropDurationQuestion": "How long from sowing to harvest?",
       "restDurationQuestion": "How long does the land rest?",
-      "stripCaption": "Your lot over the next 24 months",
-      "axisMark": "{months, select, 0 {Start} 6 {6 months} 12 {1 year} 18 {18 months} 24 {2 years} other {{months} months}}"
+      "stripCaption": "Your lot month by month",
+      "axisStart": "Start",
+      "axisYears": "{years, plural, one {# year} other {# years}}",
+      "axisMonths": "{months} months"
     },
     "myCalendar": {
       "title": "Your calendar",

@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useState, type Dispatch } from "react";
 import type { RotationPlanAction } from "../application/rotationPlanState";
 import { restBlockColor } from "../domain/cropColors";
-import { canAddBlock, longestDurationFor } from "../domain/blockLimits";
+import { canAddBlock, maximumBlockDays } from "../domain/blockLimits";
 import type { LotRotation, PreviousUse, RotationBlock } from "../domain/rotationPlan";
 import { scheduleBlocks, type ScheduledBlock } from "../domain/rotationSchedule";
 import { AddBlockSheet, type AddBlockChoice } from "./AddBlockSheet";
@@ -136,7 +136,7 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
                   name={blockName(scheduled)}
                   color={blockColor(scheduled)}
                   referenceInDays={scheduled.block.kind === "crop" ? cropNames.referenceOf(scheduled.block.cropKey) : null}
-                  longestInDays={longestDurationFor(blocks, scheduled.block.id)}
+                  longestInDays={maximumBlockDays}
                   isExpanded={expandedBlockId === scheduled.block.id}
                   isFirst={index === 0}
                   isLast={index === blocks.length - 1}

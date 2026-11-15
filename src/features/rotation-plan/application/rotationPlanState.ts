@@ -38,10 +38,10 @@ function updateLot(plan: RotationPlan, lotId: string, changes: Partial<LotRotati
 
 function createBlock(blocks: RotationBlock[], blockId: string, newBlock: NewBlock): RotationBlock {
   if (newBlock.kind === "rest") {
-    return { id: blockId, kind: "rest", durationInDays: durationForNewBlock(blocks, defaultRestDays) };
+    return { id: blockId, kind: "rest", durationInDays: durationForNewBlock(defaultRestDays) };
   }
   const requestedDays = newBlock.referenceInDays ?? defaultCropDays;
-  return { id: blockId, kind: "crop", cropKey: newBlock.cropKey, durationInDays: durationForNewBlock(blocks, requestedDays) };
+  return { id: blockId, kind: "crop", cropKey: newBlock.cropKey, durationInDays: durationForNewBlock(requestedDays) };
 }
 
 function insertAt(blocks: RotationBlock[], block: RotationBlock, index: number): RotationBlock[] {
@@ -85,13 +85,13 @@ function duplicateBlock(plan: RotationPlan, lotId: string, blockId: string, newB
     return plan;
   }
   const original = blocks[index];
-  const copy = { ...original, id: newBlockId, durationInDays: durationForNewBlock(blocks, original.durationInDays) };
+  const copy = { ...original, id: newBlockId, durationInDays: durationForNewBlock(original.durationInDays) };
   return updateLot(plan, lotId, { blocks: insertAt(blocks, copy, index + 1) });
 }
 
 function resizeBlock(plan: RotationPlan, lotId: string, blockId: string, requestedDays: number): RotationPlan {
   const blocks = rotationOf(plan, lotId).blocks;
-  const durationInDays = clampBlockDuration(blocks, blockId, requestedDays);
+  const durationInDays = clampBlockDuration(requestedDays);
   return updateLot(plan, lotId, {
     blocks: blocks.map((block) => (block.id === blockId ? { ...block, durationInDays } : block)),
   });
