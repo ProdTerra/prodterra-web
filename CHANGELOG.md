@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0 - 2026-11-15
+
+### Changed
+- With more than 5 lots, both calendars show one lot at a time: "Todos los lotes" is not offered and the calendar starts on the first lot.
+
 ## 0.7.0 - 2026-11-15
 
 ### Added

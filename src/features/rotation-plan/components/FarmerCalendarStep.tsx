@@ -6,7 +6,7 @@ import { useState } from "react";
 import { CalendarToolbar } from "@/features/calendar/components/CalendarToolbar";
 import { DayDetail } from "@/features/calendar/components/DayDetail";
 import { PlanMonthGrid, type GridLot } from "@/features/calendar/components/PlanMonthGrid";
-import { buildMonthLayout, type GridBlock } from "@/features/calendar/domain/monthGrid";
+import { buildMonthLayout, canShowAllLots, effectiveLotSelection, type GridBlock } from "@/features/calendar/domain/monthGrid";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
 import { Notice } from "@/shared/components/Notice";
@@ -59,7 +59,8 @@ export function FarmerCalendarStep({ lots, onEditPlan, onAnalyze }: FarmerCalend
   const cropColors = assignCropColors(rotations);
   const hasRest = rotations.some((rotation) => rotation.blocks.some((block) => block.kind === "rest"));
   const gridLots: GridLot[] = lots.map((lot) => ({ id: lot.shapeId, number: lot.number, name: lotName(lot), color: lot.color }));
-  const visibleLots = selectedLotId ? gridLots.filter((lot) => lot.id === selectedLotId) : gridLots;
+  const lotSelection = effectiveLotSelection(gridLots, selectedLotId);
+  const visibleLots = lotSelection ? gridLots.filter((lot) => lot.id === lotSelection) : gridLots;
   const gridBlocks: GridBlock[] = lots.flatMap((lot) =>
     (schedules.get(lot.shapeId) ?? []).map(({ block, startDate: blockStart, endDate }) => ({
       id: block.id,
@@ -104,7 +105,8 @@ export function FarmerCalendarStep({ lots, onEditPlan, onAnalyze }: FarmerCalend
         canGoBack={monthIndex > 0}
         canGoForward={monthIndex < months.length - 1}
         lots={gridLots}
-        selectedLotId={selectedLotId}
+        selectedLotId={lotSelection}
+            showsAllLotsOption={canShowAllLots(gridLots.length)}
         onPrevious={() => setSelectedIndex(monthIndex - 1)}
         onNext={() => setSelectedIndex(monthIndex + 1)}
         onGoToStart={() => {
