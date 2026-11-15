@@ -1,6 +1,6 @@
 import type { Polygon } from "geojson";
 import { describe, expect, it } from "vitest";
-import { toSilhouettePoints } from "./lotSilhouette";
+import { silhouetteBounds, toSilhouettePoints } from "./lotSilhouette";
 
 const wideLot: Polygon = {
   type: "Polygon",
@@ -34,5 +34,17 @@ describe("toSilhouettePoints", () => {
 
   it("does not repeat the closing point", () => {
     expect(toSilhouettePoints(wideLot, 100, 4)).toHaveLength(4);
+  });
+});
+
+describe("silhouetteBounds", () => {
+  it("covers a square area of ground around the lot, with the same margin as the drawing", () => {
+    const bounds = silhouetteBounds(wideLot, 100, 4);
+    const latitudeSpan = bounds.north - bounds.south;
+    const longitudeSpan = bounds.east - bounds.west;
+    expect(longitudeSpan * Math.cos((9.9185 * Math.PI) / 180)).toBeCloseTo(latitudeSpan, 8);
+    expect(longitudeSpan).toBeCloseTo((0.004 * 100) / 92, 8);
+    expect((bounds.west + bounds.east) / 2).toBeCloseTo(-83.892, 8);
+    expect((bounds.south + bounds.north) / 2).toBeCloseTo(9.9185, 8);
   });
 });

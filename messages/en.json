@@ -352,7 +352,8 @@
       "stripCaption": "Your lot month by month",
       "axisStart": "Start",
       "axisYears": "{years, plural, one {# year} other {# years}}",
-      "axisMonths": "{months} months"
+      "axisMonths": "{months} months",
+      "imageryCredit": "Satellite imagery: Esri, Maxar, Earthstar Geographics"
     },
     "myCalendar": {
       "title": "Your calendar",

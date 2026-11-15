@@ -352,7 +352,8 @@
       "stripCaption": "Tu lote mes a mes",
       "axisStart": "Inicio",
       "axisYears": "{years, plural, one {# año} other {# años}}",
-      "axisMonths": "{months} meses"
+      "axisMonths": "{months} meses",
+      "imageryCredit": "Imágenes satelitales: Esri, Maxar, Earthstar Geographics"
     },
     "myCalendar": {
       "title": "Tu calendario",
