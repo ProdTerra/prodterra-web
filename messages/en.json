@@ -429,5 +429,19 @@
     "deleteConfirm": "Delete farm",
     "deleteCancel": "Keep it",
     "retry": "Try again"
+  },
+  "print": {
+    "download": "Download PDF",
+    "farmerTitle": "Your rotation calendar",
+    "analysisTitle": "Your plan and the recommended one",
+    "subtitle": "From {start}. Generated on {today}.",
+    "farmerRow": "Your plan",
+    "recommendedRow": "Recommended",
+    "line": "{name}: {start} to {end}",
+    "recommendedLine": "Recommended. {name}: {start} to {end}",
+    "statusOk": "Fine",
+    "statusWatch": "Watch",
+    "statusRisk": "Risk",
+    "rest": "Rest"
   }
 }
