@@ -1,7 +1,7 @@
 import { apiUrl } from "@/features/farm-mapping/infrastructure/apiClient";
 import type { SavedFarm, SavedFarmSnapshot, SavedFarmSummary } from "../domain/savedFarm";
 
-export type SavedFarmsFailure = "notAuthenticated" | "notFound" | "unavailable";
+export type SavedFarmsFailure = "notAuthenticated" | "notFound" | "nameTaken" | "unavailable";
 
 export class SavedFarmsError extends Error {
   constructor(readonly reason: SavedFarmsFailure) {
@@ -12,6 +12,9 @@ export class SavedFarmsError extends Error {
 function failureOf(status: number): SavedFarmsFailure {
   if (status === 401) {
     return "notAuthenticated";
+  }
+  if (status === 409) {
+    return "nameTaken";
   }
   return status === 404 ? "notFound" : "unavailable";
 }

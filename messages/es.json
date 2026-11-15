@@ -406,6 +406,7 @@
     "saved": "Guardaste «{name}».",
     "goToFarms": "Ver Mis fincas",
     "errors": {
+      "nameTaken": "Ya tienes una finca con ese nombre. Escribe otro.",
       "nameRequired": "Escribe un nombre para la finca.",
       "nameTooLong": "El nombre puede tener hasta 80 caracteres.",
       "notAuthenticated": "Tu sesión terminó. Inicia sesión otra vez para guardar.",
