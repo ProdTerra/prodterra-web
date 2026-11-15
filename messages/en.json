@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "title": "ProdTerra",
+    "description": "Plan your farm's plantings with NASA satellite data."
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "es": "Español",
+    "en": "English"
+  },
+  "farmMapping": {
+    "mapLabel": "Satellite map of your farm",
+    "steps": {
+      "label": "Steps to register your farm",
+      "locate": "Find your farm",
+      "boundary": "Mark the edge",
+      "lots": "Split into lots",
+      "crops": "Your crops"
+    },
+    "locate": {
+      "title": "Where is your farm?",
+      "hint": "Search for your town or use your location. Then move the map until your land is in the center.",
+      "searchLabel": "Search for a place",
+      "searchPlaceholder": "E.g. Tierra Blanca, Cartago",
+      "searchAction": "Search",
+      "searching": "Searching…",
+      "noResults": "We couldn't find that place. Try the name of the town or district.",
+      "searchFailed": "Search didn't work. Check your connection and try again.",
+      "resultsLabel": "Places found",
+      "useMyLocation": "Use my location",
+      "locating": "Finding your location…",
+      "locationDenied": "There's no permission to see your location. Search for it by name.",
+      "locationUnavailable": "We couldn't find your location. Search for it by name.",
+      "confirm": "My farm is here"
+    },
+    "boundary": {
+      "title": "Mark the edge of your farm",
+      "hint": "Tap each corner of the land, one at a time. When you have them all, tap “Close farm”.",
+      "start": "Start marking",
+      "drawingHint": "Tap each corner of your farm.",
+      "undo": "Remove last point",
+      "cancel": "Cancel",
+      "changeLocation": "Change location",
+      "close": "Close farm",
+      "closeRequirement": "Mark at least 3 corners to close the farm."
+    },
+    "lots": {
+      "title": "Split your farm into lots",
+      "hint": "Mark each part where you grow something different. A lot can't go outside the farm or overlap another lot.",
+      "farmArea": "Your farm measures",
+      "unassigned": "not in a lot: {area}",
+      "lotCount": "{count, plural, =0 {No lots} one {# lot} other {# lots}}",
+      "addLot": "Mark a lot",
+      "finishLots": "Done marking",
+      "drawingHint": "Tap each corner of the lot.",
+      "defaultName": "Lot {number}",
+      "nameLabel": "Name of lot {number}",
+      "removeLot": "Delete {name}",
+      "empty": "No lots yet. Mark the first one on the map.",
+      "redrawFarm": "Mark the farm again",
+      "undoPoint": "Remove last point",
+      "closeLot": "Close lot",
+      "closeRequirement": "Mark at least 3 corners to close the lot.",
+      "redrawDialog": {
+        "title": "Mark the farm again?",
+        "description": "The farm edge and {count, plural, =0 {}one {the lot you marked} other {the # lots you marked}} will be deleted. This can’t be undone.",
+        "confirm": "Delete and mark again",
+        "cancel": "Keep my farm"
+      },
+      "rejection": {
+        "outsideFarmTitle": "The lot goes outside the farm",
+        "outsideFarm": "Mark the lot inside the yellow line, which is the edge of your farm.",
+        "overlapsLotTitle": "The lot overlaps another one",
+        "overlapsLot": "This lot covers part of {lotName}. Mark it in a free part of the farm.",
+        "dismiss": "Got it"
+      },
+      "splitEqually": "Split into equal parts",
+      "farmFull": "The whole farm is already in lots. Delete a lot if you want to mark it differently.",
+      "continue": "Continue"
+    },
+    "area": {
+      "squareMeters": "{value} m²",
+      "hectares": "{value} ha"
+    },
+    "position": {
+      "label": "Position of the map center",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "elevation": "Elevation",
+      "meters": "{value} m",
+      "loading": "Loading…",
+      "unavailable": "No data",
+      "source": "Elevation: NASADEM (NASA)"
+    },
+    "split": {
+      "title": "Split into equal parts",
+      "countLabel": "Number of lots",
+      "fewer": "Fewer lots",
+      "more": "More lots",
+      "orientationLabel": "Strip direction",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal",
+      "hint": "Every lot has the same area. You can rename or delete any of them afterwards.",
+      "done": "Done",
+      "replaceDialog": {
+        "title": "Replace your lots?",
+        "description": "{count, plural, one {The lot you marked will be deleted} other {The # lots you marked will be deleted}} and the farm will be split into equal parts.",
+        "confirm": "Replace lots",
+        "cancel": "Keep my lots"
+      }
+    },
+    "summary": {
+      "title": "Your farm at a glance",
+      "intro": "This is what we know about your farm before planning the crops.",
+      "loading": "Getting NASA data…",
+      "failed": "Climate data couldn't be loaded. Check that the API is running and try again.",
+      "retry": "Try again",
+      "landTitle": "Land",
+      "farmArea": "Farm area",
+      "lotCount": "Lots",
+      "freeArea": "Area not in a lot",
+      "landSource": "Calculated from your drawing over Esri satellite imagery.",
+      "elevationTitle": "Elevation",
+      "elevationMean": "Average",
+      "elevationRange": "From {minimum} to {maximum}",
+      "elevationSource": "NASADEM (NASA), terrain elevation model.",
+      "climateTitle": "Climate through the year",
+      "coldestMonth": "Coldest month",
+      "warmestMonth": "Warmest month",
+      "coldestNight": "Coldest night (average)",
+      "driestMonth": "Driest month",
+      "wettestMonth": "Wettest month",
+      "humidity": "Average humidity",
+      "sunlight": "Average sunlight",
+      "temperatureValue": "{month}: {value} °C",
+      "rainValue": "{month}: {value} mm a day",
+      "percentValue": "{value} %",
+      "sunlightValue": "{value} kWh/m² a day",
+      "climateSource": "NASA POWER, 2001–2025 averages. Temperatures adjusted {correction} °C for your farm's elevation.",
+      "estimateNote": "These are estimates from satellite data; they don't replace what you know about your farm.",
+      "openSource": "Open source",
+      "back": "Back to my lots",
+      "continue": "Continue to my crops",
+      "elevationRangeLabel": "Range"
+    },
+    "crops": {
+      "title": "What do you grow in each lot?",
+      "hint": "Tell us what each of your {count, plural, one {# lot} other {# lots}} has. We use it to build your calendar.",
+      "editLots": "Change my lots"
+    }
+  }
+}

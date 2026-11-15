@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "title": "ProdTerra",
+    "description": "Planifica las siembras de tu finca con datos satelitales de la NASA."
+  },
+  "languageSwitcher": {
+    "label": "Idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "farmMapping": {
+    "mapLabel": "Mapa satelital de tu finca",
+    "steps": {
+      "label": "Pasos para registrar tu finca",
+      "locate": "Ubica tu finca",
+      "boundary": "Marca el borde",
+      "lots": "Divide en lotes",
+      "crops": "Tus cultivos"
+    },
+    "locate": {
+      "title": "¿Dónde está tu finca?",
+      "hint": "Busca tu pueblo o usa tu ubicación. Después mueve el mapa hasta ver tu terreno en el centro.",
+      "searchLabel": "Buscar un lugar",
+      "searchPlaceholder": "Ej.: Tierra Blanca, Cartago",
+      "searchAction": "Buscar",
+      "searching": "Buscando…",
+      "noResults": "No encontramos ese lugar. Prueba con el nombre del pueblo o del distrito.",
+      "searchFailed": "No se pudo buscar. Revisa tu conexión e inténtalo otra vez.",
+      "resultsLabel": "Lugares encontrados",
+      "useMyLocation": "Usar mi ubicación",
+      "locating": "Buscando tu ubicación…",
+      "locationDenied": "No hay permiso para ver tu ubicación. Búscala por nombre.",
+      "locationUnavailable": "No pudimos encontrar tu ubicación. Búscala por nombre.",
+      "confirm": "Mi finca está aquí"
+    },
+    "boundary": {
+      "title": "Marca el borde de tu finca",
+      "hint": "Toca cada esquina del terreno, una por una. Cuando las tengas todas, toca «Cerrar finca».",
+      "start": "Empezar a marcar",
+      "drawingHint": "Toca cada esquina de tu finca.",
+      "undo": "Quitar último punto",
+      "cancel": "Cancelar",
+      "changeLocation": "Cambiar ubicación",
+      "close": "Cerrar finca",
+      "closeRequirement": "Marca al menos 3 esquinas para poder cerrar la finca."
+    },
+    "lots": {
+      "title": "Divide tu finca en lotes",
+      "hint": "Marca cada parte donde siembras algo distinto. Un lote no puede salirse de la finca ni montarse sobre otro.",
+      "farmArea": "Tu finca mide",
+      "unassigned": "sin lote: {area}",
+      "lotCount": "{count, plural, =0 {Sin lotes} one {# lote} other {# lotes}}",
+      "addLot": "Marcar un lote",
+      "finishLots": "Terminar de marcar",
+      "drawingHint": "Toca cada esquina del lote.",
+      "defaultName": "Lote {number}",
+      "nameLabel": "Nombre del lote {number}",
+      "removeLot": "Borrar {name}",
+      "empty": "Todavía no hay lotes. Marca el primero sobre el mapa.",
+      "redrawFarm": "Volver a marcar la finca",
+      "undoPoint": "Quitar último punto",
+      "closeLot": "Cerrar lote",
+      "closeRequirement": "Marca al menos 3 esquinas para poder cerrar el lote.",
+      "redrawDialog": {
+        "title": "¿Volver a marcar la finca?",
+        "description": "Se borrarán el borde de la finca y {count, plural, =0 {}one {el lote que marcaste} other {los # lotes que marcaste}}. Esta acción no se puede deshacer.",
+        "confirm": "Borrar y volver a marcar",
+        "cancel": "Conservar mi finca"
+      },
+      "rejection": {
+        "outsideFarmTitle": "El lote se sale de la finca",
+        "outsideFarm": "Marca el lote dentro de la línea amarilla, que es el borde de tu finca.",
+        "overlapsLotTitle": "El lote se monta sobre otro",
+        "overlapsLot": "Este lote ocupa parte de {lotName}. Márcalo en un espacio libre de la finca.",
+        "dismiss": "Entendido"
+      },
+      "splitEqually": "Dividir en partes iguales",
+      "farmFull": "Toda la finca ya está en lotes. Borra un lote si quieres marcarlo distinto.",
+      "continue": "Continuar"
+    },
+    "area": {
+      "squareMeters": "{value} m²",
+      "hectares": "{value} ha"
+    },
+    "position": {
+      "label": "Posición del centro del mapa",
+      "latitude": "Latitud",
+      "longitude": "Longitud",
+      "elevation": "Altitud",
+      "meters": "{value} m",
+      "loading": "Calculando…",
+      "unavailable": "Sin dato",
+      "source": "Altitud: NASADEM (NASA)"
+    },
+    "split": {
+      "title": "Dividir en partes iguales",
+      "countLabel": "Número de lotes",
+      "fewer": "Menos lotes",
+      "more": "Más lotes",
+      "orientationLabel": "Dirección de las franjas",
+      "vertical": "Verticales",
+      "horizontal": "Horizontales",
+      "hint": "Todos los lotes tienen la misma área. Después puedes cambiarles el nombre o borrar alguno.",
+      "done": "Listo",
+      "replaceDialog": {
+        "title": "¿Reemplazar tus lotes?",
+        "description": "{count, plural, one {El lote que marcaste se borrará} other {Los # lotes que marcaste se borrarán}} y la finca se dividirá en partes iguales.",
+        "confirm": "Reemplazar lotes",
+        "cancel": "Conservar mis lotes"
+      }
+    },
+    "summary": {
+      "title": "Resumen de tu finca",
+      "intro": "Esto es lo que sabemos de tu finca antes de planear los cultivos.",
+      "loading": "Consultando los datos de la NASA…",
+      "failed": "No se pudieron cargar los datos del clima. Revisa que la API esté encendida e inténtalo otra vez.",
+      "retry": "Intentar otra vez",
+      "landTitle": "Terreno",
+      "farmArea": "Área de la finca",
+      "lotCount": "Lotes",
+      "freeArea": "Área sin lote",
+      "landSource": "Calculado con tu dibujo sobre la imagen satelital de Esri.",
+      "elevationTitle": "Altura",
+      "elevationMean": "Promedio",
+      "elevationRange": "De {minimum} a {maximum}",
+      "elevationSource": "NASADEM (NASA), modelo de elevación del terreno.",
+      "climateTitle": "Clima del año",
+      "coldestMonth": "Mes más frío",
+      "warmestMonth": "Mes más cálido",
+      "coldestNight": "Noche más fría (promedio)",
+      "driestMonth": "Mes más seco",
+      "wettestMonth": "Mes más lluvioso",
+      "humidity": "Humedad promedio",
+      "sunlight": "Sol promedio",
+      "temperatureValue": "{month}: {value} °C",
+      "rainValue": "{month}: {value} mm al día",
+      "percentValue": "{value} %",
+      "sunlightValue": "{value} kWh/m² al día",
+      "climateSource": "NASA POWER, promedios de 2001 a 2025. Temperaturas ajustadas {correction} °C por la altura de tu finca.",
+      "estimateNote": "Son estimaciones a partir de datos satelitales; no reemplazan lo que tú conoces de tu finca.",
+      "openSource": "Ver fuente",
+      "back": "Volver a mis lotes",
+      "continue": "Continuar a mis cultivos",
+      "elevationRangeLabel": "Rango"
+    },
+    "crops": {
+      "title": "¿Qué siembras en cada lote?",
+      "hint": "Cuéntanos qué tiene cada uno de tus {count, plural, one {# lote} other {# lotes}}. Con eso armamos tu calendario.",
+      "editLots": "Cambiar mis lotes"
+    }
+  }
+}
