@@ -205,6 +205,7 @@
       "temperature": "Average temperature of {value} °C, outside what the crop tolerates.",
       "drought": "Without irrigation about {value} liters of water per m² are missing.",
       "irrigation": "Irrigate about {value} liters per m² this month.",
+      "waterExcess": "About {value} liters per m² more rain than the crop tolerates: check the drainage.",
       "pest": "Watch for {pest}: this month's weather favors it."
     },
     "openLotPlan": "Open the plan for {lot}",

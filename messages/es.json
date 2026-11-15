@@ -205,6 +205,7 @@
       "temperature": "Temperatura promedio de {value} °C, fuera de lo que soporta el cultivo.",
       "drought": "Sin riego faltan unos {value} litros de agua por m².",
       "irrigation": "Regar unos {value} litros por m² este mes.",
+      "waterExcess": "Llueven unos {value} litros por m² más de lo que el cultivo aguanta: revisar el drenaje.",
       "pest": "Vigilar {pest}: el clima de este mes la favorece."
     },
     "openLotPlan": "Ver el plan de {lot}",

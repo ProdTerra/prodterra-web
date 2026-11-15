@@ -28,6 +28,8 @@ export function AlarmList({ alarms, lots, monthTitle, lotName, pestName, decimal
         return translate("alarm.drought", { value: whole(alert.litersPerSquareMeter) });
       case "irrigation":
         return translate("alarm.irrigation", { value: whole(alert.litersPerSquareMeter) });
+      case "waterExcess":
+        return translate("alarm.waterExcess", { value: whole(alert.litersPerSquareMeter) });
       case "pest":
         return translate("alarm.pest", { pest: pestName(alert.pestKey) });
     }

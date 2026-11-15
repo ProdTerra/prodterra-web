@@ -8,7 +8,8 @@ const alertPriority: Record<PlanAlert["type"], number> = {
   drought: 1,
   temperature: 2,
   pest: 3,
-  irrigation: 4,
+  waterExcess: 4,
+  irrigation: 5,
 };
 
 export function daysInMonth(monthKey: string): number {
