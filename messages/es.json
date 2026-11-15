@@ -350,7 +350,8 @@
       "restDates": "Del {start} al {end}",
       "cropDurationQuestion": "¿Cuánto tiempo pasa de la siembra a la cosecha?",
       "restDurationQuestion": "¿Cuánto tiempo descansa la tierra?",
-      "stripCaption": "Tu lote en los próximos 24 meses"
+      "stripCaption": "Tu lote en los próximos 24 meses",
+      "axisMark": "{months, select, 0 {Inicio} 6 {6 meses} 12 {1 año} 18 {18 meses} 24 {2 años} other {{months} meses}}"
     },
     "myCalendar": {
       "title": "Tu calendario",

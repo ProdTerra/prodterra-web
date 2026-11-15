@@ -2,7 +2,7 @@
 
 import { Minus, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { amountInUnit, daysForAmount, durationUnits, naturalUnitOf, type DurationUnit } from "../domain/durationUnits";
 
 type DurationFieldProps = {
@@ -12,11 +12,12 @@ type DurationFieldProps = {
   startDate: string;
   longestInDays: number;
   onChange: (durationInDays: number) => void;
+  action?: ReactNode;
 };
 
 const digitsOnly = /^\d{1,4}$/;
 
-export function DurationField({ name, question, durationInDays, startDate, longestInDays, onChange }: DurationFieldProps) {
+export function DurationField({ name, question, durationInDays, startDate, longestInDays, onChange, action }: DurationFieldProps) {
   const translate = useTranslations("rotationPlan.rotation");
   const inputId = useId();
   const [unit, setUnit] = useState<DurationUnit>(() => naturalUnitOf(durationInDays));
@@ -90,6 +91,7 @@ export function DurationField({ name, question, durationInDays, startDate, longe
             </button>
           ))}
         </div>
+        {action}
       </div>
       {wasLimited && <p className="field-hint">{translate("limitReached")}</p>}
     </div>

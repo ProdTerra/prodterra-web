@@ -100,6 +100,14 @@ export function RotationBlockCard(props: RotationBlockCardProps) {
             startDate={scheduled.startDate}
             longestInDays={props.longestInDays}
             onChange={props.onDurationChange}
+            action={
+              isChanged && (
+                <button type="button" onClick={() => props.onDurationChange(Math.min(referenceInDays, props.longestInDays))} className="button button--secondary button--small">
+                  <RotateCcw aria-hidden size={16} />
+                  {translate("useUsual", { duration: days(referenceInDays) })}
+                </button>
+              )
+            }
           />
           {!isCrop && (
             <div className="chip-row">
@@ -116,12 +124,6 @@ export function RotationBlockCard(props: RotationBlockCardProps) {
                 </button>
               ))}
             </div>
-          )}
-          {isChanged && (
-            <button type="button" onClick={() => props.onDurationChange(Math.min(referenceInDays, props.longestInDays))} className="button button--secondary button--small">
-              <RotateCcw aria-hidden size={16} />
-              {translate("useUsual", { duration: days(referenceInDays) })}
-            </button>
           )}
         </div>
       )}
