@@ -16,6 +16,7 @@ import {
 } from "../application/farmMappingState";
 import { lotDisplayName } from "../application/lotDisplayName";
 import { calculateAreaInHectares, validateLot } from "../domain/farmGeometry";
+import { maximumFarmAreaInHectares, validateFarmArea } from "../domain/farmLimits";
 import { pickLotColor } from "../domain/lotColors";
 import {
   splitIntoEqualStrips,
@@ -110,6 +111,7 @@ export function FarmMappingScreen() {
   const [isRedrawConfirmOpen, setIsRedrawConfirmOpen] = useState(false);
   const [isReplaceConfirmOpen, setIsReplaceConfirmOpen] = useState(false);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [farmAreaRejection, setFarmAreaRejection] = useState<"tooLarge" | "tooSmall" | null>(null);
   const [split, setSplit] = useState<{
     lotCount: number;
     orientation: StripOrientation;
@@ -179,11 +181,18 @@ export function FarmMappingScreen() {
 
   function handleFarmFinished(shape: FinishedShape) {
     setDrawingKind(null);
+    const areaInHectares = calculateAreaInHectares(shape.geometry);
+    const validation = validateFarmArea(areaInHectares);
+    if (!validation.isValid) {
+      mapRef.current?.removeShapes([shape.shapeId]);
+      setFarmAreaRejection(validation.reason);
+      return;
+    }
     dispatch({
       type: "boundaryFinished",
       shapeId: shape.shapeId,
       geometry: shape.geometry,
-      areaInHectares: calculateAreaInHectares(shape.geometry),
+      areaInHectares,
     });
   }
 
@@ -433,6 +442,16 @@ export function FarmMappingScreen() {
           }}
         />
       )}
+      <Dialog
+        isOpen={farmAreaRejection !== null}
+        tone="info"
+        title={translate(farmAreaRejection === "tooSmall" ? "boundary.tooSmallTitle" : "boundary.tooLargeTitle")}
+        description={translate(farmAreaRejection === "tooSmall" ? "boundary.tooSmall" : "boundary.tooLarge", {
+          maximum: new Intl.NumberFormat(locale, { useGrouping: "always" }).format(maximumFarmAreaInHectares),
+        })}
+        confirmLabel={translate("boundary.tryAgain")}
+        onConfirm={() => setFarmAreaRejection(null)}
+      />
       <Dialog
         isOpen={isRedrawConfirmOpen}
         tone="danger"

@@ -2,6 +2,7 @@ import { Check, Columns3, Plus, Undo2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
 import type { DrawnShape, Lot } from "../application/farmMappingState";
+import { maximumLots } from "../domain/farmLimits";
 import { hasRoomForAnotherLot } from "../domain/freeArea";
 import type { StripOrientation } from "../domain/splitFarm";
 import { LotListItem } from "./LotListItem";
@@ -49,10 +50,13 @@ export function LotsStep({
   const formatArea = useAreaFormatter();
   const lotsArea = lots.reduce((total, lot) => total + lot.areaInHectares, 0);
   const unassignedArea = Math.max(farmBoundary.areaInHectares - lotsArea, 0);
-  const canAddLot = hasRoomForAnotherLot(
-    farmBoundary.areaInHectares,
-    lots.map((lot) => lot.areaInHectares),
-  );
+  const hasReachedLotLimit = lots.length >= maximumLots;
+  const canAddLot =
+    !hasReachedLotLimit &&
+    hasRoomForAnotherLot(
+      farmBoundary.areaInHectares,
+      lots.map((lot) => lot.areaInHectares),
+    );
 
   return (
     <div className="step-content">
@@ -100,7 +104,7 @@ export function LotsStep({
 
       {!canAddLot && !isDrawing && split === null && (
         <Notice tone="success" id="farm-full-notice">
-          {translate("farmFull")}
+          {hasReachedLotLimit ? translate("lotLimit", { maximum: maximumLots }) : translate("farmFull")}
         </Notice>
       )}
 

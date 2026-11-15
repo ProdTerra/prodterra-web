@@ -43,7 +43,12 @@
       "cancel": "Cancel",
       "changeLocation": "Change location",
       "close": "Close farm",
-      "closeRequirement": "Mark at least 3 corners to close the farm."
+      "closeRequirement": "Mark at least 3 corners to close the farm.",
+      "tooLargeTitle": "The farm is too large",
+      "tooLarge": "The marked area is over the {maximum} ha ProdTerra supports. Zoom in and mark only the edge of the farm.",
+      "tooSmallTitle": "The area is too small",
+      "tooSmall": "It looks like it closed too early. Mark the farm corners again.",
+      "tryAgain": "Mark again"
     },
     "lots": {
       "title": "Split your farm into lots",
@@ -77,7 +82,8 @@
       },
       "splitEqually": "Split into equal parts",
       "farmFull": "The whole farm is already in lots. Delete a lot if you want to mark it differently.",
-      "continue": "Continue"
+      "continue": "Continue",
+      "lotLimit": "You already marked {maximum} lots, the most the calendar supports."
     },
     "area": {
       "squareMeters": "{value} m²",

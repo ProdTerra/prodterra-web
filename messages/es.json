@@ -43,7 +43,12 @@
       "cancel": "Cancelar",
       "changeLocation": "Cambiar ubicación",
       "close": "Cerrar finca",
-      "closeRequirement": "Marca al menos 3 esquinas para poder cerrar la finca."
+      "closeRequirement": "Marca al menos 3 esquinas para poder cerrar la finca.",
+      "tooLargeTitle": "La finca es demasiado grande",
+      "tooLarge": "El área marcada supera las {maximum} ha que admite ProdTerra. Acércate al terreno y marca solo el borde de la finca.",
+      "tooSmallTitle": "El área es demasiado pequeña",
+      "tooSmall": "Parece que se cerró antes de tiempo. Marca de nuevo las esquinas de la finca.",
+      "tryAgain": "Marcar de nuevo"
     },
     "lots": {
       "title": "Divide tu finca en lotes",
@@ -77,7 +82,8 @@
       },
       "splitEqually": "Dividir en partes iguales",
       "farmFull": "Toda la finca ya está en lotes. Borra un lote si quieres marcarlo distinto.",
-      "continue": "Continuar"
+      "continue": "Continuar",
+      "lotLimit": "Ya marcaste {maximum} lotes, el máximo que admite el calendario."
     },
     "area": {
       "squareMeters": "{value} m²",
