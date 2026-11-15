@@ -92,4 +92,14 @@ describe("rotationPlanReducer", () => {
     );
     expect(rotationOf(restored, "a").blocks).toEqual(original);
   });
+
+  it("moves a dragged block to the position where it is dropped", () => {
+    const withCarrot = apply(
+      [{ type: "blockAdded", lotId: "a", blockId: "carrot", block: { kind: "crop", cropKey: "carrot", referenceInDays: 180 } }],
+      potatoThenRest,
+    );
+    const moved = apply([{ type: "blockMovedTo", lotId: "a", blockId: "carrot", toIndex: 0 }], withCarrot);
+    const before = rotationOf(withCarrot, "a").blocks.map((block) => block.id);
+    expect(rotationOf(moved, "a").blocks.map((block) => block.id)).toEqual(["carrot", before[0], before[1]]);
+  });
 });
