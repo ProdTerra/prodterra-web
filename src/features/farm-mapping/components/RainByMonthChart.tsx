@@ -1,20 +1,24 @@
 import { useFormatter, useTranslations } from "next-intl";
 import type { MonthlyClimate } from "../domain/climateSummary";
+import { monthlyRainInLitersPerSquareMeter } from "../domain/monthlyRain";
 
 type RainByMonthChartProps = {
   months: MonthlyClimate[];
-  driestMonth: number;
-  wettestMonth: number;
   monthName: (month: number) => string;
 };
 
-export function RainByMonthChart({ months, driestMonth, wettestMonth, monthName }: RainByMonthChartProps) {
+type MonthRain = { month: number; liters: number };
+
+export function RainByMonthChart({ months, monthName }: RainByMonthChartProps) {
   const translate = useTranslations("farmMapping.summary");
   const format = useFormatter();
-  const formatRain = (value: number) => format.number(value, { maximumFractionDigits: 1 });
-  const highestRain = Math.max(...months.map((month) => month.precipitationInMillimetersPerDay));
-  const rainOf = (monthNumber: number) =>
-    months.find((month) => month.month === monthNumber)?.precipitationInMillimetersPerDay ?? 0;
+  const rains: MonthRain[] = months.map((month) => ({
+    month: month.month,
+    liters: monthlyRainInLitersPerSquareMeter(month.precipitationInMillimetersPerDay, month.month),
+  }));
+  const driest = rains.reduce((lowest, rain) => (rain.liters < lowest.liters ? rain : lowest));
+  const wettest = rains.reduce((highest, rain) => (rain.liters > highest.liters ? rain : highest));
+  const formatLiters = (liters: number) => format.number(liters);
 
   return (
     <figure className="rain-chart">
@@ -24,57 +28,50 @@ export function RainByMonthChart({ months, driestMonth, wettestMonth, monthName 
       <div
         role="img"
         aria-label={translate("rainChartLabel", {
-          driestMonth: monthName(driestMonth),
-          driestValue: formatRain(rainOf(driestMonth)),
-          wettestMonth: monthName(wettestMonth),
-          wettestValue: formatRain(rainOf(wettestMonth)),
+          driestMonth: monthName(driest.month),
+          driestValue: formatLiters(driest.liters),
+          wettestMonth: monthName(wettest.month),
+          wettestValue: formatLiters(wettest.liters),
         })}
         className="rain-chart__plot"
       >
-        {months.map((month) => {
-          const isDriest = month.month === driestMonth;
-          const isWettest = month.month === wettestMonth;
-          const label = translate("rainBar", {
-            month: monthName(month.month),
-            value: formatRain(month.precipitationInMillimetersPerDay),
-          });
+        {rains.map((rain) => {
+          const highlight = rain.month === driest.month ? "driest" : rain.month === wettest.month ? "wettest" : undefined;
           return (
-            <div key={month.month} className="rain-chart__column" data-tooltip={label}>
-              {(isDriest || isWettest) && (
-                <span className="rain-chart__value">{formatRain(month.precipitationInMillimetersPerDay)}</span>
-              )}
+            <div
+              key={rain.month}
+              className="rain-chart__column"
+              data-tooltip={translate("rainBar", { month: monthName(rain.month), value: formatLiters(rain.liters) })}
+            >
+              {highlight && <span className="rain-chart__value">{formatLiters(rain.liters)}</span>}
               <span
                 className="rain-chart__bar"
-                data-highlight={isDriest ? "driest" : isWettest ? "wettest" : undefined}
-                style={{ height: `${(month.precipitationInMillimetersPerDay / highestRain) * 100}%` }}
+                data-highlight={highlight}
+                style={{ height: `${(rain.liters / wettest.liters) * 100}%` }}
               />
               <span aria-hidden className="rain-chart__month">
-                {monthName(month.month).charAt(0).toUpperCase()}
+                {monthName(rain.month).charAt(0).toUpperCase()}
               </span>
             </div>
           );
         })}
       </div>
       <p className="rain-chart__legend">
-        <span>
-          {translate("driest")}: <strong>{monthName(driestMonth)}</strong>
-        </span>
-        <span>
-          {translate("wettest")}: <strong>{monthName(wettestMonth)}</strong>
-        </span>
+        <span>{translate("driestDetail", { month: monthName(driest.month), value: formatLiters(driest.liters) })}</span>
+        <span>{translate("wettestDetail", { month: monthName(wettest.month), value: formatLiters(wettest.liters) })}</span>
       </p>
       <table className="visually-hidden">
         <thead>
           <tr>
             <th scope="col">{translate("monthHeader")}</th>
-            <th scope="col">{translate("rainUnit")}</th>
+            <th scope="col">{translate("litersHeader")}</th>
           </tr>
         </thead>
         <tbody>
-          {months.map((month) => (
-            <tr key={month.month}>
-              <th scope="row">{monthName(month.month)}</th>
-              <td>{formatRain(month.precipitationInMillimetersPerDay)}</td>
+          {rains.map((rain) => (
+            <tr key={rain.month}>
+              <th scope="row">{monthName(rain.month)}</th>
+              <td>{formatLiters(rain.liters)}</td>
             </tr>
           ))}
         </tbody>

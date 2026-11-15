@@ -134,11 +134,9 @@
         "dry": "Seco"
       },
       "rainTitle": "Lluvia por mes",
-      "rainUnit": "mm al día",
-      "rainChartLabel": "Lluvia promedio por mes. Menos lluvia en {driestMonth} ({driestValue} mm al día), más lluvia en {wettestMonth} ({wettestValue} mm al día).",
-      "rainBar": "{month}: {value} mm al día",
-      "driest": "Más seco",
-      "wettest": "Más lluvioso",
+      "rainUnit": "litros por metro cuadrado",
+      "rainChartLabel": "Lluvia de cada mes en litros por metro cuadrado. El mes más seco es {driestMonth}, con unos {driestValue} litros por m², y el más lluvioso es {wettestMonth}, con unos {wettestValue}.",
+      "rainBar": "{month}: unos {value} litros por m²",
       "monthHeader": "Mes",
       "sourcesTitle": "¿De dónde salen estos datos?",
       "landSource": "Terreno: calculado con tu dibujo sobre la imagen satelital World Imagery de Esri.",
@@ -158,7 +156,10 @@
       "percentValue": "{value} %",
       "sunlightValue": "{value} kWh/m² al día",
       "altitudeAdjustment": "Ajuste por altura: la NASA mide el clima de una zona amplia cuya altura promedio es {gridElevation}, y la finca está a {farmElevation}. Según el modelo de atmósfera estándar de la NASA, el aire se enfría unos 6,5 °C por cada 1.000 m de subida, por eso a las temperaturas de la NASA se les {direction, select, colder {restan} other {suman}} {correction} °C.",
-      "lapseRateSource": "Ver modelo de la NASA"
+      "lapseRateSource": "Ver modelo de la NASA",
+      "driestDetail": "Más seco: {month}, unos {value} litros por m²",
+      "wettestDetail": "Más lluvioso: {month}, unos {value} litros por m²",
+      "litersHeader": "Litros por m²"
     },
     "crops": {
       "title": "¿Qué siembras en cada lote?",

@@ -120,12 +120,7 @@ function ClimateOverview({ profile, landTile }: { profile: LotClimateProfile; la
         </div>
       </dl>
 
-      <RainByMonthChart
-        months={profile.months}
-        driestMonth={summary.driestMonth.month}
-        wettestMonth={summary.wettestMonth.month}
-        monthName={formatters.monthName}
-      />
+      <RainByMonthChart months={profile.months} monthName={formatters.monthName} />
     </>
   );
 }

@@ -134,11 +134,9 @@
         "dry": "Dry"
       },
       "rainTitle": "Rain per month",
-      "rainUnit": "mm a day",
-      "rainChartLabel": "Average rain per month. Least rain in {driestMonth} ({driestValue} mm a day), most rain in {wettestMonth} ({wettestValue} mm a day).",
-      "rainBar": "{month}: {value} mm a day",
-      "driest": "Driest",
-      "wettest": "Wettest",
+      "rainUnit": "liters per square meter",
+      "rainChartLabel": "Rain each month in liters per square meter. The driest month is {driestMonth}, with about {driestValue} liters per m², and the wettest is {wettestMonth}, with about {wettestValue}.",
+      "rainBar": "{month}: about {value} liters per m²",
       "monthHeader": "Month",
       "sourcesTitle": "Where does this data come from?",
       "landSource": "Land: calculated from your drawing over Esri World Imagery satellite imagery.",
@@ -158,7 +156,10 @@
       "percentValue": "{value} %",
       "sunlightValue": "{value} kWh/m² a day",
       "altitudeAdjustment": "Elevation adjustment: NASA measures the climate of a wide area whose average elevation is {gridElevation}, and the farm is at {farmElevation}. According to NASA's standard atmosphere model, air cools about 6.5 °C for every 1,000 m of climb, so {correction} °C {direction, select, colder {is subtracted from} other {is added to}} NASA's temperatures.",
-      "lapseRateSource": "See NASA's model"
+      "lapseRateSource": "See NASA's model",
+      "driestDetail": "Driest: {month}, about {value} liters per m²",
+      "wettestDetail": "Wettest: {month}, about {value} liters per m²",
+      "litersHeader": "Liters per m²"
     },
     "crops": {
       "title": "What do you grow in each lot?",
