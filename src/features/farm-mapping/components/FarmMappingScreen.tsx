@@ -15,6 +15,7 @@ import {
 import { lotDisplayName } from "../application/lotDisplayName";
 import { calculateAreaInHectares, validateLot } from "../domain/farmGeometry";
 import { pickLotColor } from "../domain/lotColors";
+import { splitIntoEqualStrips, type StripOrientation } from "../domain/splitFarm";
 import type { FinishedShape, RestorableShape, ShapeKind } from "../infrastructure/drawingSession";
 import {
   getBrowserStorage,
@@ -28,10 +29,12 @@ import { BoundaryStep } from "./BoundaryStep";
 import { LocateStep } from "./LocateStep";
 import { LotsStep } from "./LotsStep";
 import { MapPositionChip } from "./MapPositionChip";
-import type { MapCoordinates, SatelliteMapHandle } from "./SatelliteMap";
+import type { LotLabel, MapCoordinates, SatelliteMapHandle } from "./SatelliteMap";
 import { StepIndicator } from "./StepIndicator";
 
 const SatelliteMap = dynamic(() => import("./SatelliteMap"), { ssr: false });
+
+const defaultSplitLotCount = 4;
 
 const cartagoHighlandsView: MapView = { longitude: -83.892, latitude: 9.918, zoom: 13 };
 
@@ -50,6 +53,22 @@ function toRestorableShapes(draft: FarmMappingState): RestorableShape[] {
   ];
 }
 
+function labelPositionOf(lot: Lot): MapCoordinates {
+  const ring = lot.geometry.coordinates[0].slice(0, -1);
+  const longitude = ring.reduce((sum, [ringLongitude]) => sum + ringLongitude, 0) / ring.length;
+  const latitude = ring.reduce((sum, [, ringLatitude]) => sum + ringLatitude, 0) / ring.length;
+  return { longitude, latitude };
+}
+
+function toLotLabels(lots: Lot[]): LotLabel[] {
+  return lots.map((lot) => ({
+    shapeId: lot.shapeId,
+    text: String(lot.number),
+    color: lot.color,
+    position: labelPositionOf(lot),
+  }));
+}
+
 function readInitialMapView(): MapView {
   const storage = typeof window === "undefined" ? null : getBrowserStorage();
   return (storage && loadMapView(storage)) ?? cartagoHighlandsView;
@@ -62,9 +81,18 @@ export function FarmMappingScreen() {
   const [drawingKind, setDrawingKind] = useState<ShapeKind | null>(null);
   const [canCloseShape, setCanCloseShape] = useState(false);
   const [isRedrawConfirmOpen, setIsRedrawConfirmOpen] = useState(false);
+  const [isReplaceConfirmOpen, setIsReplaceConfirmOpen] = useState(false);
+  const [split, setSplit] = useState<{ lotCount: number; orientation: StripOrientation } | null>(null);
   const mapRef = useRef<SatelliteMapHandle>(null);
   const [initialMapView] = useState(readInitialMapView);
   const [mapCenter, setMapCenter] = useState<MapCoordinates>(initialMapView);
+  const [isMapReady, setIsMapReady] = useState(false);
+
+  useEffect(() => {
+    if (isMapReady) {
+      mapRef.current?.setLotLabels(toLotLabels(state.lots));
+    }
+  }, [state.lots, isMapReady]);
 
   useEffect(() => {
     const storage = getBrowserStorage();
@@ -83,6 +111,7 @@ export function FarmMappingScreen() {
   }, [state]);
 
   function handleMapReady() {
+    setIsMapReady(true);
     const storage = getBrowserStorage();
     const draft = storage && loadFarmDraft(storage);
     if (draft) {
@@ -161,8 +190,46 @@ export function FarmMappingScreen() {
     dispatch({ type: "lotRemoved", shapeId });
   }
 
+  function applySplit(lotCount: number, orientation: StripOrientation) {
+    if (!state.farmBoundary) {
+      return;
+    }
+    const strips = splitIntoEqualStrips(state.farmBoundary.geometry, lotCount, orientation);
+    const newLots = strips.map((geometry) => ({
+      shapeId: crypto.randomUUID(),
+      geometry,
+      areaInHectares: calculateAreaInHectares(geometry),
+    }));
+    mapRef.current?.removeShapes(state.lots.map((lot) => lot.shapeId));
+    mapRef.current?.restoreShapes(
+      newLots.map((lot, index) => ({
+        kind: "lot" as const,
+        shapeId: lot.shapeId,
+        geometry: lot.geometry,
+        color: pickLotColor(index + 1),
+      })),
+    );
+    dispatch({ type: "lotsReplaced", lots: newLots });
+    setSplit({ lotCount, orientation });
+  }
+
+  function startSplit() {
+    stopDrawing();
+    setIsReplaceConfirmOpen(false);
+    applySplit(defaultSplitLotCount, "vertical");
+  }
+
+  function requestSplit() {
+    if (state.lots.length > 0) {
+      setIsReplaceConfirmOpen(true);
+      return;
+    }
+    startSplit();
+  }
+
   function handleRedrawFarm() {
     setIsRedrawConfirmOpen(false);
+    setSplit(null);
     const shapeIds = [state.farmBoundary?.shapeId, ...state.lots.map((lot) => lot.shapeId)];
     mapRef.current?.removeShapes(shapeIds.filter((shapeId): shapeId is string => Boolean(shapeId)));
     dispatch({ type: "boundaryReset" });
@@ -202,7 +269,7 @@ export function FarmMappingScreen() {
 
   return (
     <div className="farm-mapping">
-      <section className="farm-mapping__panel">
+      <section className="farm-mapping__panel" data-step={state.step}>
         <header className="panel-header">
           <span className="brand">ProdTerra</span>
           <LanguageSwitcher />
@@ -239,6 +306,10 @@ export function FarmMappingScreen() {
             onRenameLot={(shapeId, name) => dispatch({ type: "lotRenamed", shapeId, name })}
             onRemoveLot={handleRemoveLot}
             onRedrawFarm={() => setIsRedrawConfirmOpen(true)}
+            split={split}
+            onStartSplit={requestSplit}
+            onChangeSplit={applySplit}
+            onFinishSplit={() => setSplit(null)}
           />
         )}
       </section>
@@ -255,7 +326,7 @@ export function FarmMappingScreen() {
           language={locale}
         />
         <span aria-hidden className="map-crosshair" data-subtle={state.step !== "locate" || undefined} />
-        <MapPositionChip center={mapCenter} />
+        {isMapReady && <MapPositionChip center={mapCenter} />}
         {drawingKind && (
           <p role="status" className="map-hint">
             {drawingKind === "farm" ? translate("boundary.drawingHint") : translate("lots.drawingHint")}
@@ -272,6 +343,16 @@ export function FarmMappingScreen() {
         cancelLabel={translate("lots.redrawDialog.cancel")}
         onConfirm={handleRedrawFarm}
         onCancel={() => setIsRedrawConfirmOpen(false)}
+      />
+      <Dialog
+        isOpen={isReplaceConfirmOpen}
+        tone="danger"
+        title={translate("split.replaceDialog.title")}
+        description={translate("split.replaceDialog.description", { count: state.lots.length })}
+        confirmLabel={translate("split.replaceDialog.confirm")}
+        cancelLabel={translate("split.replaceDialog.cancel")}
+        onConfirm={startSplit}
+        onCancel={() => setIsReplaceConfirmOpen(false)}
       />
       <Dialog
         isOpen={rejectionMessage !== null}

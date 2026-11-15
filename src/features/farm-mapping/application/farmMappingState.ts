@@ -42,7 +42,8 @@ export type FarmMappingAction =
   | { type: "lotRenamed"; shapeId: string; name: string }
   | { type: "lotRemoved"; shapeId: string }
   | { type: "rejectionDismissed" }
-  | { type: "draftRestored"; draft: FarmMappingState };
+  | { type: "draftRestored"; draft: FarmMappingState }
+  | { type: "lotsReplaced"; lots: DrawnShape[] };
 
 export const initialFarmMappingState: FarmMappingState = {
   step: "locate",
@@ -54,6 +55,10 @@ export const initialFarmMappingState: FarmMappingState = {
 
 function toShape({ shapeId, geometry, areaInHectares }: DrawnShape): DrawnShape {
   return { shapeId, geometry, areaInHectares };
+}
+
+function toLot(shape: DrawnShape, number: number): Lot {
+  return { ...toShape(shape), number, color: pickLotColor(number), customName: "" };
 }
 
 function toRejection(validation: RejectedLotValidation): LotRejection {
@@ -78,7 +83,7 @@ export function farmMappingReducer(
       return { ...initialFarmMappingState, step: "boundary" };
     case "lotAccepted": {
       const number = state.lastLotNumber + 1;
-      const lot: Lot = { ...toShape(action), number, color: pickLotColor(number), customName: "" };
+      const lot = toLot(action, number);
       return { ...state, lots: [...state.lots, lot], lastLotNumber: number, rejection: null };
     }
     case "lotRejected":
@@ -94,6 +99,10 @@ export function farmMappingReducer(
       return { ...state, lots: state.lots.filter((lot) => lot.shapeId !== action.shapeId) };
     case "rejectionDismissed":
       return { ...state, rejection: null };
+    case "lotsReplaced": {
+      const lots = action.lots.map((shape, index) => toLot(shape, index + 1));
+      return { ...state, lots, lastLotNumber: lots.length, rejection: null };
+    }
     case "draftRestored":
       return { ...action.draft, rejection: null };
   }

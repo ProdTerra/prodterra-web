@@ -1,7 +1,8 @@
 "use client";
 
 import { CircleAlert, Info } from "lucide-react";
-import { useEffect, useId, useRef } from "react";
+import { useId } from "react";
+import { useModalDialog } from "./useModalDialog";
 
 type DialogTone = "danger" | "info";
 
@@ -26,23 +27,9 @@ export function Dialog({
   onConfirm,
   onCancel,
 }: DialogProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const descriptionId = useId();
   const Icon = tone === "danger" ? CircleAlert : Info;
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) {
-      return;
-    }
-    if (isOpen && !dialog.open) {
-      dialog.showModal();
-    }
-    if (!isOpen && dialog.open) {
-      dialog.close();
-    }
-  }, [isOpen]);
 
   function handleDismiss() {
     if (onCancel) {
@@ -52,22 +39,15 @@ export function Dialog({
     }
   }
 
+  const dialogProps = useModalDialog(isOpen, handleDismiss);
+
   return (
     <dialog
-      ref={dialogRef}
+      {...dialogProps}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
       className="dialog"
       data-tone={tone}
-      onCancel={(event) => {
-        event.preventDefault();
-        handleDismiss();
-      }}
-      onClick={(event) => {
-        if (event.target === event.currentTarget) {
-          handleDismiss();
-        }
-      }}
     >
       <div className="dialog__body">
         <span aria-hidden className="dialog__icon">

@@ -72,7 +72,9 @@
         "overlapsLotTitle": "The lot overlaps another one",
         "overlapsLot": "This lot covers part of {lotName}. Mark it in a free part of the farm.",
         "dismiss": "Got it"
-      }
+      },
+      "splitEqually": "Split into equal parts",
+      "farmFull": "The whole farm is already in lots. Delete a lot if you want to mark it differently."
     },
     "area": {
       "squareMeters": "{value} m²",
@@ -87,6 +89,23 @@
       "loading": "Loading…",
       "unavailable": "No data",
       "source": "Elevation: NASADEM (NASA)"
+    },
+    "split": {
+      "title": "Split into equal parts",
+      "countLabel": "Number of lots",
+      "fewer": "Fewer lots",
+      "more": "More lots",
+      "orientationLabel": "Strip direction",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal",
+      "hint": "Every lot has the same area. You can rename or delete any of them afterwards.",
+      "done": "Done",
+      "replaceDialog": {
+        "title": "Replace your lots?",
+        "description": "{count, plural, one {The lot you marked will be deleted} other {The # lots you marked will be deleted}} and the farm will be split into equal parts.",
+        "confirm": "Replace lots",
+        "cancel": "Keep my lots"
+      }
     }
   }
 }

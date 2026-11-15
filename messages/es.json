@@ -72,7 +72,9 @@
         "overlapsLotTitle": "El lote se monta sobre otro",
         "overlapsLot": "Este lote ocupa parte de {lotName}. Márcalo en un espacio libre de la finca.",
         "dismiss": "Entendido"
-      }
+      },
+      "splitEqually": "Dividir en partes iguales",
+      "farmFull": "Toda la finca ya está en lotes. Borra un lote si quieres marcarlo distinto."
     },
     "area": {
       "squareMeters": "{value} m²",
@@ -87,6 +89,23 @@
       "loading": "Calculando…",
       "unavailable": "Sin dato",
       "source": "Altitud: NASADEM (NASA)"
+    },
+    "split": {
+      "title": "Dividir en partes iguales",
+      "countLabel": "Número de lotes",
+      "fewer": "Menos lotes",
+      "more": "Más lotes",
+      "orientationLabel": "Dirección de las franjas",
+      "vertical": "Verticales",
+      "horizontal": "Horizontales",
+      "hint": "Todos los lotes tienen la misma área. Después puedes cambiarles el nombre o borrar alguno.",
+      "done": "Listo",
+      "replaceDialog": {
+        "title": "¿Reemplazar tus lotes?",
+        "description": "{count, plural, one {El lote que marcaste se borrará} other {Los # lotes que marcaste se borrarán}} y la finca se dividirá en partes iguales.",
+        "confirm": "Reemplazar lotes",
+        "cancel": "Conservar mis lotes"
+      }
     }
   }
 }
