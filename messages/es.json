@@ -261,7 +261,8 @@
       "previousUse": "qué tenía antes",
       "irrigation": "riego",
       "blocks": "qué vas a sembrar",
-      "rest": "descanso"
+      "rest": "descanso",
+      "ready": "Listo"
     },
     "startDate": {
       "title": "¿Desde cuándo quieres planificar?",

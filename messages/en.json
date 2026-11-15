@@ -261,7 +261,8 @@
       "previousUse": "what it had before",
       "irrigation": "irrigation",
       "blocks": "what you will plant",
-      "rest": "rest"
+      "rest": "rest",
+      "ready": "Ready"
     },
     "startDate": {
       "title": "When do you want your plan to start?",

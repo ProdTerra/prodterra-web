@@ -19,6 +19,7 @@
 - Place search with the ArcGIS geocoder, the split panel with lengthwise, crosswise and grid layouts aligned to the farm's long axis.
 
 ### Changed
+- Lot cards in step 4 show "Listo" for a complete lot instead of repeating its crop list.
 - The 24-month strip shows thin dashed guides with a small notch at 6 meses, 1 año and 18 meses, so each mark lines up with the crops on the bar.
 - The 24-month strip marks Inicio, 6 meses, 1 año, 18 meses and 2 años with the month and full year (only Inicio, 1 año and 2 años on phones), and "Usar N días" sits next to the duration field.
 - The 24-month strip now sits above the blocks at full width with crop names inside and month labels underneath; the "Quedan … meses" line was removed.
