@@ -191,7 +191,8 @@
       "failed": "No pudimos traer otras fotos. Inténtalo otra vez.",
       "latest": "La más reciente",
       "noOthers": "No hay otras fotos de este lugar.",
-      "close": "Cerrar"
+      "close": "Cerrar",
+      "noMoreDetail": "Foto de {date}: no tiene más detalle"
     }
   },
   "calendar": {

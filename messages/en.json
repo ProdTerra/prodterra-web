@@ -191,7 +191,8 @@
       "failed": "We could not load other photos. Try again.",
       "latest": "The most recent",
       "noOthers": "There are no other photos of this place.",
-      "close": "Close"
+      "close": "Close",
+      "noMoreDetail": "{date} photo: no more detail"
     }
   },
   "calendar": {

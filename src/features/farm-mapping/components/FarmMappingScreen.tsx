@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useLocale, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { Dialog } from "@/shared/components/Dialog";
 import { AccountMenu } from "@/features/account/components/AccountMenu";
@@ -51,7 +51,7 @@ import type {
 import { ImageryPicker } from "./ImageryPicker";
 import { PanelSheetHandle } from "./PanelSheetHandle";
 import { loadImageryChoice, saveImageryChoice } from "../infrastructure/imageryChoiceStorage";
-import type { WaybackRelease } from "../infrastructure/waybackImagery";
+import { waybackMaximumZoom, type WaybackRelease } from "../infrastructure/waybackImagery";
 import { StepIndicator } from "./StepIndicator";
 
 const SatelliteMap = dynamic(() => import("./SatelliteMap"), { ssr: false });
@@ -110,6 +110,7 @@ function readInitialMapView(): MapView {
 
 export function FarmMappingScreen() {
   const translate = useTranslations("farmMapping");
+  const format = useFormatter();
   const locale = useLocale();
   const [state, dispatch] = useReducer(
     farmMappingReducer,
@@ -131,6 +132,7 @@ export function FarmMappingScreen() {
   const [isMapReady, setIsMapReady] = useState(false);
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
   const [imageryRelease, setImageryRelease] = useState<WaybackRelease | null>(null);
+  const [mapZoom, setMapZoom] = useState(initialMapView.zoom);
   const screenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -187,6 +189,7 @@ export function FarmMappingScreen() {
 
   function handleMapViewChanged(view: MapView) {
     setMapCenter({ longitude: view.longitude, latitude: view.latitude });
+    setMapZoom(view.zoom);
     const storage = getBrowserStorage();
     if (storage) {
       saveMapView(storage, view);
@@ -478,6 +481,11 @@ export function FarmMappingScreen() {
             data-subtle={state.step !== "locate" || undefined}
           />
           {isMapReady && <MapPositionChip center={mapCenter} />}
+          {isMapReady && imageryRelease && mapZoom > waybackMaximumZoom && (
+            <p role="status" className="imagery-detail-notice">
+              {translate("imagery.noMoreDetail", { date: format.dateTime(new Date(`${imageryRelease.date}T00:00:00Z`), { month: "short", year: "numeric", timeZone: "UTC" }) })}
+            </p>
+          )}
           {isMapReady && (
             <ImageryPicker selected={imageryRelease} getCenter={() => mapRef.current?.getCenter() ?? null} onSelect={chooseImagery} />
           )}
