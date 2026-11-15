@@ -429,5 +429,19 @@
     "deleteConfirm": "Borrar finca",
     "deleteCancel": "Conservarla",
     "retry": "Intentar otra vez"
+  },
+  "print": {
+    "download": "Descargar PDF",
+    "farmerTitle": "Tu calendario de rotación",
+    "analysisTitle": "Tu plan y el recomendado",
+    "subtitle": "Desde el {start}. Generado el {today}.",
+    "farmerRow": "Tu plan",
+    "recommendedRow": "Recomendado",
+    "line": "{name}: {start} a {end}",
+    "recommendedLine": "Recomendado. {name}: {start} a {end}",
+    "statusOk": "Bien",
+    "statusWatch": "Vigilar",
+    "statusRisk": "Riesgo",
+    "rest": "Descanso"
   }
 }

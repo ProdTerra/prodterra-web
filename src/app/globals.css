@@ -2633,3 +2633,115 @@ body {
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
+.print-report {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+
+  body > *:not(.print-report) {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  .print-report {
+    display: block;
+    color: #161a15;
+    font-size: 10pt;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .print-report__header {
+    margin-bottom: 6mm;
+  }
+
+  .print-report__header strong {
+    color: #1f4d2e;
+  }
+
+  .print-report__header h1 {
+    font-size: 18pt;
+    font-weight: 700;
+  }
+
+  .print-report__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4mm;
+    margin-top: 2mm;
+  }
+
+  .print-report__legend li {
+    display: flex;
+    align-items: center;
+    gap: 1.5mm;
+  }
+
+  .print-report__legend span {
+    width: 4mm;
+    height: 4mm;
+    border-radius: 1mm;
+  }
+
+  .print-report__lot {
+    break-inside: avoid;
+    margin-bottom: 6mm;
+  }
+
+  .print-report__lot h2 {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    margin-bottom: 2mm;
+    font-size: 12pt;
+    font-weight: 700;
+  }
+
+  .print-report__lot h2 span {
+    display: inline-grid;
+    place-items: center;
+    width: 6mm;
+    height: 6mm;
+    border-radius: 999px;
+    color: #ffffff;
+    font-size: 9pt;
+  }
+
+  .print-report table {
+    width: 100%;
+    margin-bottom: 2mm;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .print-report th,
+  .print-report td {
+    padding: 1.5mm;
+    border: 0.3mm solid #d3d6ce;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .print-report thead th {
+    font-weight: 600;
+  }
+
+  .print-report tbody th {
+    width: 26mm;
+    font-weight: 600;
+  }
+
+  .print-report__lines {
+    columns: 2;
+    font-size: 9pt;
+  }
+}
