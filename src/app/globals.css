@@ -52,6 +52,39 @@ body {
 .farm-mapping__map {
   position: relative;
   flex: 0 0 55dvh;
+  transition: flex-basis 0.25s ease;
+}
+
+.farm-mapping[data-sheet="expanded"] .farm-mapping__map {
+  flex-basis: 16dvh;
+}
+
+.panel-sheet-handle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: none;
+  height: 1.75rem;
+  margin: -0.75rem -1rem -0.75rem;
+  touch-action: none;
+  cursor: grab;
+}
+
+.panel-sheet-handle span {
+  width: 2.75rem;
+  height: 0.3125rem;
+  border-radius: 999px;
+  background: var(--color-line);
+}
+
+.panel-sheet-handle:focus-visible span {
+  background: var(--color-field);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .farm-mapping__map {
+    transition: none;
+  }
 }
 
 .farm-mapping__panel {
@@ -72,8 +105,13 @@ body {
     flex-direction: row;
   }
 
-  .farm-mapping__map {
+  .farm-mapping__map,
+  .farm-mapping[data-sheet="expanded"] .farm-mapping__map {
     flex: 1 1 auto;
+  }
+
+  .panel-sheet-handle {
+    display: none;
   }
 
   .farm-mapping__panel {
