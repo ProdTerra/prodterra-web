@@ -15,7 +15,7 @@ Spanish and English. The API lives in a separate repository: `prodterra-api`.
 | 5. Tu calendario | The farmer's plan day by day, without climate data. |
 | 6. Recomendado | The farmer's plan and a recommended rotation, colored by NASA climate risk, with monthly alarms and a per-lot comparison. |
 
-An account is optional. It is only needed to save a farm ("Guardar mi plan") and to see it later under "Mis fincas". Both calendars can be downloaded as PDF.
+An account is optional. It is only needed to save a farm ("Guardar mi plan") and to see it later under "Mis fincas". The farmer can sign in with Google or with email and password, and recover the password by email: the link opens `/reset-password`. Both calendars can be downloaded as PDF.
 
 ## Run locally
 

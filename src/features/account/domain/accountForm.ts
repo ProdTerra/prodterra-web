@@ -1,4 +1,4 @@
-export type AccountField = "name" | "email" | "password";
+export type AccountField = "name" | "email" | "password" | "confirmPassword";
 
 export type AccountErrorCode =
   | "nameRequired"
@@ -10,13 +10,27 @@ export type AccountErrorCode =
   | "emailTaken"
   | "invalidCredentials"
   | "tooManyAttempts"
+  | "passwordMismatch"
+  | "invalidResetLink"
+  | "googleUnavailable"
+  | "googleCancelled"
+  | "googleFailed"
   | "unavailable";
+
+export const googleSignInErrorCodes = ["googleUnavailable", "googleCancelled", "googleFailed"] as const;
+export type GoogleSignInErrorCode = (typeof googleSignInErrorCodes)[number];
+
+export function readGoogleSignInError(value: string | null): GoogleSignInErrorCode | null {
+  return googleSignInErrorCodes.find((code) => code === value) ?? null;
+}
 
 export type AccountFieldError = { field?: AccountField; code: AccountErrorCode };
 
-export type AccountFormMode = "login" | "register";
+export type AccountFormMode = "login" | "register" | "forgot";
 
 export type AccountFormValues = { name: string; email: string; password: string };
+
+export type NewPasswordValues = { password: string; confirmPassword: string };
 
 const maximumNameLength = 80;
 const minimumPasswordLength = 8;
@@ -32,6 +46,9 @@ function nameError(name: string): AccountFieldError | null {
 }
 
 function passwordError(password: string, mode: AccountFormMode): AccountFieldError | null {
+  if (mode === "forgot") {
+    return null;
+  }
   if (password.length === 0) {
     return { field: "password", code: mode === "login" ? "passwordRequired" : "passwordTooShort" };
   }
@@ -49,6 +66,14 @@ export function validateAccountForm(values: AccountFormValues, mode: AccountForm
     mode === "register" ? nameError(values.name) : null,
     emailPattern.test(values.email.trim()) ? null : { field: "email", code: "invalidEmail" },
     passwordError(values.password, mode),
+  ];
+  return errors.filter((error): error is AccountFieldError => error !== null);
+}
+
+export function validateNewPassword({ password, confirmPassword }: NewPasswordValues): AccountFieldError[] {
+  const errors: (AccountFieldError | null)[] = [
+    passwordError(password, "register"),
+    confirmPassword === password ? null : { field: "confirmPassword", code: "passwordMismatch" },
   ];
   return errors.filter((error): error is AccountFieldError => error !== null);
 }

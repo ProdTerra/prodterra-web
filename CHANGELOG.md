@@ -3,6 +3,8 @@
 ## Unreleased
 
 ### Added
+- "Continuar con Google" in the login and registration dialog; it returns to the same page and shows a plain message when Google sign in is cancelled or fails.
+- "¿Olvidaste tu contraseña?": the dialog sends a reset link by email, and the `/reset-password` page sets the new password with inline validation, signs the farmer in and leads back to the plan.
 - Saving a farm with a name the user already uses shows "Ya tienes una finca con ese nombre" under the name field.
 - New "exceso de agua" alarm when the month's rain goes above the crop's maximum water need.
 - Rotation plan step: choose the start date on a month calendar (today up to one year ahead) with quick picks and plain messages for days that cannot be picked.
