@@ -14,7 +14,8 @@
       "label": "Steps to register your farm",
       "locate": "Find your farm",
       "boundary": "Mark the edge",
-      "lots": "Split into lots"
+      "lots": "Split into lots",
+      "crops": "Your crops"
     },
     "locate": {
       "title": "Where is your farm?",
@@ -74,7 +75,8 @@
         "dismiss": "Got it"
       },
       "splitEqually": "Split into equal parts",
-      "farmFull": "The whole farm is already in lots. Delete a lot if you want to mark it differently."
+      "farmFull": "The whole farm is already in lots. Delete a lot if you want to mark it differently.",
+      "continue": "Continue"
     },
     "area": {
       "squareMeters": "{value} m²",
@@ -106,6 +108,45 @@
         "confirm": "Replace lots",
         "cancel": "Keep my lots"
       }
+    },
+    "summary": {
+      "title": "Your farm at a glance",
+      "intro": "This is what we know about your farm before planning the crops.",
+      "loading": "Getting NASA data…",
+      "failed": "Climate data couldn't be loaded. Check that the API is running and try again.",
+      "retry": "Try again",
+      "landTitle": "Land",
+      "farmArea": "Farm area",
+      "lotCount": "Lots",
+      "freeArea": "Area not in a lot",
+      "landSource": "Calculated from your drawing over Esri satellite imagery.",
+      "elevationTitle": "Elevation",
+      "elevationMean": "Average",
+      "elevationRange": "From {minimum} to {maximum}",
+      "elevationSource": "NASADEM (NASA), terrain elevation model.",
+      "climateTitle": "Climate through the year",
+      "coldestMonth": "Coldest month",
+      "warmestMonth": "Warmest month",
+      "coldestNight": "Coldest night (average)",
+      "driestMonth": "Driest month",
+      "wettestMonth": "Wettest month",
+      "humidity": "Average humidity",
+      "sunlight": "Average sunlight",
+      "temperatureValue": "{month}: {value} °C",
+      "rainValue": "{month}: {value} mm a day",
+      "percentValue": "{value} %",
+      "sunlightValue": "{value} kWh/m² a day",
+      "climateSource": "NASA POWER, 2001–2025 averages. Temperatures adjusted {correction} °C for your farm's elevation.",
+      "estimateNote": "These are estimates from satellite data; they don't replace what you know about your farm.",
+      "openSource": "Open source",
+      "back": "Back to my lots",
+      "continue": "Continue to my crops",
+      "elevationRangeLabel": "Range"
+    },
+    "crops": {
+      "title": "What do you grow in each lot?",
+      "hint": "Tell us what each of your {count, plural, one {# lot} other {# lots}} has. We use it to build your calendar.",
+      "editLots": "Change my lots"
     }
   }
 }

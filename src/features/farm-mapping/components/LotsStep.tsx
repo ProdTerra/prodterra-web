@@ -23,6 +23,7 @@ type LotsStepProps = {
   onStartSplit: () => void;
   onChangeSplit: (lotCount: number, orientation: StripOrientation) => void;
   onFinishSplit: () => void;
+  onContinue: () => void;
 };
 
 export function LotsStep({
@@ -41,6 +42,7 @@ export function LotsStep({
   onStartSplit,
   onChangeSplit,
   onFinishSplit,
+  onContinue,
 }: LotsStepProps) {
   const translate = useTranslations("farmMapping.lots");
   const formatArea = useAreaFormatter();
@@ -129,7 +131,7 @@ export function LotsStep({
               onClick={onStartDrawing}
               disabled={!canAddLot}
               aria-describedby={canAddLot ? undefined : "farm-full-notice"}
-              className="button button--primary"
+              className={lots.length > 0 ? "button button--outline" : "button button--primary"}
             >
               <Plus aria-hidden size={18} />
               {translate("addLot")}
@@ -141,6 +143,11 @@ export function LotsStep({
             <button type="button" onClick={onRedrawFarm} className="button button--quiet">
               {translate("redrawFarm")}
             </button>
+            {lots.length > 0 && (
+              <button type="button" onClick={onContinue} className="button button--primary step-actions__continue">
+                {translate("continue")}
+              </button>
+            )}
           </>
         )}
       </div>

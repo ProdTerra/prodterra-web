@@ -26,6 +26,8 @@ import {
   type MapView,
 } from "../infrastructure/farmDraftStorage";
 import { BoundaryStep } from "./BoundaryStep";
+import { CropsStep } from "./CropsStep";
+import { FarmSummaryDialog } from "./FarmSummaryDialog";
 import { LocateStep } from "./LocateStep";
 import { LotsStep } from "./LotsStep";
 import { MapPositionChip } from "./MapPositionChip";
@@ -82,6 +84,7 @@ export function FarmMappingScreen() {
   const [canCloseShape, setCanCloseShape] = useState(false);
   const [isRedrawConfirmOpen, setIsRedrawConfirmOpen] = useState(false);
   const [isReplaceConfirmOpen, setIsReplaceConfirmOpen] = useState(false);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [split, setSplit] = useState<{ lotCount: number; orientation: StripOrientation } | null>(null);
   const mapRef = useRef<SatelliteMapHandle>(null);
   const [initialMapView] = useState(readInitialMapView);
@@ -310,7 +313,14 @@ export function FarmMappingScreen() {
             onStartSplit={requestSplit}
             onChangeSplit={applySplit}
             onFinishSplit={() => setSplit(null)}
+            onContinue={() => {
+              stopDrawing();
+              setIsSummaryOpen(true);
+            }}
           />
+        )}
+        {state.step === "crops" && (
+          <CropsStep lots={state.lots} onEditLots={() => dispatch({ type: "lotsEditRequested" })} />
         )}
       </section>
 
@@ -334,6 +344,19 @@ export function FarmMappingScreen() {
         )}
       </div>
 
+      {state.farmBoundary && (
+        <FarmSummaryDialog
+          isOpen={isSummaryOpen}
+          farmBoundary={state.farmBoundary.geometry}
+          farmAreaInHectares={state.farmBoundary.areaInHectares}
+          lots={state.lots}
+          onClose={() => setIsSummaryOpen(false)}
+          onContinue={() => {
+            setIsSummaryOpen(false);
+            dispatch({ type: "lotsConfirmed" });
+          }}
+        />
+      )}
       <Dialog
         isOpen={isRedrawConfirmOpen}
         tone="danger"

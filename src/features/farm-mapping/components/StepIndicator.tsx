@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { FarmMappingStep } from "../application/farmMappingState";
 
-const orderedSteps: FarmMappingStep[] = ["locate", "boundary", "lots"];
+const orderedSteps: FarmMappingStep[] = ["locate", "boundary", "lots", "crops"];
 
 export function StepIndicator({ currentStep }: { currentStep: FarmMappingStep }) {
   const translate = useTranslations("farmMapping.steps");
