@@ -8,7 +8,8 @@ export type PlanAlert =
   | { type: "temperature"; level: "risk"; meanTemperatureInCelsius: number }
   | { type: "pest"; level: "watch"; pestKey: string }
   | { type: "irrigation"; level: "watch"; litersPerSquareMeter: number }
-  | { type: "drought"; level: "risk"; litersPerSquareMeter: number };
+  | { type: "drought"; level: "risk"; litersPerSquareMeter: number }
+  | { type: "waterExcess"; level: "watch"; litersPerSquareMeter: number };
 
 export type RecommendationReason =
   | { type: "sameFamily"; familyKey: string; positive: false }
