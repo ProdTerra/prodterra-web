@@ -108,7 +108,7 @@
       "along": "A lo largo",
       "across": "A lo ancho",
       "grid": "Cuadrícula",
-      "hint": "Todos los lotes tienen la misma área y siguen el lado más largo de la finca. Después puedes cambiarles el nombre o borrar alguno.",
+      "hint": "Todos tienen la misma área y siguen el lado más largo de la finca. Luego puedes renombrarlos o borrar alguno.",
       "done": "Listo",
       "replaceDialog": {
         "title": "¿Reemplazar tus lotes?",
@@ -121,7 +121,8 @@
       "title": "Resumen de tu finca",
       "intro": "Lo más importante de tu terreno, antes de planear los cultivos.",
       "loading": "Consultando los datos de la NASA…",
-      "failed": "No pudimos traer los datos de la NASA para tu finca. Revisa tu conexión a internet e inténtalo otra vez.",
+      "failedTitle": "No pudimos traer el clima de tu finca",
+      "failed": "Revisa tu conexión a internet e inténtalo otra vez. Sin estos datos no se puede pasar al siguiente paso.",
       "retry": "Intentar otra vez",
       "landTile": "Terreno",
       "landDetail": "{count, plural, one {# lote} other {# lotes}}",
@@ -171,8 +172,7 @@
       "farmElevationRow": "Altura de la finca (NASADEM)",
       "gridElevationRow": "Altura de la zona que mide NASA POWER (~50 km)",
       "adjustmentRow": "Ajuste a las temperaturas",
-      "adjustmentExplanation": "La finca está {difference} más {direction, select, colder {arriba} other {abajo}} que esa zona. El aire cambia 6,5 °C por cada 1.000 m de altura (U.S. Standard Atmosphere 1976).",
-      "continueBlocked": "Para continuar necesitamos los datos de clima de la finca."
+      "adjustmentExplanation": "La finca está {difference} más {direction, select, colder {arriba} other {abajo}} que esa zona. El aire cambia 6,5 °C por cada 1.000 m de altura (U.S. Standard Atmosphere 1976)."
     },
     "crops": {
       "title": "¿Qué siembras en cada lote?",
@@ -207,7 +207,8 @@
     "title": "Tu calendario",
     "hint": "Cómo se ve cada lote los próximos 12 meses. Cada día está pintado según su estado.",
     "loading": "Armando el plan con datos de la NASA…",
-    "failed": "No pudimos armar el calendario. Revisa tu conexión a internet e inténtalo otra vez.",
+    "failedTitle": "No pudimos armar el calendario",
+    "failed": "Revisa tu conexión a internet e inténtalo otra vez.",
     "retry": "Intentar otra vez",
     "demoNotice": "Este calendario usa datos de prueba para los rangos de los cultivos y las plagas.",
     "previousMonth": "Mes anterior",

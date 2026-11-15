@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, RotateCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
 import { useState } from "react";
@@ -63,7 +63,11 @@ export function CalendarStep({ lots, onEditCrops }: CalendarStepProps) {
         <Notice tone="loading">{translate("loading")}</Notice>
       )}
       {state.status === "failed" && (
-        <Notice tone="error" action={{ label: translate("retry"), onClick: retry }}>
+        <Notice
+          tone="error"
+          title={translate("failedTitle")}
+          action={{ label: translate("retry"), onClick: retry, icon: RotateCcw }}
+        >
           {translate("failed")}
         </Notice>
       )}

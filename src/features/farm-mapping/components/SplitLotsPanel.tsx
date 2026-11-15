@@ -1,6 +1,5 @@
-import { Columns3, Grid2x2, Minus, Plus, Rows3, type LucideIcon } from "lucide-react";
+import { Check, Columns3, Grid2x2, Minus, Plus, Rows3, type LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Notice } from "@/shared/components/Notice";
 import type { SplitLayout } from "../domain/splitFarm";
 
 export const minimumSplitLots = 2;
@@ -25,11 +24,21 @@ export function SplitLotsPanel({ lotCount, layout, onChange, onDone }: SplitLots
   const translate = useTranslations("farmMapping.split");
 
   return (
-    <section aria-label={translate("title")} className="split-panel">
-      <h2 className="split-panel__title">{translate("title")}</h2>
+    <section aria-labelledby="split-panel-title" className="split-panel">
+      <header className="split-panel__header">
+        <h2 id="split-panel-title" className="split-panel__title">
+          {translate("title")}
+        </h2>
+        <button type="button" onClick={onDone} className="button button--primary button--small">
+          <Check aria-hidden size={16} />
+          {translate("done")}
+        </button>
+      </header>
 
-      <div className="split-panel__row">
-        <span id="split-count-label">{translate("countLabel")}</span>
+      <div className="split-panel__count">
+        <span id="split-count-label" className="split-panel__label">
+          {translate("countLabel")}
+        </span>
         <div role="group" aria-labelledby="split-count-label" className="stepper">
           <button
             type="button"
@@ -55,9 +64,11 @@ export function SplitLotsPanel({ lotCount, layout, onChange, onDone }: SplitLots
         </div>
       </div>
 
-      <div className="split-panel__row">
-        <span id="split-layout-label">{translate("layoutLabel")}</span>
-        <div role="group" aria-labelledby="split-layout-label" className="segmented">
+      <div className="split-panel__field">
+        <span id="split-layout-label" className="split-panel__label">
+          {translate("layoutLabel")}
+        </span>
+        <div role="group" aria-labelledby="split-layout-label" className="layout-options">
           {layouts.map((option) => {
             const Icon = iconByLayout[option];
             return (
@@ -67,7 +78,7 @@ export function SplitLotsPanel({ lotCount, layout, onChange, onDone }: SplitLots
                 aria-pressed={option === layout}
                 onClick={() => onChange(lotCount, option)}
               >
-                <Icon aria-hidden size={16} />
+                <Icon aria-hidden size={20} />
                 {translate(option)}
               </button>
             );
@@ -75,10 +86,7 @@ export function SplitLotsPanel({ lotCount, layout, onChange, onDone }: SplitLots
         </div>
       </div>
 
-      <Notice tone="info">{translate("hint")}</Notice>
-      <button type="button" onClick={onDone} className="button button--primary">
-        {translate("done")}
-      </button>
+      <p className="split-panel__hint">{translate("hint")}</p>
     </section>
   );
 }

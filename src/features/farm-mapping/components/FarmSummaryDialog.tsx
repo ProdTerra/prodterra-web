@@ -1,6 +1,6 @@
 "use client";
 
-import { Droplets, ExternalLink, Mountain, Ruler, Sun, Thermometer } from "lucide-react";
+import { Droplets, ExternalLink, Mountain, RotateCcw, Ruler, Sun, Thermometer } from "lucide-react";
 import type { Polygon } from "geojson";
 import { useFormatter, useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
@@ -202,8 +202,13 @@ export function FarmSummaryDialog({
           <Notice tone="loading">{translate("loading")}</Notice>
         )}
         {state.status === "failed" && (
-          <Notice tone="error" id="summary-continue-blocked" action={{ label: translate("retry"), onClick: retry }}>
-            {translate("failed")} {translate("continueBlocked")}
+          <Notice
+            tone="error"
+            id="summary-continue-blocked"
+            title={translate("failedTitle")}
+            action={{ label: translate("retry"), onClick: retry, icon: RotateCcw }}
+          >
+            {translate("failed")}
           </Notice>
         )}
         {state.status === "ready" && <ClimateOverview profile={state.profile} landTile={landTile} />}

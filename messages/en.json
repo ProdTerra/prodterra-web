@@ -108,7 +108,7 @@
       "along": "Lengthwise",
       "across": "Crosswise",
       "grid": "Grid",
-      "hint": "Every lot has the same area and follows the longest side of the farm. You can rename or delete any of them afterwards.",
+      "hint": "All lots have the same area and follow the longest side of the farm. You can rename or delete them afterwards.",
       "done": "Done",
       "replaceDialog": {
         "title": "Replace your lots?",
@@ -121,7 +121,8 @@
       "title": "Your farm at a glance",
       "intro": "The key facts about your land, before planning the crops.",
       "loading": "Getting NASA data…",
-      "failed": "We couldn't get NASA data for your farm. Check your internet connection and try again.",
+      "failedTitle": "We couldn't load your farm's climate",
+      "failed": "Check your internet connection and try again. You can't move on to the next step without this data.",
       "retry": "Try again",
       "landTile": "Land",
       "landDetail": "{count, plural, one {# lot} other {# lots}}",
@@ -171,8 +172,7 @@
       "farmElevationRow": "Farm elevation (NASADEM)",
       "gridElevationRow": "Elevation of the area NASA POWER measures (~50 km)",
       "adjustmentRow": "Adjustment to temperatures",
-      "adjustmentExplanation": "The farm is {difference} {direction, select, colder {higher} other {lower}} than that area. Air changes 6.5 °C for every 1,000 m of elevation (U.S. Standard Atmosphere 1976).",
-      "continueBlocked": "To continue we need the farm's climate data."
+      "adjustmentExplanation": "The farm is {difference} {direction, select, colder {higher} other {lower}} than that area. Air changes 6.5 °C for every 1,000 m of elevation (U.S. Standard Atmosphere 1976)."
     },
     "crops": {
       "title": "What do you grow in each lot?",
@@ -207,7 +207,8 @@
     "title": "Your calendar",
     "hint": "How each lot looks over the next 12 months. Every day is painted by its status.",
     "loading": "Building the plan with NASA data…",
-    "failed": "We couldn't build the calendar. Check your internet connection and try again.",
+    "failedTitle": "We couldn't build the calendar",
+    "failed": "Check your internet connection and try again.",
     "retry": "Try again",
     "demoNotice": "This calendar uses test data for crop and pest ranges.",
     "previousMonth": "Previous month",
