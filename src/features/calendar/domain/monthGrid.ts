@@ -52,8 +52,12 @@ export function segmentsInWeek(blocks: GridBlock[], week: string[]): WeekSegment
 
 export type GroupedBlocks = { lanes: string[]; blocks: GridBlock[] };
 
+export function laneKeyForUse(cropKey: string | null): string {
+  return cropKey ? `crop:${cropKey}` : "rest";
+}
+
 function laneKeyOf(block: GridBlock): string {
-  return block.cropKey ? `crop:${block.cropKey}` : "rest";
+  return laneKeyForUse(block.cropKey);
 }
 
 export function groupByUse(blocks: GridBlock[], days: string[]): GroupedBlocks {

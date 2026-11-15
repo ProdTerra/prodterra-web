@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { RotationEvaluation } from "../infrastructure/plansApi";
-import { toLotPlans } from "./evaluationView";
+import { hasAltitudeWarning, toLotPlans } from "./evaluationView";
 
 const evaluation: RotationEvaluation = {
   startDate: "2026-11-15",
@@ -40,5 +40,23 @@ describe("toLotPlans", () => {
 
   it("leaves a lot empty when the variant is missing", () => {
     expect(toLotPlans(evaluation, "recommended")[0]).toEqual({ lotId: "a", months: [], events: [] });
+  });
+});
+
+describe("hasAltitudeWarning", () => {
+  const rotation = {
+    blocks: [],
+    months: [],
+    warnings: [
+      { type: "sameFamilyInARow" as const, blockIndex: 0, familyKey: "solanaceae" },
+      { type: "altitudeOutOfRange" as const, blockIndex: 1, cropKey: "coffee" },
+    ],
+  };
+
+  it("finds the altitude warning for the crop growing that month", () => {
+    expect(hasAltitudeWarning(rotation, "coffee")).toBe(true);
+    expect(hasAltitudeWarning(rotation, "potato")).toBe(false);
+    expect(hasAltitudeWarning(rotation, null)).toBe(false);
+    expect(hasAltitudeWarning(null, "coffee")).toBe(false);
   });
 });

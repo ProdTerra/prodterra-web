@@ -13,12 +13,12 @@ import { useSavedRotationPlan } from "@/features/rotation-plan/components/useRot
 import { CropLegend } from "@/features/rotation-plan/components/CropLegend";
 import { cropColorOf, restBlockColor } from "@/features/rotation-plan/domain/cropColors";
 import { statusByMonth } from "../domain/calendar";
+import { laneStatusesForMonth } from "../domain/laneStatus";
 import { buildMonthLayout, type GridBlock } from "../domain/monthGrid";
-import { allMonths, toLotPlans, type PlanVariant } from "../domain/evaluationView";
+import { allMonths, hasAltitudeWarning, toLotPlans, type PlanVariant } from "../domain/evaluationView";
 import { toEvaluationRequest } from "../domain/planRequests";
 import { CalendarToolbar } from "./CalendarToolbar";
 import { DayDetail } from "./DayDetail";
-import { LotComparisonDialog } from "./LotComparisonDialog";
 import { MonthInsights, type LotMonthState } from "./MonthInsights";
 import { PlanMonthGrid, type GridLot } from "./PlanMonthGrid";
 import type { EvaluatedRotation, MonthStatus } from "../infrastructure/plansApi";
@@ -45,7 +45,6 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
   const plans = evaluation ? { usesDemoData: evaluation.usesDemoData, lots: toLotPlans(evaluation, variant) } : null;
   const labels = useCalendarLabels(evaluation);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [openLotId, setOpenLotId] = useState<string | null>(null);
   const [isNewPlanConfirmOpen, setIsNewPlanConfirmOpen] = useState(false);
   const [selectedLotId, setSelectedLotId] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -119,13 +118,30 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
   const gridBlockColor = (block: GridBlock) => (block.cropKey ? cropColorOf(block.cropKey) : restBlockColor);
   const climateLot = evaluation?.lots.find((lotEvaluation) => (selectedLotId ? lotEvaluation.lotId === selectedLotId : true) && lotEvaluation.climate?.length);
   const monthClimate = selectedMonth ? (climateLot?.climate?.find((climate) => climate.month === Number(selectedMonth.slice(5, 7))) ?? null) : null;
+  const monthOfLot = (lotId: string) =>
+    plans?.lots.find((lotPlan) => lotPlan.lotId === lotId)?.months.find((candidate) => candidate.month === selectedMonth);
+  const rotationOfLot = (lotId: string) => evaluation?.lots.find((lotEvaluation) => lotEvaluation.lotId === lotId)?.[variant] ?? null;
   const lotStates: LotMonthState[] = visibleLots.map((lot) => {
-    const month = plans?.lots.find((lotPlan) => lotPlan.lotId === lot.id)?.months.find((candidate) => candidate.month === selectedMonth);
-    const useLabel = month?.cropKey ? labels.cropName(month.cropKey) : month?.phase === "rest" ? translateInsights("rest") : translateInsights("free");
-    return { lot, useLabel, status: month?.status ?? null, alerts: month?.alerts ?? [] };
+    const month = monthOfLot(lot.id);
+    const cropKey = month?.cropKey ?? null;
+    const useLabel = cropKey ? labels.cropName(cropKey) : month?.phase === "rest" ? translateInsights("rest") : translateInsights("free");
+    const altitudeWarningCrop = cropKey && hasAltitudeWarning(rotationOfLot(lot.id), cropKey) ? labels.cropName(cropKey) : null;
+    return { lot, useLabel, status: month?.status ?? null, alerts: month?.alerts ?? [], altitudeWarningCrop };
   });
-  const openLot = lots.find((lot) => lot.shapeId === openLotId) ?? null;
-  const openEvaluation = evaluation?.lots.find((lotEvaluation) => lotEvaluation.lotId === openLotId) ?? null;
+  const laneStatuses = laneStatusesForMonth(
+    layout?.lanes ?? [],
+    layoutIsGrouped,
+    visibleLots.map((lot) => {
+      const month = monthOfLot(lot.id);
+      return {
+        lotId: lot.id,
+        cropKey: month?.cropKey ?? null,
+        isRest: month?.phase === "rest",
+        status: month?.status ?? null,
+        alarmCount: month?.alerts.length ?? 0,
+      };
+    }),
+  );
 
   return (
     <div className="calendar-step">
@@ -198,7 +214,8 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
               today={`${todayKey}-${String(today.getDate()).padStart(2, "0")}`}
               selectedDate={selectedDate}
               isSingleLot={visibleLots.length === 1}
-          showsMarkers={!layoutIsGrouped}
+              showsMarkers={!layoutIsGrouped}
+              laneStatuses={laneStatuses}
               blockName={layoutBlockName}
               blockColor={gridBlockColor}
               onSelectDate={setSelectedDate}
@@ -212,7 +229,6 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
                 decimal={labels.decimal}
                 whole={labels.whole}
                 pestName={labels.pestName}
-                onCompare={setOpenLotId}
               />
               <div className="calendar-card">
                 <CropLegend
@@ -247,14 +263,6 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
         />
       )}
 
-      <LotComparisonDialog
-        lot={openLot}
-        evaluation={openEvaluation}
-        lotName={lotName}
-        cropName={labels.cropName}
-        whole={labels.whole}
-        onClose={() => setOpenLotId(null)}
-      />
       <Dialog
         isOpen={isNewPlanConfirmOpen}
         tone="info"
