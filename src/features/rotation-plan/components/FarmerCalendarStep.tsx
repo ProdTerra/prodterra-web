@@ -10,12 +10,11 @@ import { buildMonthLayout, type GridBlock } from "@/features/calendar/domain/mon
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
 import { Notice } from "@/shared/components/Notice";
-import { PrintButton } from "@/shared/components/PrintButton";
-import { PrintableReport, type ReportLot } from "@/shared/components/PrintableReport";
+import { CalendarExportButton } from "@/features/calendar-export/components/CalendarExportButton";
 import { assignCropColors, restBlockColor } from "../domain/cropColors";
 import { localToday } from "../domain/planDates";
 import { isLotRotationComplete, rotationOf } from "../domain/rotationPlan";
-import { dayUsesForMonth, planMonths, scheduleBlocks, type DayUse, type ScheduledBlock } from "../domain/rotationSchedule";
+import { planMonths, scheduleBlocks } from "../domain/rotationSchedule";
 import { CropLegend } from "./CropLegend";
 import { useCropNames } from "./useCropNames";
 import { usePlanFormat } from "./usePlanFormat";
@@ -30,7 +29,6 @@ type FarmerCalendarStepProps = {
 export function FarmerCalendarStep({ lots, onEditPlan, onAnalyze }: FarmerCalendarStepProps) {
   const translate = useTranslations("rotationPlan.myCalendar");
   const translateLots = useTranslations("farmMapping.lots");
-  const translatePrint = useTranslations("print");
   const translateGrid = useTranslations("calendar.grid");
   const plan = useSavedRotationPlan(lots.map((lot) => lot.shapeId));
   const cropNames = useCropNames();
@@ -60,8 +58,6 @@ export function FarmerCalendarStep({ lots, onEditPlan, onAnalyze }: FarmerCalend
   const selectedMonth = months[Math.min(selectedIndex, months.length - 1)].month;
   const cropColors = assignCropColors(rotations);
   const hasRest = rotations.some((rotation) => rotation.blocks.some((block) => block.kind === "rest"));
-  const dayUseName = (use: DayUse) => (use.kind === "crop" ? cropNames.cropName(use.cropKey) : translate("rest"));
-  const blockName = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropNames.cropName(block.cropKey) : translate("rest"));
   const gridLots: GridLot[] = lots.map((lot) => ({ id: lot.shapeId, number: lot.number, name: lotName(lot), color: lot.color }));
   const visibleLots = selectedLotId ? gridLots.filter((lot) => lot.id === selectedLotId) : gridLots;
   const gridBlocks: GridBlock[] = lots.flatMap((lot) =>
@@ -82,33 +78,6 @@ export function FarmerCalendarStep({ lots, onEditPlan, onAnalyze }: FarmerCalend
   const layoutBlockName = (block: GridBlock) =>
     layout.isGrouped ? `${gridBlockName(block)} · ${translateGrid("lotCount", { count: block.lotCount ?? 0 })}` : gridBlockName(block);
 
-  const reportLots: ReportLot[] = lots.map((lot) => {
-    const schedule = schedules.get(lot.shapeId) ?? [];
-    return {
-      key: lot.shapeId,
-      name: lotName(lot),
-      color: lot.color,
-      number: lot.number,
-      rows: [
-        {
-          label: translatePrint("farmerRow"),
-          cells: months.map(({ month }) => {
-            const use = dayUsesForMonth(schedule, month)[14]?.use ?? null;
-            const color = use?.kind === "crop" ? cropColors.get(use.cropKey) ?? restBlockColor : use ? restBlockColor : null;
-            return { month, text: use ? dayUseName(use) : "", color: color ? `${color}40` : null };
-          }),
-        },
-      ],
-      lines: schedule.map((scheduled) =>
-        translatePrint("line", {
-          name: blockName(scheduled),
-          start: format.dayMonthYear(scheduled.startDate),
-          end: format.dayMonthYear(scheduled.endDate),
-        }),
-      ),
-    };
-  });
-
   return (
     <div className="farmer-calendar">
       <header className="calendar-step__header">
@@ -116,20 +85,14 @@ export function FarmerCalendarStep({ lots, onEditPlan, onAnalyze }: FarmerCalend
           <h1 className="step-title">{translate("title")}</h1>
           <p className="step-hint">{translate("hint", { start: format.dayMonthYear(startDate) })}</p>
         </div>
-        <PrintButton label={translatePrint("download")} />
+        <CalendarExportButton
+          lots={gridLots}
+          sources={{ farmer: { months: months.map(({ month }) => month), blocks: gridBlocks, insights: null }, recommended: null }}
+          initialCalendar="farmer"
+          cropName={cropNames.cropName}
+          pestName={(pestKey) => pestKey}
+        />
       </header>
-      <PrintableReport
-        title={translatePrint("farmerTitle")}
-        subtitle={translatePrint("subtitle", { start: format.dayMonthYear(startDate), today: format.dayMonthYear(today) })}
-        months={months.map(({ month }) => month)}
-        monthLabel={format.shortMonth}
-        legend={[
-          ...[...cropColors].map(([cropKey, color]) => ({ label: cropNames.cropName(cropKey), color: `${color}40` })),
-          ...(hasRest ? [{ label: translate("rest"), color: `${restBlockColor}40` }] : []),
-        ]}
-        lots={reportLots}
-      />
-
       {cropNames.status === "failed" && (
         <Notice tone="error" title={translate("catalogFailedTitle")} action={{ label: translate("retry"), onClick: cropNames.retry, icon: RotateCcw }}>
           {translate("catalogFailed")}

@@ -2,26 +2,25 @@
 
 import { ArrowLeft, FilePlus2, RotateCcw, Sparkles, UserRound } from "lucide-react";
 import { Dialog } from "@/shared/components/Dialog";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
-import { PrintButton } from "@/shared/components/PrintButton";
-import { PrintableReport, type ReportLot } from "@/shared/components/PrintableReport";
 import { useState, type ReactNode } from "react";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
 import { useSavedRotationPlan } from "@/features/rotation-plan/components/useRotationPlan";
+import { CalendarExportButton } from "@/features/calendar-export/components/CalendarExportButton";
+import { sourcesFromEvaluation } from "@/features/calendar-export/application/exportSources";
 import { CropLegend } from "@/features/rotation-plan/components/CropLegend";
 import { cropColorOf, restBlockColor } from "@/features/rotation-plan/domain/cropColors";
 import { statusByMonth } from "../domain/calendar";
 import { buildMonthLayout, type GridBlock } from "../domain/monthGrid";
-import { allMonths, toLotPlans, type PlanVariant } from "../domain/evaluationView";
+import { toLotPlans, type PlanVariant } from "../domain/evaluationView";
 import { toEvaluationRequest } from "../domain/planRequests";
 import { CalendarToolbar } from "./CalendarToolbar";
 import { DayDetail } from "./DayDetail";
 import { LotComparisonDialog } from "./LotComparisonDialog";
 import { MonthInsights, type LotMonthState } from "./MonthInsights";
 import { PlanMonthGrid, type GridLot } from "./PlanMonthGrid";
-import type { EvaluatedRotation, MonthStatus } from "../infrastructure/plansApi";
 import { useCalendarLabels } from "./useCalendarLabels";
 import { useRotationEvaluation } from "./useRotationEvaluation";
 
@@ -31,8 +30,6 @@ type CalendarStepProps = {
   onNewPlan: () => void;
   actions?: ReactNode;
 };
-
-const printStatusColors: Record<MonthStatus, string> = { ok: "#cfe8d4", watch: "#fbe9a6", risk: "#f6c3be" };
 
 export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepProps) {
   const translate = useTranslations("calendar");
@@ -54,48 +51,6 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
   const [today] = useState(() => new Date());
   const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`;
   const lotName = (lot: Lot) => lotDisplayName(lot, (number) => translateLots("defaultName", { number }));
-  const translatePrint = useTranslations("print");
-  const format = useFormatter();
-  const printDate = (isoDate: string) =>
-    format.dateTime(new Date(`${isoDate}T12:00:00Z`), { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-
-  function reportRow(label: string, rotation: EvaluatedRotation | null) {
-    return {
-      label,
-      cells: (rotation?.months ?? []).map((month) => ({
-        month: month.month,
-        text: month.cropKey ? labels.cropName(month.cropKey) : month.isRest ? translatePrint("rest") : "",
-        color: printStatusColors[month.status],
-      })),
-    };
-  }
-
-  const reportLots: ReportLot[] = evaluation
-    ? lots.map((lot) => {
-        const lotEvaluation = evaluation.lots.find((candidate) => candidate.lotId === lot.shapeId);
-        const blockLine = (key: "line" | "recommendedLine") => (block: EvaluatedRotation["blocks"][number]) =>
-          translatePrint(key, {
-            name: block.cropKey ? labels.cropName(block.cropKey) : translatePrint("rest"),
-            start: printDate(block.startsOn),
-            end: printDate(block.endsOn),
-          });
-        return {
-          key: lot.shapeId,
-          name: lotName(lot),
-          color: lot.color,
-          number: lot.number,
-          rows: [
-            reportRow(translatePrint("farmerRow"), lotEvaluation?.farmer ?? null),
-            reportRow(translatePrint("recommendedRow"), lotEvaluation?.recommended ?? null),
-          ],
-          lines: [
-            ...(lotEvaluation?.farmer?.blocks.map(blockLine("line")) ?? []),
-            ...(lotEvaluation?.recommended?.blocks.map(blockLine("recommendedLine")) ?? []),
-          ],
-        };
-      })
-    : [];
-
   const months = plans ? statusByMonth(plans.lots) : [];
   const monthIndex = Math.min(selectedIndex, Math.max(months.length - 1, 0));
   const selectedMonth = months[monthIndex]?.month;
@@ -139,7 +94,15 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
             <ArrowLeft aria-hidden size={18} />
             {translate("backToMyCalendar")}
           </button>
-          {evaluation && <PrintButton label={translatePrint("download")} />}
+          {evaluation && (
+            <CalendarExportButton
+              lots={gridLots}
+              sources={sourcesFromEvaluation(evaluation)}
+              initialCalendar={variant}
+              cropName={labels.cropName}
+              pestName={labels.pestName}
+            />
+          )}
           <button type="button" onClick={() => setIsNewPlanConfirmOpen(true)} className="button button--outline">
             <FilePlus2 aria-hidden size={18} />
             {translate("newPlan.action")}
@@ -230,21 +193,6 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
             </div>
           </div>
         </>
-      )}
-
-      {evaluation && (
-        <PrintableReport
-          title={translatePrint("analysisTitle")}
-          subtitle={translatePrint("subtitle", { start: printDate(evaluation.startDate), today: format.dateTime(new Date(), { day: "numeric", month: "long", year: "numeric" }) })}
-          months={allMonths([...toLotPlans(evaluation, "farmer"), ...toLotPlans(evaluation, "recommended")])}
-          monthLabel={labels.shortMonthName}
-          legend={[
-            { label: translatePrint("statusOk"), color: printStatusColors.ok },
-            { label: translatePrint("statusWatch"), color: printStatusColors.watch },
-            { label: translatePrint("statusRisk"), color: printStatusColors.risk },
-          ]}
-          lots={reportLots}
-        />
       )}
 
       <LotComparisonDialog

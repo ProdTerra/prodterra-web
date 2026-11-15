@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- "Descargar PDF" in "Tu calendario" and "Recomendado" opens a dialog instead of the browser print view: choose the calendar (Tu calendario / Recomendado; Recomendado only from its step), the whole plan or a range of months ("6 meses → 6 páginas"), the paper size (Letter by default in the US, Canada, Mexico, Costa Rica, Panama, Colombia, Venezuela, the Philippines and Chile; A4 elsewhere) and up to 5 lots ("Máximo 5 lotes por PDF para que se lean bien. Exporta otro PDF para los demás lotes."; with more lots the riskiest 5 are preselected for Recomendado). The PDF has one landscape page per month that looks like the screen: month grid from Monday with weekends shaded, one lane per lot, crop bars with the crop name, ▲ sowing and ■ harvest, rest drawn dashed, readable in black and white; Recomendado adds the typical climate of the month and each lot's status (icon and word) with its alarms, and the footer carries the legend, the NASA POWER note and "Página N de M". The PDF library (@react-pdf/renderer 4.9.0) and the Instrument Sans font files (OFL, in `public/fonts`) load only when a PDF is generated.
+
+### Removed
+- The printable table report and its print styles.
+
 ## 0.6.0 - 2026-11-15
 
 ### Added
