@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { groupByUse, segmentsInWeek, weeksOfMonth, type GridBlock } from "./monthGrid";
+import { canShowAllLots, effectiveLotSelection, groupByUse, segmentsInWeek, weeksOfMonth, type GridBlock } from "./monthGrid";
 
 describe("weeksOfMonth", () => {
   it("lays a month out in weeks that start on Monday, including the days around it", () => {
@@ -60,5 +60,25 @@ describe("groupByUse", () => {
       ["crop:potato", "2027-01-06", "2027-01-07", 2],
       ["rest", "2027-01-04", "2027-01-05", 1],
     ]);
+  });
+});
+
+describe("effectiveLotSelection", () => {
+  const lotsOf = (count: number) => Array.from({ length: count }, (_, index) => ({ id: `lot-${index + 1}` }));
+
+  it("shows all lots when there are 5 or fewer and none is chosen", () => {
+    expect(effectiveLotSelection(lotsOf(5), null)).toBeNull();
+    expect(canShowAllLots(5)).toBe(true);
+  });
+
+  it("starts on the first lot when there are more than 5", () => {
+    expect(effectiveLotSelection(lotsOf(6), null)).toBe("lot-1");
+    expect(canShowAllLots(6)).toBe(false);
+  });
+
+  it("keeps the chosen lot, and ignores a lot that no longer exists", () => {
+    expect(effectiveLotSelection(lotsOf(8), "lot-3")).toBe("lot-3");
+    expect(effectiveLotSelection(lotsOf(8), "lot-99")).toBe("lot-1");
+    expect(effectiveLotSelection(lotsOf(2), "lot-99")).toBeNull();
   });
 });

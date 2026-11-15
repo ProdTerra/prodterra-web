@@ -11,6 +11,7 @@ type CalendarToolbarProps = {
   canGoForward: boolean;
   lots: GridLot[];
   selectedLotId: string | null;
+  showsAllLotsOption: boolean;
   onPrevious: () => void;
   onNext: () => void;
   onGoToStart: () => void;
@@ -47,7 +48,7 @@ export function CalendarToolbar(props: CalendarToolbarProps) {
           value={props.selectedLotId ?? allLotsValue}
           onChange={(event) => props.onSelectLot(event.target.value === allLotsValue ? null : event.target.value)}
         >
-          <option value={allLotsValue}>{translate("allLots")}</option>
+          {props.showsAllLotsOption && <option value={allLotsValue}>{translate("allLots")}</option>}
           {props.lots.map((lot) => (
             <option key={lot.id} value={lot.id}>
               {lot.name}
