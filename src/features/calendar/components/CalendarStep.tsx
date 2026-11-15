@@ -9,15 +9,18 @@ import { useState, type ReactNode } from "react";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
 import { useSavedRotationPlan } from "@/features/rotation-plan/components/useRotationPlan";
-import { alarmsForMonth, statusByMonth } from "../domain/calendar";
+import { cropColorOf, restBlockColor } from "@/features/rotation-plan/domain/cropColors";
+import { statusByMonth } from "../domain/calendar";
+import type { GridBlock } from "../domain/monthGrid";
 import { allMonths, toLotPlans, type PlanVariant } from "../domain/evaluationView";
 import { toEvaluationRequest } from "../domain/planRequests";
-import { AlarmList } from "./AlarmList";
-import { LotDayGrid } from "./LotDayGrid";
+import { CalendarToolbar } from "./CalendarToolbar";
+import { DayDetail } from "./DayDetail";
 import { LotComparisonDialog } from "./LotComparisonDialog";
+import { MonthInsights, type LotMonthState } from "./MonthInsights";
+import { PlanMonthGrid, type GridLot } from "./PlanMonthGrid";
 import type { EvaluatedRotation, MonthStatus } from "../infrastructure/plansApi";
 import { MonthStrip } from "./MonthStrip";
-import { StatusLegend } from "./StatusLegend";
 import { useCalendarLabels } from "./useCalendarLabels";
 import { useRotationEvaluation } from "./useRotationEvaluation";
 
@@ -41,6 +44,9 @@ export function CalendarStep({ lots, onBack, actions }: CalendarStepProps) {
   const labels = useCalendarLabels(evaluation);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [openLotId, setOpenLotId] = useState<string | null>(null);
+  const [selectedLotId, setSelectedLotId] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const translateInsights = useTranslations("calendar.insights");
   const [today] = useState(() => new Date());
   const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`;
   const lotName = (lot: Lot) => lotDisplayName(lot, (number) => translateLots("defaultName", { number }));
@@ -87,7 +93,29 @@ export function CalendarStep({ lots, onBack, actions }: CalendarStepProps) {
     : [];
 
   const months = plans ? statusByMonth(plans.lots) : [];
-  const selectedMonth = months[selectedIndex]?.month;
+  const monthIndex = Math.min(selectedIndex, Math.max(months.length - 1, 0));
+  const selectedMonth = months[monthIndex]?.month;
+  const gridLots: GridLot[] = lots.map((lot) => ({ id: lot.shapeId, number: lot.number, name: lotName(lot), color: lot.color }));
+  const visibleLots = selectedLotId ? gridLots.filter((lot) => lot.id === selectedLotId) : gridLots;
+  const gridBlocks: GridBlock[] = (evaluation?.lots ?? []).flatMap((lotEvaluation) =>
+    (lotEvaluation[variant]?.blocks ?? []).map((block, index) => ({
+      id: `${lotEvaluation.lotId}-${variant}-${index}`,
+      lotId: lotEvaluation.lotId,
+      kind: block.kind,
+      cropKey: block.cropKey,
+      startDate: block.startsOn,
+      endDate: block.endsOn,
+    })),
+  );
+  const gridBlockName = (block: GridBlock) => (block.cropKey ? labels.cropName(block.cropKey) : translate("rest"));
+  const gridBlockColor = (block: GridBlock) => (block.cropKey ? cropColorOf(block.cropKey) : restBlockColor);
+  const climateLot = evaluation?.lots.find((lotEvaluation) => (selectedLotId ? lotEvaluation.lotId === selectedLotId : true) && lotEvaluation.climate?.length);
+  const monthClimate = selectedMonth ? (climateLot?.climate?.find((climate) => climate.month === Number(selectedMonth.slice(5, 7))) ?? null) : null;
+  const lotStates: LotMonthState[] = visibleLots.map((lot) => {
+    const month = plans?.lots.find((lotPlan) => lotPlan.lotId === lot.id)?.months.find((candidate) => candidate.month === selectedMonth);
+    const useLabel = month?.cropKey ? labels.cropName(month.cropKey) : month?.phase === "rest" ? translateInsights("rest") : translateInsights("free");
+    return { lot, useLabel, status: month?.status ?? null, alerts: month?.alerts ?? [] };
+  });
   const openLot = lots.find((lot) => lot.shapeId === openLotId) ?? null;
   const openEvaluation = evaluation?.lots.find((lotEvaluation) => lotEvaluation.lotId === openLotId) ?? null;
 
@@ -136,38 +164,55 @@ export function CalendarStep({ lots, onBack, actions }: CalendarStepProps) {
               {translate("variantRecommended")}
             </button>
           </div>
+          <CalendarToolbar
+            monthTitle={labels.monthName(selectedMonth)}
+            canGoBack={monthIndex > 0}
+            canGoForward={monthIndex < months.length - 1}
+            lots={gridLots}
+            selectedLotId={selectedLotId}
+            onPrevious={() => setSelectedIndex(monthIndex - 1)}
+            onNext={() => setSelectedIndex(monthIndex + 1)}
+            onGoToStart={() => {
+              setSelectedIndex(0);
+              setSelectedDate(evaluation?.startDate ?? null);
+            }}
+            onSelectLot={setSelectedLotId}
+          />
           <MonthStrip
             months={months}
-            selectedIndex={selectedIndex}
+            selectedIndex={monthIndex}
             monthName={labels.monthName}
             shortMonthName={labels.shortMonthName}
             onSelect={setSelectedIndex}
+            showsHeader={false}
           />
-          <div className="calendar-step__body">
-            <div className="calendar-step__grid">
-              <LotDayGrid
-                lots={lots}
-                plans={plans.lots}
-                monthKey={selectedMonth}
-                todayKey={todayKey}
-                todayDay={today.getDate()}
-                lotName={lotName}
-                cropName={labels.cropName}
-                monthName={labels.monthName}
-                onOpenLot={setOpenLotId}
-              />
-              <StatusLegend />
-            </div>
-            <AlarmList
-              alarms={alarmsForMonth(plans.lots, selectedMonth)}
-              lots={lots}
-              monthTitle={labels.monthName(selectedMonth)}
-              lotName={lotName}
-              pestName={labels.pestName}
-              decimal={labels.decimal}
-              whole={labels.whole}
-              onOpenLot={setOpenLotId}
+          <div className="calendar-layout">
+            <PlanMonthGrid
+              monthKey={selectedMonth}
+              lots={visibleLots}
+              blocks={gridBlocks}
+              today={`${todayKey}-${String(today.getDate()).padStart(2, "0")}`}
+              selectedDate={selectedDate}
+              isSingleLot={visibleLots.length === 1}
+              blockName={gridBlockName}
+              blockColor={gridBlockColor}
+              onSelectDate={setSelectedDate}
             />
+            <div className="calendar-side">
+              <MonthInsights
+                monthKey={selectedMonth}
+                monthTitle={labels.monthName(selectedMonth)}
+                climate={monthClimate}
+                lotStates={lotStates}
+                decimal={labels.decimal}
+                whole={labels.whole}
+                pestName={labels.pestName}
+                onCompare={setOpenLotId}
+              />
+              <div className="calendar-card">
+                <DayDetail date={selectedDate} lots={visibleLots} blocks={gridBlocks} blockName={gridBlockName} blockColor={gridBlockColor} />
+              </div>
+            </div>
           </div>
         </>
       )}

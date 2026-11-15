@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Changed
+- "Recomendado" uses the same month grid and lot selector, keeps the "Tu plan / Recomendado" switch and adds a month panel: typical climate of the month in words and numbers (temperature range, possible frost, rain for the month as dry/normal/rainy, humidity, sun), labeled as an average of past years and not a forecast; and each lot's status with icon and word (Bien, Atención, Riesgo) plus its alarms written as actions with their cause ("Riega unos 25 L/m² este mes · La lluvia del mes no alcanza"), ordered by severity, with "Comparar los dos planes".
 - "Tu calendario" is a Google Calendar style month grid: weeks from Monday, crop bars that run across the days and wrap at each week with the crop name, one fixed lane per lot (lot number on the left), a "Ver" selector to show all lots or one lot with larger bars, sowing and harvest marks, month chips and "Inicio del plan". Tapping a day shows each lot on that day ("Papa: día 49 de 120").
 
 ## 0.3.0 - 2026-11-15

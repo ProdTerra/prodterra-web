@@ -3,6 +3,16 @@ import { apiUrl } from "@/features/farm-mapping/infrastructure/apiClient";
 
 export type MonthStatus = "ok" | "watch" | "risk";
 
+export type MonthClimate = {
+  month: number;
+  meanTemperatureInCelsius: number;
+  minimumTemperatureInCelsius: number;
+  maximumTemperatureInCelsius: number;
+  relativeHumidityInPercent: number;
+  precipitationInMillimetersPerDay: number;
+  solarRadiationInKilowattHoursPerSquareMeterPerDay: number;
+};
+
 export type PlanAlert =
   | { type: "frost"; level: "risk"; minimumTemperatureInCelsius: number }
   | { type: "temperature"; level: "risk"; meanTemperatureInCelsius: number }
@@ -70,6 +80,7 @@ export type LotRotationEvaluation = {
   lotId: string;
   climateAvailable: boolean;
   elevationInMeters: number | null;
+  climate?: MonthClimate[];
   farmer: EvaluatedRotation | null;
   recommended: EvaluatedRotation | null;
 };
