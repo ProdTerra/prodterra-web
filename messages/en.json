@@ -195,6 +195,13 @@
       "close": "Close",
       "noMoreDetail": "{date} photo: no more detail",
       "noMoreDetailHere": "This area has no more detail: the photo is enlarged"
+    },
+    "startOver": {
+      "action": "Start over",
+      "title": "Start over?",
+      "description": "Your farm edge, lots and rotation are deleted and you go back to step 1. Farms saved in My farms are not touched: if you want to keep this plan, save it first.",
+      "confirm": "Delete and start over",
+      "cancel": "Cancel"
     }
   },
   "calendar": {

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0 - 2026-11-15
+
+### Added
+- "Empezar de cero" under the step bar from step 2 on (or once a farm edge exists): after a warning it deletes the farm edge, the lots and the rotation, forgets the opened saved farm and returns to step 1. Farms saved in Mis fincas are not touched.
+
 ## 0.5.0 - 2026-11-15
 
 ### Added

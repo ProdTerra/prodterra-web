@@ -50,6 +50,7 @@ export type FarmMappingAction =
   | { type: "lotsEditRequested" }
   | { type: "planConfirmed" }
   | { type: "newPlanRequested" }
+  | { type: "startOverRequested" }
   | { type: "planEditRequested" }
   | { type: "analysisRequested" }
   | { type: "myCalendarRequested" };
@@ -122,6 +123,8 @@ export function farmMappingReducer(
       return { ...state, step: "lots" };
     case "newPlanRequested":
       return state.farmBoundary ? { ...state, step: "lots", lots: [], lastLotNumber: 0, rejection: null } : state;
+    case "startOverRequested":
+      return { ...initialFarmMappingState };
     case "planConfirmed":
       return state.step === "plan" ? { ...state, step: "myCalendar" } : state;
     case "planEditRequested":
