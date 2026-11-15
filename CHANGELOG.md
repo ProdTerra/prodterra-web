@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- Saving a farm with a name the user already uses shows "Ya tienes una finca con ese nombre" under the name field.
 - New "exceso de agua" alarm when the month's rain goes above the crop's maximum water need.
 - Rotation plan step: choose the start date on a month calendar (today up to one year ahead) with quick picks and plain messages for days that cannot be picked.
 - Per-lot rotation timeline: previous use, irrigation and an ordered list of crops and rest periods with week steppers, start and end dates, the usual cycle from the crop catalog and a reset when it was changed. Blocks last 2 weeks to 24 months and the whole lot plan up to 24 months; adding stops with an explanation when the plan is full.

@@ -27,8 +27,9 @@ export function SavePlanButton({ farmState }: { farmState: FarmMappingState }) {
   const [isNameTouched, setIsNameTouched] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [outcome, setOutcome] = useState<SaveOutcome>(null);
+  const [takenName, setTakenName] = useState<string | null>(null);
   const dialogProps = useModalDialog(isDialogOpen, () => setIsDialogOpen(false));
-  const nameError = validateFarmName(name);
+  const nameError = validateFarmName(name) ?? (takenName !== null && takenName === name.trim() ? "nameTaken" : null);
 
   function openSaveDialog() {
     const storage = getBrowserStorage();
@@ -36,6 +37,7 @@ export function SavePlanButton({ farmState }: { farmState: FarmMappingState }) {
     setName(activeFarm?.name ?? translate("defaultName"));
     setIsNameTouched(false);
     setOutcome(null);
+    setTakenName(null);
     setIsDialogOpen(true);
   }
 
@@ -70,6 +72,10 @@ export function SavePlanButton({ farmState }: { farmState: FarmMappingState }) {
       setOutcome({ kind: "saved", name: saved.name });
       setIsDialogOpen(false);
     } catch (error) {
+      if (error instanceof SavedFarmsError && error.reason === "nameTaken") {
+        setTakenName(name.trim());
+        return;
+      }
       setOutcome({ kind: "failed", reason: error instanceof SavedFarmsError ? error.reason : "unavailable" });
     } finally {
       setIsSaving(false);

@@ -406,6 +406,7 @@
     "saved": "You saved \"{name}\".",
     "goToFarms": "See My farms",
     "errors": {
+      "nameTaken": "You already have a farm with that name. Type another one.",
       "nameRequired": "Enter a name for the farm.",
       "nameTooLong": "The name can have up to 80 characters.",
       "notAuthenticated": "Your session ended. Log in again to save.",
