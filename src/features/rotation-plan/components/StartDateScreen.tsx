@@ -44,7 +44,7 @@ export function StartDateScreen({ initialDate, today, onEditLots, onConfirm }: S
     <div className="start-date">
       <header>
         <h1 className="step-title">{translate("title")}</h1>
-        <p className="step-hint">{translate("hint")}</p>
+        <p className="step-hint">{translate("hint", { latest: dayMonthYear(latestDate) })}</p>
       </header>
 
       <div className="start-date__body">
@@ -58,7 +58,6 @@ export function StartDateScreen({ initialDate, today, onEditLots, onConfirm }: S
           <p role="status" className="start-date__chosen">
             {translate.rich("chosen", { date: longDate(selectedDate), strong: (chunks) => <strong>{chunks}</strong> })}
           </p>
-          <p className="start-date__range">{translate("range", { latest: dayMonthYear(latestDate) })}</p>
         </div>
 
         <div className="start-date__calendar">
