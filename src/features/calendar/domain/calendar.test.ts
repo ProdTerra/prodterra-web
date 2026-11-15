@@ -3,11 +3,11 @@ import type { LotPlan, PlanMonth } from "../infrastructure/plansApi";
 import { alarmsForMonth, daysInMonth, statusByMonth, worstStatus } from "./calendar";
 
 function month(monthKey: string, overrides: Partial<PlanMonth> = {}): PlanMonth {
-  return { month: monthKey, cropKey: "potato", phase: "current", status: "ok", alerts: [], ...overrides };
+  return { month: monthKey, cropKey: "potato", phase: "crop", status: "ok", alerts: [], ...overrides };
 }
 
 function lot(lotId: string, months: PlanMonth[]): LotPlan {
-  return { lotId, currentCrop: null, nextCrop: null, recommendations: [], months, elevationInMeters: 2150, climateAvailable: true };
+  return { lotId, months, events: [] };
 }
 
 const plans = [

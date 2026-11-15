@@ -1,7 +1,7 @@
 import type { Polygon } from "geojson";
 import { describe, expect, it } from "vitest";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
-import { toPlanRequests } from "./planRequests";
+import { toEvaluationRequest } from "./planRequests";
 
 const geometry: Polygon = {
   type: "Polygon",
@@ -13,22 +13,25 @@ const lots: Lot[] = [
   { shapeId: "b", geometry, areaInHectares: 1, number: 2, color: "#59B7D9", customName: "" },
 ];
 
-describe("toPlanRequests", () => {
-  it("uses the first block of each rotation as the current use from the start month", () => {
-    const requests = toPlanRequests(lots, {
+describe("toEvaluationRequest", () => {
+  it("sends every block of each rotation with the start date", () => {
+    const requests = toEvaluationRequest(lots, {
       startDate: "2026-11-14",
       lots: {
         a: { previousUse: { kind: "unknown" }, hasIrrigation: false, blocks: [{ id: "1", kind: "crop", cropKey: "potato", durationInDays: 120 }] },
         b: { previousUse: { kind: "crop", cropKey: "cabbage" }, hasIrrigation: true, blocks: [{ id: "2", kind: "rest", durationInDays: 28 }] },
       },
     });
-    expect(requests).toEqual([
-      { lotId: "a", boundary: geometry, currentUse: { kind: "crop", cropKey: "potato", plantedOn: "2026-11" }, previousUse: { kind: "unknown" }, hasIrrigation: false },
-      { lotId: "b", boundary: geometry, currentUse: { kind: "fallow" }, previousUse: { kind: "crop", cropKey: "cabbage" }, hasIrrigation: true },
-    ]);
+    expect(requests).toEqual({
+      startDate: "2026-11-14",
+      lots: [
+        { lotId: "a", boundary: geometry, previousUse: { kind: "unknown" }, hasIrrigation: false, blocks: [{ kind: "crop", cropKey: "potato", durationInDays: 120 }] },
+        { lotId: "b", boundary: geometry, previousUse: { kind: "crop", cropKey: "cabbage" }, hasIrrigation: true, blocks: [{ kind: "rest", durationInDays: 28 }] },
+      ],
+    });
   });
 
   it("returns nothing while a lot is incomplete", () => {
-    expect(toPlanRequests(lots, { startDate: "2026-11-14", lots: {} })).toBeNull();
+    expect(toEvaluationRequest(lots, { startDate: "2026-11-14", lots: {} })).toBeNull();
   });
 });

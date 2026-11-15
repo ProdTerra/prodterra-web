@@ -178,8 +178,8 @@
     }
   },
   "calendar": {
-    "title": "Recommended calendar",
-    "hint": "How each lot looks over the next 12 months. Every day is painted by its status.",
+    "title": "Your plan and the recommended one",
+    "hint": "Each day is colored using NASA climate data for your farm. Tap a lot to compare both plans.",
     "loading": "Building the plan with NASA data…",
     "failedTitle": "We couldn't build the calendar",
     "failed": "Check your internet connection and try again.",
@@ -195,7 +195,6 @@
     "sowing": "Sowing",
     "harvest": "Harvest",
     "free": "Free",
-    "recommendedSuffix": "{crop} (recommended)",
     "lotsGridLabel": "Status of each lot per day in {month}",
     "dayHeader": "Day {day}",
     "rowSummary": "{lot}: {crop}, {status, select, ok {all fine} watch {watch} other {risk}} this month",
@@ -212,14 +211,6 @@
     "lotPlan": {
       "title": "Plan for {lot}",
       "elevation": "Lot elevation: {value}",
-      "now": "Now",
-      "nowCrop": "{crop}, estimated harvest in {month}",
-      "nowFallow": "Resting",
-      "estimatedCycle": "We don't have this crop's cycle; it was estimated at 3 months.",
-      "next": "Recommended next crop",
-      "nextCrop": "{crop}: sow in {sow}, harvest in {harvest}",
-      "why": "Why",
-      "alternatives": "Other options",
       "noClimate": "There is no climate data for this lot.",
       "close": "Close"
     },
@@ -245,7 +236,23 @@
       "Mg": "magnesium",
       "S": "sulfur"
     },
-    "backToMyCalendar": "Back to my calendar"
+    "backToMyCalendar": "Back to my calendar",
+    "variantLabel": "Which calendar to show",
+    "variantFarmer": "Your plan",
+    "variantRecommended": "Recommended",
+    "rest": "Rest",
+    "comparison": {
+      "title": "{lot}: your plan and the recommended one",
+      "riskMonths": "{count, plural, =0 {No risky months} one {# risky month} other {# risky months}}",
+      "watchMonths": "{count, plural, =0 {nothing to watch} one {# month to watch} other {# months to watch}}",
+      "dates": "{start} to {end}",
+      "noWarnings": "The rotation has no problems.",
+      "warning": {
+        "sameFamilyInARow": "{crop} follows another crop of the same family; that helps pests and tires the soil.",
+        "shorterThanReference": "{crop} lasts {weeks} weeks; its reference cycle is {referenceWeeks} weeks.",
+        "altitudeOutOfRange": "{crop} doesn't usually grow at this lot's elevation."
+      }
+    }
   },
   "rotationPlan": {
     "lotStatus": {

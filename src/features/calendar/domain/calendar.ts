@@ -21,7 +21,7 @@ export function worstStatus(statuses: MonthStatus[]): MonthStatus {
 }
 
 export function statusByMonth(plans: LotPlan[]): { month: string; status: MonthStatus }[] {
-  const months = plans[0]?.months.map((month) => month.month) ?? [];
+  const months = [...new Set(plans.flatMap((plan) => plan.months.map((month) => month.month)))].sort();
   return months.map((monthKey) => ({
     month: monthKey,
     status: worstStatus(

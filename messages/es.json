@@ -178,8 +178,8 @@
     }
   },
   "calendar": {
-    "title": "Calendario recomendado",
-    "hint": "Cómo se ve cada lote los próximos 12 meses. Cada día está pintado según su estado.",
+    "title": "Tu plan y el recomendado",
+    "hint": "Cada día está pintado según el clima de la NASA para tu finca. Toca un lote para comparar los dos planes.",
     "loading": "Armando el plan con datos de la NASA…",
     "failedTitle": "No pudimos armar el calendario",
     "failed": "Revisa tu conexión a internet e inténtalo otra vez.",
@@ -195,7 +195,6 @@
     "sowing": "Siembra",
     "harvest": "Cosecha",
     "free": "Libre",
-    "recommendedSuffix": "{crop} (recomendado)",
     "lotsGridLabel": "Estado de cada lote por día en {month}",
     "dayHeader": "Día {day}",
     "rowSummary": "{lot}: {crop}, {status, select, ok {todo bien} watch {vigilar} other {riesgo}} este mes",
@@ -212,14 +211,6 @@
     "lotPlan": {
       "title": "Plan de {lot}",
       "elevation": "Altura del lote: {value}",
-      "now": "Ahora",
-      "nowCrop": "{crop}, cosecha estimada en {month}",
-      "nowFallow": "En descanso",
-      "estimatedCycle": "No tenemos el ciclo de este cultivo; se estimó en 3 meses.",
-      "next": "Siguiente cultivo recomendado",
-      "nextCrop": "{crop}: siembra en {sow}, cosecha en {harvest}",
-      "why": "Por qué",
-      "alternatives": "Otras opciones",
       "noClimate": "No hay datos de clima para este lote.",
       "close": "Cerrar"
     },
@@ -245,7 +236,23 @@
       "Mg": "magnesio",
       "S": "azufre"
     },
-    "backToMyCalendar": "Volver a mi calendario"
+    "backToMyCalendar": "Volver a mi calendario",
+    "variantLabel": "Qué calendario ver",
+    "variantFarmer": "Tu plan",
+    "variantRecommended": "Recomendado",
+    "rest": "Descanso",
+    "comparison": {
+      "title": "{lot}: tu plan y el recomendado",
+      "riskMonths": "{count, plural, =0 {Sin meses de riesgo} one {# mes de riesgo} other {# meses de riesgo}}",
+      "watchMonths": "{count, plural, =0 {nada que vigilar} one {# mes para vigilar} other {# meses para vigilar}}",
+      "dates": "{start} a {end}",
+      "noWarnings": "La rotación no tiene problemas.",
+      "warning": {
+        "sameFamilyInARow": "{crop} va después de otro cultivo de la misma familia; eso favorece plagas y cansa el suelo.",
+        "shorterThanReference": "{crop} dura {weeks} semanas; su ciclo de referencia es de {referenceWeeks} semanas.",
+        "altitudeOutOfRange": "{crop} no suele darse a la altura de este lote."
+      }
+    }
   },
   "rotationPlan": {
     "lotStatus": {
