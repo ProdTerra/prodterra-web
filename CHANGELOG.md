@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Rotation plan step: choose the start date on a month calendar (today up to one year ahead) with quick picks and plain messages for days that cannot be picked.
+- Per-lot rotation timeline: previous use, irrigation and an ordered list of crops and rest periods with week steppers, start and end dates, the usual cycle from the crop catalog and a reset when it was changed. Blocks last 2 weeks to 24 months and the whole lot plan up to 24 months; adding stops with an explanation when the plan is full.
+- Copy one lot's rotation to every lot, lot cards that say what is missing, and "Ver mi calendario" enabled only when every lot is complete.
+- Farmer calendar without climate data: month navigation over the plan, one row per lot colored by crop, rest drawn with a pattern, sowing and harvest markers, a legend and the dates of each lot.
+- The rotation plan is kept in the browser under `prodterra.rotationPlan`.
+
+### Changed
+- The flow now has six steps: locate, boundary, lots, your rotation, your calendar and recommended. The recommended step reads the rotation plan until the plan evaluation endpoint exists.
+
+### Removed
+- The old crops step and its `prodterra.lotPlantings` storage.
+
 ## 0.1.0 - 2026-11-14
 
 ### Added

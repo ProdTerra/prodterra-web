@@ -6,8 +6,7 @@ import { Notice } from "@/shared/components/Notice";
 import { useState } from "react";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
-import { loadLotPlantings } from "@/features/lot-plantings/infrastructure/lotPlantingsStorage";
-import { getBrowserStorage } from "@/shared/infrastructure/browserStorage";
+import { useSavedRotationPlan } from "@/features/rotation-plan/components/useRotationPlan";
 import { alarmsForMonth, statusByMonth } from "../domain/calendar";
 import { toPlanRequests } from "../domain/planRequests";
 import { AlarmList } from "./AlarmList";
@@ -20,18 +19,14 @@ import { useFarmPlans } from "./useFarmPlans";
 
 type CalendarStepProps = {
   lots: Lot[];
-  onEditCrops: () => void;
+  onBack: () => void;
 };
 
-function readRequests(lots: Lot[]) {
-  const storage = getBrowserStorage();
-  return storage ? toPlanRequests(lots, loadLotPlantings(storage)) : null;
-}
-
-export function CalendarStep({ lots, onEditCrops }: CalendarStepProps) {
+export function CalendarStep({ lots, onBack }: CalendarStepProps) {
   const translate = useTranslations("calendar");
   const translateLots = useTranslations("farmMapping.lots");
-  const [requests] = useState(() => readRequests(lots));
+  const plan = useSavedRotationPlan(lots.map((lot) => lot.shapeId));
+  const [requests] = useState(() => toPlanRequests(lots, plan));
   const { state, retry } = useFarmPlans(requests);
   const plans = state.status === "ready" ? state.plans : null;
   const labels = useCalendarLabels(plans);
@@ -53,9 +48,9 @@ export function CalendarStep({ lots, onEditCrops }: CalendarStepProps) {
           <h1 className="step-title">{translate("title")}</h1>
           <p className="step-hint">{translate("hint")}</p>
         </div>
-        <button type="button" onClick={onEditCrops} className="button button--secondary">
+        <button type="button" onClick={onBack} className="button button--secondary">
           <ArrowLeft aria-hidden size={18} />
-          {translate("editCrops")}
+          {translate("backToMyCalendar")}
         </button>
       </header>
 

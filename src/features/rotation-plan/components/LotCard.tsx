@@ -1,5 +1,4 @@
 import { Check, CircleDashed } from "lucide-react";
-import { useTranslations } from "next-intl";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { LotSilhouette } from "./LotSilhouette";
 
@@ -7,15 +6,13 @@ type LotCardProps = {
   lot: Lot;
   name: string;
   area: string;
-  summary: string | null;
+  status: string;
   isComplete: boolean;
   isSelected: boolean;
   onSelect: () => void;
 };
 
-export function LotCard({ lot, name, area, summary, isComplete, isSelected, onSelect }: LotCardProps) {
-  const translate = useTranslations("farmMapping.crops");
-
+export function LotCard({ lot, name, area, status, isComplete, isSelected, onSelect }: LotCardProps) {
   return (
     <button type="button" aria-pressed={isSelected} onClick={onSelect} className="lot-card">
       <span className="lot-card__shape">
@@ -28,7 +25,7 @@ export function LotCard({ lot, name, area, summary, isComplete, isSelected, onSe
       <span className="lot-card__area">{area}</span>
       <span className="lot-card__status" data-complete={isComplete || undefined}>
         {isComplete ? <Check aria-hidden size={14} /> : <CircleDashed aria-hidden size={14} />}
-        {summary ?? (isComplete ? translate("statusComplete") : translate("statusPending"))}
+        <span>{status}</span>
       </span>
     </button>
   );

@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import type { MonthStatus } from "../infrastructure/plansApi";
 
 type MonthStripProps = {
-  months: { month: string; status: MonthStatus }[];
+  months: { month: string; status?: MonthStatus }[];
   selectedIndex: number;
   monthName: (monthKey: string) => string;
   shortMonthName: (monthKey: string) => string;
@@ -51,7 +51,7 @@ export function MonthStrip({ months, selectedIndex, monthName, shortMonthName, o
             onClick={() => onSelect(index)}
             className="month-chip"
           >
-            <span aria-hidden className="month-chip__dot" />
+            {month.status && <span aria-hidden className="month-chip__dot" />}
             {shortMonthName(month.month)}
           </button>
         ))}

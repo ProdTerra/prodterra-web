@@ -4,6 +4,7 @@ export type CatalogCrop = {
   key: string;
   name: { es: string; en: string };
   familyKey: string;
+  referenceCycleInDays: number | null;
 };
 
 export async function fetchCatalogCrops(signal: AbortSignal): Promise<CatalogCrop[]> {

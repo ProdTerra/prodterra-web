@@ -14,22 +14,21 @@ const lots: Lot[] = [
 ];
 
 describe("toPlanRequests", () => {
-  it("turns each lot and its answers into a plan request", () => {
+  it("uses the first block of each rotation as the current use from the start month", () => {
     const requests = toPlanRequests(lots, {
-      a: { currentUse: { kind: "crop", cropKey: "potato" }, plantedOn: "2026-08", previousUse: { kind: "unknown" }, hasIrrigation: false },
-      b: { currentUse: { kind: "fallow" }, plantedOn: null, previousUse: { kind: "crop", cropKey: "cabbage" }, hasIrrigation: true },
+      startDate: "2026-11-14",
+      lots: {
+        a: { previousUse: { kind: "unknown" }, hasIrrigation: false, blocks: [{ id: "1", kind: "crop", cropKey: "potato", durationInDays: 120 }] },
+        b: { previousUse: { kind: "crop", cropKey: "cabbage" }, hasIrrigation: true, blocks: [{ id: "2", kind: "rest", durationInDays: 28 }] },
+      },
     });
     expect(requests).toEqual([
-      { lotId: "a", boundary: geometry, currentUse: { kind: "crop", cropKey: "potato", plantedOn: "2026-08" }, previousUse: { kind: "unknown" }, hasIrrigation: false },
+      { lotId: "a", boundary: geometry, currentUse: { kind: "crop", cropKey: "potato", plantedOn: "2026-11" }, previousUse: { kind: "unknown" }, hasIrrigation: false },
       { lotId: "b", boundary: geometry, currentUse: { kind: "fallow" }, previousUse: { kind: "crop", cropKey: "cabbage" }, hasIrrigation: true },
     ]);
   });
 
-  it("returns nothing while a lot is missing answers", () => {
-    expect(
-      toPlanRequests(lots, {
-        a: { currentUse: { kind: "crop", cropKey: "potato" }, plantedOn: null, previousUse: { kind: "unknown" }, hasIrrigation: false },
-      }),
-    ).toBeNull();
+  it("returns nothing while a lot is incomplete", () => {
+    expect(toPlanRequests(lots, { startDate: "2026-11-14", lots: {} })).toBeNull();
   });
 });

@@ -1,27 +1,25 @@
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
-import type { LotPlantingsState } from "@/features/lot-plantings/application/lotPlantingsState";
+import { isLotRotationComplete, rotationOf, type LotRotation, type RotationPlan } from "@/features/rotation-plan/domain/rotationPlan";
 import type { LotPlanRequest } from "../infrastructure/plansApi";
 
-export function toPlanRequests(lots: Lot[], plantings: LotPlantingsState): LotPlanRequest[] | null {
-  const requests: LotPlanRequest[] = [];
-  for (const lot of lots) {
-    const planting = plantings[lot.shapeId];
-    if (!planting?.currentUse || !planting.previousUse || planting.hasIrrigation === null) {
-      return null;
-    }
-    if (planting.currentUse.kind === "crop" && !planting.plantedOn) {
-      return null;
-    }
-    requests.push({
-      lotId: lot.shapeId,
-      boundary: lot.geometry,
-      currentUse:
-        planting.currentUse.kind === "crop"
-          ? { kind: "crop", cropKey: planting.currentUse.cropKey, plantedOn: planting.plantedOn as string }
-          : { kind: "fallow" },
-      previousUse: planting.previousUse,
-      hasIrrigation: planting.hasIrrigation,
-    });
+function currentUseOf(rotation: LotRotation, startDate: string): LotPlanRequest["currentUse"] {
+  const firstBlock = rotation.blocks[0];
+  return firstBlock.kind === "crop"
+    ? { kind: "crop", cropKey: firstBlock.cropKey, plantedOn: startDate.slice(0, 7) }
+    : { kind: "fallow" };
+}
+
+export function toPlanRequests(lots: Lot[], plan: RotationPlan): LotPlanRequest[] | null {
+  const { startDate } = plan;
+  const rotations = lots.map((lot) => rotationOf(plan, lot.shapeId));
+  if (!startDate || !rotations.every(isLotRotationComplete)) {
+    return null;
   }
-  return requests;
+  return lots.map((lot, index) => ({
+    lotId: lot.shapeId,
+    boundary: lot.geometry,
+    currentUse: currentUseOf(rotations[index], startDate),
+    previousUse: rotations[index].previousUse as LotPlanRequest["previousUse"],
+    hasIrrigation: rotations[index].hasIrrigation as boolean,
+  }));
 }
