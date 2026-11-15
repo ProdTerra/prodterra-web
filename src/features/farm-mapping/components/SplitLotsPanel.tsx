@@ -1,34 +1,50 @@
-import { Minus, Plus } from "lucide-react";
+import { Check, Columns3, Grid2x2, Minus, Plus, Rows3, type LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { StripOrientation } from "../domain/splitFarm";
+import type { SplitLayout } from "../domain/splitFarm";
 
 export const minimumSplitLots = 2;
 export const maximumSplitLots = 20;
 
 type SplitLotsPanelProps = {
   lotCount: number;
-  orientation: StripOrientation;
-  onChange: (lotCount: number, orientation: StripOrientation) => void;
+  layout: SplitLayout;
+  onChange: (lotCount: number, layout: SplitLayout) => void;
   onDone: () => void;
 };
 
-const orientations: StripOrientation[] = ["vertical", "horizontal"];
+const layouts: SplitLayout[] = ["along", "across", "grid"];
 
-export function SplitLotsPanel({ lotCount, orientation, onChange, onDone }: SplitLotsPanelProps) {
+const iconByLayout: Record<SplitLayout, LucideIcon> = {
+  along: Rows3,
+  across: Columns3,
+  grid: Grid2x2,
+};
+
+export function SplitLotsPanel({ lotCount, layout, onChange, onDone }: SplitLotsPanelProps) {
   const translate = useTranslations("farmMapping.split");
 
   return (
-    <section aria-label={translate("title")} className="split-panel">
-      <h2 className="split-panel__title">{translate("title")}</h2>
+    <section aria-labelledby="split-panel-title" className="split-panel">
+      <header className="split-panel__header">
+        <h2 id="split-panel-title" className="split-panel__title">
+          {translate("title")}
+        </h2>
+        <button type="button" onClick={onDone} className="button button--primary button--small">
+          <Check aria-hidden size={16} />
+          {translate("done")}
+        </button>
+      </header>
 
-      <div className="split-panel__row">
-        <span id="split-count-label">{translate("countLabel")}</span>
+      <div className="split-panel__count">
+        <span id="split-count-label" className="split-panel__label">
+          {translate("countLabel")}
+        </span>
         <div role="group" aria-labelledby="split-count-label" className="stepper">
           <button
             type="button"
             aria-label={translate("fewer")}
             disabled={lotCount <= minimumSplitLots}
-            onClick={() => onChange(lotCount - 1, orientation)}
+            onClick={() => onChange(lotCount - 1, layout)}
             className="icon-button"
           >
             <Minus aria-hidden size={18} />
@@ -40,7 +56,7 @@ export function SplitLotsPanel({ lotCount, orientation, onChange, onDone }: Spli
             type="button"
             aria-label={translate("more")}
             disabled={lotCount >= maximumSplitLots}
-            onClick={() => onChange(lotCount + 1, orientation)}
+            onClick={() => onChange(lotCount + 1, layout)}
             className="icon-button"
           >
             <Plus aria-hidden size={18} />
@@ -48,26 +64,29 @@ export function SplitLotsPanel({ lotCount, orientation, onChange, onDone }: Spli
         </div>
       </div>
 
-      <div className="split-panel__row">
-        <span id="split-orientation-label">{translate("orientationLabel")}</span>
-        <div role="group" aria-labelledby="split-orientation-label" className="segmented">
-          {orientations.map((option) => (
-            <button
-              key={option}
-              type="button"
-              aria-pressed={option === orientation}
-              onClick={() => onChange(lotCount, option)}
-            >
-              {translate(option)}
-            </button>
-          ))}
+      <div className="split-panel__field">
+        <span id="split-layout-label" className="split-panel__label">
+          {translate("layoutLabel")}
+        </span>
+        <div role="group" aria-labelledby="split-layout-label" className="layout-options">
+          {layouts.map((option) => {
+            const Icon = iconByLayout[option];
+            return (
+              <button
+                key={option}
+                type="button"
+                aria-pressed={option === layout}
+                onClick={() => onChange(lotCount, option)}
+              >
+                <Icon aria-hidden size={20} />
+                {translate(option)}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <p className="notice">{translate("hint")}</p>
-      <button type="button" onClick={onDone} className="button button--primary">
-        {translate("done")}
-      </button>
+      <p className="split-panel__hint">{translate("hint")}</p>
     </section>
   );
 }

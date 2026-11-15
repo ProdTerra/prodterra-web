@@ -2,7 +2,9 @@ import type { Polygon } from "geojson";
 import type { LotValidation } from "../domain/farmGeometry";
 import { pickLotColor } from "../domain/lotColors";
 
-export type FarmMappingStep = "locate" | "boundary" | "lots" | "crops";
+export const farmMappingSteps = ["locate", "boundary", "lots", "plan", "myCalendar", "analysis"] as const;
+
+export type FarmMappingStep = (typeof farmMappingSteps)[number];
 
 export type DrawnShape = {
   shapeId: string;
@@ -45,7 +47,11 @@ export type FarmMappingAction =
   | { type: "draftRestored"; draft: FarmMappingState }
   | { type: "lotsReplaced"; lots: DrawnShape[] }
   | { type: "lotsConfirmed" }
-  | { type: "lotsEditRequested" };
+  | { type: "lotsEditRequested" }
+  | { type: "planConfirmed" }
+  | { type: "planEditRequested" }
+  | { type: "analysisRequested" }
+  | { type: "myCalendarRequested" };
 
 export const initialFarmMappingState: FarmMappingState = {
   step: "locate",
@@ -61,6 +67,10 @@ function toShape({ shapeId, geometry, areaInHectares }: DrawnShape): DrawnShape 
 
 function toLot(shape: DrawnShape, number: number): Lot {
   return { ...toShape(shape), number, color: pickLotColor(number), customName: "" };
+}
+
+function restoredStep(step: string): FarmMappingStep {
+  return farmMappingSteps.find((knownStep) => knownStep === step) ?? "plan";
 }
 
 function toRejection(validation: RejectedLotValidation): LotRejection {
@@ -106,10 +116,18 @@ export function farmMappingReducer(
       return { ...state, lots, lastLotNumber: lots.length, rejection: null };
     }
     case "lotsConfirmed":
-      return state.lots.length > 0 ? { ...state, step: "crops" } : state;
+      return state.lots.length > 0 ? { ...state, step: "plan" } : state;
     case "lotsEditRequested":
       return { ...state, step: "lots" };
+    case "planConfirmed":
+      return state.step === "plan" ? { ...state, step: "myCalendar" } : state;
+    case "planEditRequested":
+      return { ...state, step: "plan" };
+    case "analysisRequested":
+      return state.step === "myCalendar" ? { ...state, step: "analysis" } : state;
+    case "myCalendarRequested":
+      return { ...state, step: "myCalendar" };
     case "draftRestored":
-      return { ...action.draft, rejection: null };
+      return { ...action.draft, step: restoredStep(action.draft.step), rejection: null };
   }
 }

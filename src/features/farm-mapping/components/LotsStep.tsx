@@ -1,8 +1,10 @@
-import { Check, Columns3, Plus, Undo2 } from "lucide-react";
+import { Check, CircleStop, Columns3, Plus, RotateCcw, Undo2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 import type { DrawnShape, Lot } from "../application/farmMappingState";
+import { maximumLots } from "../domain/farmLimits";
 import { hasRoomForAnotherLot } from "../domain/freeArea";
-import type { StripOrientation } from "../domain/splitFarm";
+import type { SplitLayout } from "../domain/splitFarm";
 import { LotListItem } from "./LotListItem";
 import { SplitLotsPanel } from "./SplitLotsPanel";
 import { useAreaFormatter } from "./useAreaFormatter";
@@ -19,9 +21,9 @@ type LotsStepProps = {
   onRenameLot: (shapeId: string, name: string) => void;
   onRemoveLot: (shapeId: string) => void;
   onRedrawFarm: () => void;
-  split: { lotCount: number; orientation: StripOrientation } | null;
+  split: { lotCount: number; layout: SplitLayout } | null;
   onStartSplit: () => void;
-  onChangeSplit: (lotCount: number, orientation: StripOrientation) => void;
+  onChangeSplit: (lotCount: number, layout: SplitLayout) => void;
   onFinishSplit: () => void;
   onContinue: () => void;
 };
@@ -48,10 +50,13 @@ export function LotsStep({
   const formatArea = useAreaFormatter();
   const lotsArea = lots.reduce((total, lot) => total + lot.areaInHectares, 0);
   const unassignedArea = Math.max(farmBoundary.areaInHectares - lotsArea, 0);
-  const canAddLot = hasRoomForAnotherLot(
-    farmBoundary.areaInHectares,
-    lots.map((lot) => lot.areaInHectares),
-  );
+  const hasReachedLotLimit = lots.length >= maximumLots;
+  const canAddLot =
+    !hasReachedLotLimit &&
+    hasRoomForAnotherLot(
+      farmBoundary.areaInHectares,
+      lots.map((lot) => lot.areaInHectares),
+    );
 
   return (
     <div className="step-content">
@@ -68,7 +73,7 @@ export function LotsStep({
       </div>
 
       {lots.length === 0 ? (
-        <p className="notice">{translate("empty")}</p>
+        <Notice tone="info">{translate("empty")}</Notice>
       ) : (
         <ul className="lot-list">
           {lots.map((lot) => (
@@ -85,22 +90,22 @@ export function LotsStep({
       {split && (
         <SplitLotsPanel
           lotCount={split.lotCount}
-          orientation={split.orientation}
+          layout={split.layout}
           onChange={onChangeSplit}
           onDone={onFinishSplit}
         />
       )}
 
       {isDrawing && !canCloseShape && (
-        <p id="lot-close-requirement" className="notice">
+        <Notice tone="info" id="lot-close-requirement">
           {translate("closeRequirement")}
-        </p>
+        </Notice>
       )}
 
       {!canAddLot && !isDrawing && split === null && (
-        <p id="farm-full-notice" className="notice">
-          {translate("farmFull")}
-        </p>
+        <Notice tone="success" id="farm-full-notice">
+          {hasReachedLotLimit ? translate("lotLimit", { maximum: maximumLots }) : translate("farmFull")}
+        </Notice>
       )}
 
       <div className="step-actions" hidden={split !== null}>
@@ -120,7 +125,8 @@ export function LotsStep({
               <Undo2 aria-hidden size={18} />
               {translate("undoPoint")}
             </button>
-            <button type="button" onClick={onStopDrawing} className="button button--quiet">
+            <button type="button" onClick={onStopDrawing} className="button button--secondary">
+              <CircleStop aria-hidden size={18} />
               {translate("finishLots")}
             </button>
           </>
@@ -140,7 +146,8 @@ export function LotsStep({
               <Columns3 aria-hidden size={18} />
               {translate("splitEqually")}
             </button>
-            <button type="button" onClick={onRedrawFarm} className="button button--quiet">
+            <button type="button" onClick={onRedrawFarm} className="button button--danger-outline">
+              <RotateCcw aria-hidden size={18} />
               {translate("redrawFarm")}
             </button>
             {lots.length > 0 && (

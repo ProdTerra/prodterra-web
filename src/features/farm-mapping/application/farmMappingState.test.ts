@@ -146,26 +146,38 @@ describe("splitting the farm into equal lots", () => {
   });
 });
 
-describe("moving to the crops step", () => {
+describe("moving through the rotation steps", () => {
   const withLot = farmMappingReducer(stateWithBoundary, {
     type: "lotAccepted",
     shapeId: "lot-a",
     geometry,
     areaInHectares: 0.5,
   });
+  const planStep = farmMappingReducer(withLot, { type: "lotsConfirmed" });
 
-  it("goes to the crops step once the lots are confirmed", () => {
-    expect(farmMappingReducer(withLot, { type: "lotsConfirmed" }).step).toBe("crops");
-  });
-
-  it("stays on the lots step when there are no lots to confirm", () => {
+  it("goes to the rotation plan once the lots are confirmed", () => {
+    expect(planStep.step).toBe("plan");
     expect(farmMappingReducer(stateWithBoundary, { type: "lotsConfirmed" }).step).toBe("lots");
   });
 
-  it("returns to the lots step keeping the lots", () => {
-    const crops = farmMappingReducer(withLot, { type: "lotsConfirmed" });
-    const back = farmMappingReducer(crops, { type: "lotsEditRequested" });
+  it("goes from the plan to the farmer calendar and then to the analysis", () => {
+    const myCalendar = farmMappingReducer(planStep, { type: "planConfirmed" });
+    expect(myCalendar.step).toBe("myCalendar");
+    expect(farmMappingReducer(myCalendar, { type: "analysisRequested" }).step).toBe("analysis");
+    expect(farmMappingReducer(withLot, { type: "planConfirmed" }).step).toBe("lots");
+  });
+
+  it("goes back to each earlier step keeping the lots", () => {
+    const analysis = { ...planStep, step: "analysis" as const };
+    expect(farmMappingReducer(analysis, { type: "myCalendarRequested" }).step).toBe("myCalendar");
+    expect(farmMappingReducer(analysis, { type: "planEditRequested" }).step).toBe("plan");
+    const back = farmMappingReducer(planStep, { type: "lotsEditRequested" });
     expect(back.step).toBe("lots");
     expect(back.lots).toHaveLength(1);
+  });
+
+  it("opens a draft saved on a removed step at the rotation plan", () => {
+    const oldDraft = { ...planStep, step: "crops" as unknown as "plan" };
+    expect(farmMappingReducer(initialFarmMappingState, { type: "draftRestored", draft: oldDraft }).step).toBe("plan");
   });
 });

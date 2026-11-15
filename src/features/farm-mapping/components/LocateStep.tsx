@@ -1,19 +1,21 @@
 "use client";
 
-import { LocateFixed, MapPin, Search } from "lucide-react";
+import { LocateFixed, MapPin, Search, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { Notice } from "@/shared/components/Notice";
 import { useState, type FormEvent } from "react";
+import { isApproximateLocation, zoomForAccuracy } from "../domain/locationAccuracy";
 import { requestCurrentPosition } from "../infrastructure/currentPosition";
 import { searchPlaces, type PlaceResult } from "../infrastructure/placeSearch";
 import type { MapCoordinates } from "./SatelliteMap";
 
 type LocateStepProps = {
-  onMoveMap: (coordinates: MapCoordinates) => void;
+  onMoveMap: (coordinates: MapCoordinates, zoom?: number) => void;
   onConfirm: () => void;
 };
 
 type SearchStatus = "idle" | "searching" | "empty" | "failed" | "found";
-type LocatingStatus = "idle" | "locating" | "denied" | "unavailable";
+type LocatingStatus = "idle" | "locating" | "denied" | "unavailable" | "approximate";
 
 export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
   const translate = useTranslations("farmMapping.locate");
@@ -22,6 +24,7 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
   const [results, setResults] = useState<PlaceResult[]>([]);
   const [searchStatus, setSearchStatus] = useState<SearchStatus>("idle");
   const [locatingStatus, setLocatingStatus] = useState<LocatingStatus>("idle");
+  const [accuracyInMeters, setAccuracyInMeters] = useState(0);
 
   async function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -44,8 +47,10 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
     setLocatingStatus("locating");
     const position = await requestCurrentPosition();
     if (position.found) {
-      setLocatingStatus("idle");
-      onMoveMap(position);
+      const isApproximate = isApproximateLocation(position.accuracyInMeters);
+      setAccuracyInMeters(position.accuracyInMeters);
+      setLocatingStatus(isApproximate ? "approximate" : "idle");
+      onMoveMap(position, zoomForAccuracy(position.accuracyInMeters));
       return;
     }
     setLocatingStatus(position.failure);
@@ -56,6 +61,12 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
     setSearchStatus("idle");
     setQuery(place.label.split(",")[0]);
     onMoveMap(place);
+  }
+
+  function handleClearSearch() {
+    setQuery("");
+    setResults([]);
+    setSearchStatus("idle");
   }
 
   return (
@@ -77,7 +88,17 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
           autoComplete="off"
           className="search-form__input"
         />
-        <button type="submit" className="button button--quiet" disabled={searchStatus === "searching"}>
+        {query && (
+          <button
+            type="button"
+            onClick={handleClearSearch}
+            aria-label={translate("clearSearch")}
+            className="search-form__clear"
+          >
+            <X aria-hidden size={16} />
+          </button>
+        )}
+        <button type="submit" className="button button--search" disabled={searchStatus === "searching"}>
           {searchStatus === "searching" ? translate("searching") : translate("searchAction")}
         </button>
       </form>
@@ -94,8 +115,8 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
           ))}
         </ul>
       )}
-      {searchStatus === "empty" && <p role="status" className="notice">{translate("noResults")}</p>}
-      {searchStatus === "failed" && <p role="alert" className="notice notice--error">{translate("searchFailed")}</p>}
+      {searchStatus === "empty" && <Notice tone="info">{translate("noResults")}</Notice>}
+      {searchStatus === "failed" && <Notice tone="error">{translate("searchFailed")}</Notice>}
 
       <button
         type="button"
@@ -106,9 +127,17 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
         <LocateFixed aria-hidden size={18} />
         {locatingStatus === "locating" ? translate("locating") : translate("useMyLocation")}
       </button>
-      {locatingStatus === "denied" && <p role="alert" className="notice notice--error">{translate("locationDenied")}</p>}
-      {locatingStatus === "unavailable" && (
-        <p role="alert" className="notice notice--error">{translate("locationUnavailable")}</p>
+      {locatingStatus === "denied" && <Notice tone="error">{translate("locationDenied")}</Notice>}
+      {locatingStatus === "unavailable" && <Notice tone="error">{translate("locationUnavailable")}</Notice>}
+      {locatingStatus === "approximate" && (
+        <Notice tone="warning" title={translate("locationApproximateTitle")}>
+          {translate("locationApproximate", {
+            distance:
+              accuracyInMeters < 1000
+                ? translate("meters", { meters: Math.round(accuracyInMeters / 10) * 10 })
+                : translate("kilometers", { kilometers: Math.round(accuracyInMeters / 1000) }),
+          })}
+        </Notice>
       )}
 
       <div className="step-actions">

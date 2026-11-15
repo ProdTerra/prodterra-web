@@ -8,6 +8,8 @@ import {
   type StyleSpecification,
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import bbox from "@turf/bbox";
+import type { Polygon } from "geojson";
 import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
 import {
   createDrawingSession,
@@ -31,7 +33,8 @@ export type LotLabel = {
 
 export type SatelliteMapHandle = {
   setLotLabels: (labels: LotLabel[]) => void;
-  flyTo: (coordinates: MapCoordinates) => void;
+  fitToArea: (area: Polygon) => void;
+  flyTo: (coordinates: MapCoordinates, zoom?: number) => void;
   getCenter: () => MapCoordinates | null;
   startDrawing: (kind: ShapeKind) => void;
   closeShape: () => void;
@@ -57,6 +60,8 @@ const mapWorkerUrl = "/vendor/maplibre-gl-worker.mjs";
 
 setWorkerUrl(mapWorkerUrl);
 const farmZoom = 17;
+const fitPaddingInPixels = 48;
+const fitMaximumZoom = 18;
 
 function createLabelElement(label: LotLabel): HTMLElement {
   const element = document.createElement("span");
@@ -168,6 +173,16 @@ export default function SatelliteMap({
   useImperativeHandle(
     handleRef,
     () => ({
+      fitToArea: (area) => {
+        const [west, south, east, north] = bbox(area);
+        mapRef.current?.fitBounds(
+          [
+            [west, south],
+            [east, north],
+          ],
+          { padding: fitPaddingInPixels, maxZoom: fitMaximumZoom, animate: false },
+        );
+      },
       setLotLabels: (labels) => {
         const map = mapRef.current;
         labelMarkersRef.current.forEach((marker) => marker.remove());
@@ -181,8 +196,8 @@ export default function SatelliteMap({
             .addTo(map),
         );
       },
-      flyTo: ({ longitude, latitude }) =>
-        mapRef.current?.flyTo({ center: [longitude, latitude], zoom: farmZoom }),
+      flyTo: ({ longitude, latitude }, zoom = farmZoom) =>
+        mapRef.current?.flyTo({ center: [longitude, latitude], zoom }),
       getCenter: () => {
         const center = mapRef.current?.getCenter();
         return center ? { longitude: center.lng, latitude: center.lat } : null;

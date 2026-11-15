@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ProdTerra web
 
-## Getting Started
+ProdTerra helps farmers plan crop rotations with NASA data. The farmer marks the farm on satellite imagery, splits it into lots, builds a rotation per lot and compares it with a recommended rotation based on the farm's climate. Built for the NASA Space Apps Challenge 2026 ("Field Shift").
 
-First, run the development server:
+Spanish and English. The API lives in a separate repository: `prodterra-api`.
+
+## The flow
+
+| Step | What the farmer does |
+|---|---|
+| 1. Ubica tu finca | Search a place (ArcGIS geocoding) or use the device location. |
+| 2. Marca el borde | Draw the farm boundary (0.01 ha to 1,000 ha). |
+| 3. Divide en lotes | Draw lots or split the farm into equal lots (lengthwise, crosswise or grid). A summary shows land, elevation (NASADEM) and climate (NASA POWER). |
+| 4. Tu rotación | Pick the start date, then per lot: previous use, irrigation and a list of crop and rest blocks. Each crop starts with its reference cycle; the farmer can change it. |
+| 5. Tu calendario | The farmer's plan day by day, without climate data. |
+| 6. Recomendado | The farmer's plan and a recommended rotation, colored by NASA climate risk, with monthly alarms and a per-lot comparison. |
+
+An account is optional. It is only needed to save a farm ("Guardar mi plan") and to see it later under "Mis fincas". The farmer can sign in with Google or with email and password, and recover the password by email: the link opens `/reset-password`. Both calendars can be downloaded as PDF.
+
+## Run locally
+
+Requirements: Node.js 22 or newer and the API running on `http://localhost:4000`.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # then add the ArcGIS key
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_ARCGIS_API_KEY` | ArcGIS Location Platform key with Basemaps and Geocoding privileges. Add every site that uses it as an allowed referrer. |
+| `NEXT_PUBLIC_API_URL` | ProdTerra API base URL. Defaults to `http://localhost:4000`. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Scripts
 
-## Learn More
+| Command | What it does |
+|---|---|
+| `npm run dev` | Development server (also copies the MapLibre worker to `public/vendor`). |
+| `npm test` | Unit tests with Vitest. |
+| `npm run typecheck` | TypeScript check. |
+| `npm run lint` | ESLint. |
+| `npm run build` | Production build. |
 
-To learn more about Next.js, take a look at the following resources:
+## Code layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Each feature under `src/features` is split into `domain` (pure rules), `application` (state), `infrastructure` (API clients and browser storage) and `components` (React).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Feature | Responsibility |
+|---|---|
+| `farm-mapping` | Map, boundary, lots, equal split and the farm summary. |
+| `rotation-plan` | Start date, per-lot rotation timeline and the farmer calendar. |
+| `calendar` | Analysis step: farmer plan vs recommended, alarms and comparison. |
+| `account` | Session in the header, login and registration dialog. |
+| `saved-farms` | "Guardar mi plan" and the "Mis fincas" page. |
 
-## Deploy on Vercel
+Browser storage keys: `prodterra.farmDraft`, `prodterra.mapView`, `prodterra.rotationPlan`, `prodterra.activeSavedFarm`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Data sources
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Satellite imagery and place search: Esri World Imagery and ArcGIS geocoding.
+- Elevation: NASADEM through Microsoft Planetary Computer.
+- Climate: NASA POWER monthly climatology, adjusted to the lot elevation with the U.S. Standard Atmosphere 1976 lapse rate.
+- Crop cycles: MAG/SEPSA Infoagro cost models (Costa Rica). Lettuce and chayote still use development values.
