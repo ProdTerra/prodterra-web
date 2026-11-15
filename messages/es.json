@@ -157,7 +157,8 @@
       "sunlightStat": "Sol promedio",
       "percentValue": "{value} %",
       "sunlightValue": "{value} kWh/m² al día",
-      "altitudeAdjustment": "Ajuste por altura: la NASA mide el clima de una zona amplia cuya altura promedio es {gridElevation}. Tu finca está a {farmElevation}. Como el aire se enfría unos 6,5 °C por cada 1.000 m de subida, a las temperaturas de la NASA les {direction, select, colder {restamos} other {sumamos}} {correction} °C."
+      "altitudeAdjustment": "Ajuste por altura: la NASA mide el clima de una zona amplia cuya altura promedio es {gridElevation}, y la finca está a {farmElevation}. Según el modelo de atmósfera estándar de la NASA, el aire se enfría unos 6,5 °C por cada 1.000 m de subida, por eso a las temperaturas de la NASA se les {direction, select, colder {restan} other {suman}} {correction} °C.",
+      "lapseRateSource": "Ver modelo de la NASA"
     },
     "crops": {
       "title": "¿Qué siembras en cada lote?",

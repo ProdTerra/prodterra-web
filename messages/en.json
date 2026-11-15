@@ -157,7 +157,8 @@
       "sunlightStat": "Average sunlight",
       "percentValue": "{value} %",
       "sunlightValue": "{value} kWh/m² a day",
-      "altitudeAdjustment": "Elevation adjustment: NASA measures the climate of a wide area whose average elevation is {gridElevation}. Your farm is at {farmElevation}. Because air cools about 6.5 °C for every 1,000 m you climb, we {direction, select, colder {subtract} other {add}} {correction} °C {direction, select, colder {from} other {to}} NASA's temperatures."
+      "altitudeAdjustment": "Elevation adjustment: NASA measures the climate of a wide area whose average elevation is {gridElevation}, and the farm is at {farmElevation}. According to NASA's standard atmosphere model, air cools about 6.5 °C for every 1,000 m of climb, so {correction} °C {direction, select, colder {is subtracted from} other {is added to}} NASA's temperatures.",
+      "lapseRateSource": "See NASA's model"
     },
     "crops": {
       "title": "What do you grow in each lot?",
