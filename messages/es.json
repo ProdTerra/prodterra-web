@@ -198,7 +198,7 @@
   },
   "calendar": {
     "title": "Tu plan y el recomendado",
-    "hint": "Cada día está pintado según el clima de la NASA para tu finca. Toca un lote para comparar los dos planes.",
+    "hint": "Mira mes a mes tu plan o el recomendado, el clima típico de tu finca y lo que conviene hacer en cada lote.",
     "loading": "Armando el plan con datos de la NASA…",
     "failedTitle": "No pudimos armar el calendario",
     "failed": "Revisa tu conexión a internet e inténtalo otra vez.",
@@ -271,6 +271,64 @@
         "sameFamilyInARow": "{crop} va después de otro cultivo de la misma familia; eso favorece plagas y cansa el suelo.",
         "shorterThanReference": "{crop} dura {weeks} semanas; su ciclo de referencia es de {referenceWeeks} semanas.",
         "altitudeOutOfRange": "{crop} no suele darse a la altura de este lote."
+      }
+    },
+    "grid": {
+      "sowing": "Siembra",
+      "harvest": "Cosecha",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "planStart": "Inicio del plan",
+      "lotFilter": "Ver",
+      "allLots": "Todos los lotes",
+      "pickDay": "Toca un día para ver qué pasa ese día en cada lote.",
+      "dayOfBlock": "{name}: día {day} de {total}",
+      "free": "Sin plan ese día",
+      "sowingToday": "Este día se siembra",
+      "harvestToday": "Este día se cosecha"
+    },
+    "insights": {
+      "climateTitle": "Clima típico de {month}",
+      "climateNote": "Promedio de años anteriores para tu finca (NASA POWER). No es un pronóstico.",
+      "temperature": "Entre {min} y {max} °C",
+      "frostNights": "Noches con posible helada",
+      "rain": "Unos {value} mm en el mes",
+      "rainLevel": {
+        "dry": "Mes seco",
+        "normal": "Lluvia normal",
+        "wet": "Mes lluvioso"
+      },
+      "humidity": "{value} % de humedad",
+      "humidityLevel": {
+        "low": "Aire seco",
+        "normal": "Humedad normal",
+        "high": "Humedad alta: favorece hongos"
+      },
+      "sun": "{value} kWh/m² de sol al día",
+      "lotsTitle": "Tus lotes en {month}",
+      "status": {
+        "ok": "Bien",
+        "watch": "Atención",
+        "risk": "Riesgo"
+      },
+      "compare": "Comparar los dos planes",
+      "free": "Sin cultivo",
+      "rest": "Descanso",
+      "action": {
+        "frost": "Protege el cultivo del frío",
+        "temperature": "Revisa si el cultivo aguanta este mes",
+        "drought": "Riega unos {value} L/m² o espera las lluvias",
+        "irrigation": "Riega unos {value} L/m² este mes",
+        "waterExcess": "Revisa el drenaje del lote",
+        "pest": "Vigila {pest}"
+      },
+      "cause": {
+        "frost": "Noches de hasta {value} °C",
+        "temperature": "Promedio de {value} °C, fuera de lo que soporta",
+        "drought": "Sin riego le falta agua este mes",
+        "irrigation": "La lluvia del mes no alcanza",
+        "waterExcess": "Llueven unos {value} L/m² de más",
+        "pest": "El clima de este mes la favorece"
       }
     }
   },
