@@ -6,10 +6,11 @@ import { useState, type Dispatch } from "react";
 import type { RotationPlanAction } from "../application/rotationPlanState";
 import { restBlockColor } from "../domain/cropColors";
 import { canAddBlock, maximumBlockDays } from "../domain/blockLimits";
-import type { LotRotation, PreviousUse, RotationBlock } from "../domain/rotationPlan";
+import type { LotRotation, RotationBlock } from "../domain/rotationPlan";
 import { scheduleBlocks, type ScheduledBlock } from "../domain/rotationSchedule";
-import { AddBlockSheet, type AddBlockChoice } from "./AddBlockSheet";
-import { ChoiceChips, type ChoiceOption } from "./ChoiceChips";
+import { CropPickerSheet, type PickerCrop } from "./CropPickerSheet";
+import { PreviousUseField } from "./PreviousUseField";
+import { ChoiceChips } from "./ChoiceChips";
 import { RotationBlockCard } from "./RotationBlockCard";
 import { TimelineStrip } from "./TimelineStrip";
 import type { useCropNames } from "./useCropNames";
@@ -23,24 +24,9 @@ type LotRotationEditorProps = {
   dispatch: Dispatch<RotationPlanAction>;
 };
 
-const restValue = "fallow";
-const unknownValue = "unknown";
+const restChoice = "rest";
 const yesValue = "yes";
 const noValue = "no";
-
-function toPreviousUse(value: string): PreviousUse {
-  if (value === restValue || value === unknownValue) {
-    return { kind: value };
-  }
-  return { kind: "crop", cropKey: value };
-}
-
-function previousUseValue(previousUse: PreviousUse | null): string | null {
-  if (!previousUse) {
-    return null;
-  }
-  return previousUse.kind === "crop" ? previousUse.cropKey : previousUse.kind;
-}
 
 type RemovedBlock = { block: RotationBlock; index: number; name: string };
 
@@ -49,13 +35,17 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
   const [expandedBlockId, setExpandedBlockId] = useState<string | null>(null);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [removedBlock, setRemovedBlock] = useState<RemovedBlock | null>(null);
-  const cropOptions: ChoiceOption[] = cropNames.crops.map((crop) => ({ value: crop.key, label: cropNames.localized(crop) }));
   const { blocks } = rotation;
   const schedule = scheduleBlocks(startDate, blocks);
   const hasRoom = canAddBlock(blocks);
   const blockName = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropNames.cropName(block.cropKey) : translate("rest"));
   const blockColor = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropColors.get(block.cropKey) ?? restBlockColor : restBlockColor);
   const dayCount = (days: number) => translate("dayCount", { days });
+  const farmCropKeys = [...cropColors.keys()];
+  const pickerCrops: PickerCrop[] = cropNames.crops.map((crop) => {
+    const usual = cropNames.referenceOf(crop.key);
+    return { key: crop.key, name: cropNames.localized(crop), usualDays: usual ? dayCount(usual) : null };
+  });
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 6 } }),
@@ -75,12 +65,12 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
     dispatch(action);
   }
 
-  function addChosenBlock(choice: AddBlockChoice) {
+  function addChosenBlock(value: string) {
     const blockId = crypto.randomUUID();
     const block =
-      choice.kind === "rest"
+      value === restChoice
         ? ({ kind: "rest" } as const)
-        : ({ kind: "crop", cropKey: choice.cropKey, referenceInDays: cropNames.referenceOf(choice.cropKey) } as const);
+        : ({ kind: "crop", cropKey: value, referenceInDays: cropNames.referenceOf(value) } as const);
     run({ type: "blockAdded", lotId, blockId, block });
     setIsPickerOpen(false);
     setExpandedBlockId(blockId);
@@ -98,11 +88,11 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
 
   return (
     <div className="rotation-editor">
-      <ChoiceChips
-        label={translate("previousQuestion")}
-        options={[...cropOptions, { value: restValue, label: translate("rest") }, { value: unknownValue, label: translate("unknown") }]}
-        selectedValue={previousUseValue(rotation.previousUse)}
-        onSelect={(value) => run({ type: "previousUseChosen", lotId, previousUse: toPreviousUse(value) })}
+      <PreviousUseField
+        previousUse={rotation.previousUse}
+        crops={pickerCrops}
+        suggestedKeys={farmCropKeys}
+        onChange={(previousUse) => run({ type: "previousUseChosen", lotId, previousUse })}
       />
       <ChoiceChips
         label={translate("irrigationQuestion")}
@@ -175,12 +165,12 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
         )}
       </section>
 
-      <AddBlockSheet
+      <CropPickerSheet
         isOpen={isPickerOpen}
-        crops={cropNames.crops.map((crop) => {
-          const usual = cropNames.referenceOf(crop.key);
-          return { key: crop.key, name: cropNames.localized(crop), usualDays: usual ? dayCount(usual) : null };
-        })}
+        title={translate("sheetTitle")}
+        crops={pickerCrops}
+        suggestedKeys={farmCropKeys}
+        extras={[{ value: restChoice, label: translate("rest"), kind: "rest" }]}
         onChoose={addChosenBlock}
         onClose={() => setIsPickerOpen(false)}
       />
