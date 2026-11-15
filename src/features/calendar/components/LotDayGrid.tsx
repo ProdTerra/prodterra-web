@@ -2,7 +2,7 @@ import { Sprout, Wheat } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { daysInMonth } from "../domain/calendar";
-import type { LotPlan } from "../infrastructure/plansApi";
+import type { LotPlan, PlanEvent } from "../infrastructure/plansApi";
 
 type LotDayGridProps = {
   lots: Lot[];
@@ -16,19 +16,10 @@ type LotDayGridProps = {
   onOpenLot: (lotId: string) => void;
 };
 
-const eventDay = 15;
 const labeledDays = new Set([1, 5, 10, 15, 20, 25]);
 
-type DayEvent = "sowing" | "harvest" | null;
-
-function eventFor(plan: LotPlan, monthKey: string): DayEvent {
-  if (plan.nextCrop?.sowMonth === monthKey) {
-    return "sowing";
-  }
-  if (plan.currentCrop?.harvestMonth === monthKey || plan.nextCrop?.harvestMonth === monthKey) {
-    return "harvest";
-  }
-  return null;
+function eventOn(plan: LotPlan, monthKey: string, day: number): PlanEvent["kind"] | null {
+  return plan.events.find((event) => event.month === monthKey && event.day === day)?.kind ?? null;
 }
 
 export function LotDayGrid({ lots, plans, monthKey, todayKey, todayDay, lotName, cropName, monthName, onOpenLot }: LotDayGridProps) {
@@ -52,12 +43,9 @@ export function LotDayGrid({ lots, plans, monthKey, todayKey, todayDay, lotName,
             const plan = plans.find((candidate) => candidate.lotId === lot.shapeId);
             const planMonth = plan?.months.find((month) => month.month === monthKey);
             const status = planMonth?.status ?? "ok";
-            const cropLabel = !planMonth?.cropKey
-              ? translate("free")
-              : planMonth.phase === "next"
-                ? translate("recommendedSuffix", { crop: cropName(planMonth.cropKey) })
-                : cropName(planMonth.cropKey);
-            const event = plan ? eventFor(plan, monthKey) : null;
+            const cropLabel = planMonth?.cropKey
+              ? cropName(planMonth.cropKey)
+              : translate(planMonth?.phase === "rest" ? "rest" : "free");
             return (
               <button
                 key={lot.shapeId}
@@ -77,17 +65,20 @@ export function LotDayGrid({ lots, plans, monthKey, todayKey, todayDay, lotName,
                     </span>
                   </span>
                 </span>
-                {days.map((day) => (
-                  <span
-                    key={day}
-                    aria-hidden
-                    className="day-cell"
-                    data-status={status}
-                    data-today={(monthKey === todayKey && day === todayDay) || undefined}
-                  >
-                    {event && day === eventDay && (event === "sowing" ? <Sprout size={12} /> : <Wheat size={12} />)}
-                  </span>
-                ))}
+                {days.map((day) => {
+                  const event = plan ? eventOn(plan, monthKey, day) : null;
+                  return (
+                    <span
+                      key={day}
+                      aria-hidden
+                      className="day-cell"
+                      data-status={planMonth ? status : undefined}
+                      data-today={(monthKey === todayKey && day === todayDay) || undefined}
+                    >
+                      {event && (event === "sowing" ? <Sprout size={12} /> : <Wheat size={12} />)}
+                    </span>
+                  );
+                })}
               </button>
             );
           })}

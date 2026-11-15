@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, RotateCcw } from "lucide-react";
+import { ArrowLeft, RotateCcw, Sparkles, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
 import { useState } from "react";
@@ -8,14 +8,15 @@ import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
 import { useSavedRotationPlan } from "@/features/rotation-plan/components/useRotationPlan";
 import { alarmsForMonth, statusByMonth } from "../domain/calendar";
-import { toPlanRequests } from "../domain/planRequests";
+import { toLotPlans, type PlanVariant } from "../domain/evaluationView";
+import { toEvaluationRequest } from "../domain/planRequests";
 import { AlarmList } from "./AlarmList";
 import { LotDayGrid } from "./LotDayGrid";
-import { LotPlanDialog } from "./LotPlanDialog";
+import { LotComparisonDialog } from "./LotComparisonDialog";
 import { MonthStrip } from "./MonthStrip";
 import { StatusLegend } from "./StatusLegend";
 import { useCalendarLabels } from "./useCalendarLabels";
-import { useFarmPlans } from "./useFarmPlans";
+import { useRotationEvaluation } from "./useRotationEvaluation";
 
 type CalendarStepProps = {
   lots: Lot[];
@@ -26,10 +27,12 @@ export function CalendarStep({ lots, onBack }: CalendarStepProps) {
   const translate = useTranslations("calendar");
   const translateLots = useTranslations("farmMapping.lots");
   const plan = useSavedRotationPlan(lots.map((lot) => lot.shapeId));
-  const [requests] = useState(() => toPlanRequests(lots, plan));
-  const { state, retry } = useFarmPlans(requests);
-  const plans = state.status === "ready" ? state.plans : null;
-  const labels = useCalendarLabels(plans);
+  const [request] = useState(() => toEvaluationRequest(lots, plan));
+  const { state, retry } = useRotationEvaluation(request);
+  const evaluation = state.status === "ready" ? state.evaluation : null;
+  const [variant, setVariant] = useState<PlanVariant>("recommended");
+  const plans = evaluation ? { usesDemoData: evaluation.usesDemoData, lots: toLotPlans(evaluation, variant) } : null;
+  const labels = useCalendarLabels(evaluation);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [openLotId, setOpenLotId] = useState<string | null>(null);
   const [today] = useState(() => new Date());
@@ -39,7 +42,7 @@ export function CalendarStep({ lots, onBack }: CalendarStepProps) {
   const months = plans ? statusByMonth(plans.lots) : [];
   const selectedMonth = months[selectedIndex]?.month;
   const openLot = lots.find((lot) => lot.shapeId === openLotId) ?? null;
-  const openPlan = plans?.lots.find((plan) => plan.lotId === openLotId) ?? null;
+  const openEvaluation = evaluation?.lots.find((lotEvaluation) => lotEvaluation.lotId === openLotId) ?? null;
 
   return (
     <div className="calendar-step">
@@ -72,6 +75,16 @@ export function CalendarStep({ lots, onBack }: CalendarStepProps) {
           {plans.usesDemoData && (
             <Notice tone="demo">{translate("demoNotice")}</Notice>
           )}
+          <div role="group" aria-label={translate("variantLabel")} className="variant-switch">
+            <button type="button" aria-pressed={variant === "farmer"} onClick={() => setVariant("farmer")}>
+              <UserRound aria-hidden size={18} />
+              {translate("variantFarmer")}
+            </button>
+            <button type="button" aria-pressed={variant === "recommended"} onClick={() => setVariant("recommended")}>
+              <Sparkles aria-hidden size={18} />
+              {translate("variantRecommended")}
+            </button>
+          </div>
           <MonthStrip
             months={months}
             selectedIndex={selectedIndex}
@@ -108,12 +121,11 @@ export function CalendarStep({ lots, onBack }: CalendarStepProps) {
         </>
       )}
 
-      <LotPlanDialog
+      <LotComparisonDialog
         lot={openLot}
-        plan={openPlan}
+        evaluation={openEvaluation}
         lotName={lotName}
         cropName={labels.cropName}
-        monthName={labels.monthName}
         whole={labels.whole}
         onClose={() => setOpenLotId(null)}
       />

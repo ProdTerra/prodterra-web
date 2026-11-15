@@ -1,7 +1,7 @@
 import { useFormatter, useLocale } from "next-intl";
-import type { FarmPlans } from "../infrastructure/plansApi";
+import type { RotationEvaluation } from "../infrastructure/plansApi";
 
-export function useCalendarLabels(plans: FarmPlans | null) {
+export function useCalendarLabels(plans: RotationEvaluation | null) {
   const locale = useLocale();
   const format = useFormatter();
   const localized = (name: { es: string; en: string }) => (locale === "en" ? name.en : name.es);

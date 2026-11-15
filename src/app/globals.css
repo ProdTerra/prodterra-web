@@ -2451,3 +2451,103 @@ body {
 .farmer-calendar .lot-dates__title {
   grid-column: 1 / -1;
 }
+
+.variant-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  max-width: 28rem;
+  padding: 0.25rem;
+  border-radius: 0.875rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+}
+
+.variant-switch button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  border-radius: 0.625rem;
+  font-weight: 600;
+  color: var(--color-stone);
+}
+
+.variant-switch button[aria-pressed="true"] {
+  background: var(--color-field);
+  color: var(--color-paper);
+}
+
+.lot-comparison {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 720px) {
+  .lot-comparison {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.lot-comparison__column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 1rem;
+}
+
+.lot-comparison__column h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.lot-comparison__counts {
+  font-size: 0.875rem;
+  color: var(--color-stone);
+}
+
+.lot-comparison__blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.lot-comparison__blocks > li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--color-field);
+}
+
+.lot-comparison__blocks > li[data-kind="rest"] {
+  border-left-color: var(--color-line);
+}
+
+.lot-comparison__blocks > li > span {
+  font-size: 0.875rem;
+  color: var(--color-stone);
+}
+
+.lot-comparison__warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #5c4600;
+}
+
+.lot-comparison__warnings li,
+.lot-comparison__clean {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  font-size: 0.875rem;
+}
+
+.lot-comparison__clean {
+  color: var(--status-ok-strong);
+}
