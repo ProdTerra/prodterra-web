@@ -20,6 +20,7 @@
 - Place search with the ArcGIS geocoder, the split panel with lengthwise, crosswise and grid layouts aligned to the farm's long axis.
 
 ### Changed
+- Start date screen: one hint ("Puede ser hoy o cualquier día hasta el …") replaces the two repeated explanations.
 - Crop choices scale to a larger catalog: "¿Qué sigue?" has a search box (accent-insensitive), the farm's crops first and then every crop; "¿Qué tenía antes este lote?" shows No sé, Descanso, the farm's crops and "Otro cultivo", which opens the same search.
 - Shorter imagery credit under the lot cards: "Fotos satelitales © Esri y colaboradores".
 - Lot cards in step 4 show the satellite image of each lot (Esri World Imagery export) with the lot outline on top and the surroundings dimmed; if the image fails, the colored shape is shown as before.
