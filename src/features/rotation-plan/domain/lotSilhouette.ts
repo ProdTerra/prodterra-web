@@ -23,3 +23,27 @@ export function toSilhouettePoints(lot: Polygon, boxSize: number, padding: numbe
 
   return projected.map(([x, y]) => [offsetX + (x - minimumX) * scale, offsetY + (maximumY - y) * scale]);
 }
+
+export type GeographicBounds = { west: number; south: number; east: number; north: number };
+
+export function silhouetteBounds(lot: Polygon, boxSize: number, padding: number): GeographicBounds {
+  const ring = lot.coordinates[0].slice(0, -1);
+  const meanLatitude = ring.reduce((sum, [, latitude]) => sum + latitude, 0) / ring.length;
+  const longitudeScale = Math.cos(meanLatitude * degreesToRadians);
+  const longitudes = ring.map(([longitude]) => longitude);
+  const latitudes = ring.map(([, latitude]) => latitude);
+  const minimumLongitude = Math.min(...longitudes);
+  const maximumLongitude = Math.max(...longitudes);
+  const minimumLatitude = Math.min(...latitudes);
+  const maximumLatitude = Math.max(...latitudes);
+  const largestSide = Math.max((maximumLongitude - minimumLongitude) * longitudeScale, maximumLatitude - minimumLatitude);
+  const halfSide = (largestSide * boxSize) / (boxSize - padding * 2) / 2;
+  const centerLongitude = (minimumLongitude + maximumLongitude) / 2;
+  const centerLatitude = (minimumLatitude + maximumLatitude) / 2;
+  return {
+    west: centerLongitude - halfSide / longitudeScale,
+    east: centerLongitude + halfSide / longitudeScale,
+    south: centerLatitude - halfSide,
+    north: centerLatitude + halfSide,
+  };
+}

@@ -84,6 +84,7 @@ export function RotationScreen({ lots, plan, startDate, dispatch, onChangeStartD
           />
         ))}
       </section>
+      <p className="lot-cards__credit">{translate("imageryCredit")}</p>
 
       <section aria-labelledby="rotation-editor-title" className="crops-step__form">
         <h2 id="rotation-editor-title" className="crops-step__form-title">
