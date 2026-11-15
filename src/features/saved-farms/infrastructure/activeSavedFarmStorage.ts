@@ -21,6 +21,10 @@ export function rememberActiveSavedFarm(storage: KeyValueStorage, farm: ActiveSa
   writeJson(storage, activeFarmKey, farm);
 }
 
+export function forgetActiveSavedFarm(storage: KeyValueStorage): void {
+  storage.removeItem(activeFarmKey);
+}
+
 export function openSavedFarmInPlanner(storage: KeyValueStorage, farm: SavedFarm): void {
   saveFarmDraft(storage, { ...farm.snapshot.draft, step: "analysis" });
   saveRotationPlan(storage, farm.snapshot.rotationPlan);

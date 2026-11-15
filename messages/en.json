@@ -89,7 +89,8 @@
       "splitEqually": "Split into equal parts",
       "farmFull": "The whole farm is already in lots. Delete a lot if you want to mark it differently.",
       "continue": "Continue",
-      "lotLimit": "You already marked {maximum} lots, the most the calendar supports."
+      "lotLimit": "You already marked {maximum} lots, the most the calendar supports.",
+      "wholeFarm": "Use the whole farm as one lot"
     },
     "area": {
       "squareMeters": "{value} m²",
@@ -335,6 +336,13 @@
       "showQuietLots": "Show the other {count} lots without alarms",
       "hideQuietLots": "Hide the lots without alarms",
       "lotGroup": "Lots {numbers}"
+    },
+    "newPlan": {
+      "action": "Create a new plan",
+      "title": "Start a new plan on this farm?",
+      "description": "Your farm boundary is kept. You will split it into lots and build the rotation from scratch. To keep this plan, save it first in My farms.",
+      "confirm": "Create new plan",
+      "cancel": "Cancel"
     }
   },
   "rotationPlan": {

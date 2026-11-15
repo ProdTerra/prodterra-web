@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowLeft, RotateCcw, Sparkles, UserRound } from "lucide-react";
+import { ArrowLeft, FilePlus2, RotateCcw, Sparkles, UserRound } from "lucide-react";
+import { Dialog } from "@/shared/components/Dialog";
 import { useFormatter, useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
 import { PrintButton } from "@/shared/components/PrintButton";
@@ -27,12 +28,13 @@ import { useRotationEvaluation } from "./useRotationEvaluation";
 type CalendarStepProps = {
   lots: Lot[];
   onBack: () => void;
+  onNewPlan: () => void;
   actions?: ReactNode;
 };
 
 const printStatusColors: Record<MonthStatus, string> = { ok: "#cfe8d4", watch: "#fbe9a6", risk: "#f6c3be" };
 
-export function CalendarStep({ lots, onBack, actions }: CalendarStepProps) {
+export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepProps) {
   const translate = useTranslations("calendar");
   const translateLots = useTranslations("farmMapping.lots");
   const plan = useSavedRotationPlan(lots.map((lot) => lot.shapeId));
@@ -44,6 +46,7 @@ export function CalendarStep({ lots, onBack, actions }: CalendarStepProps) {
   const labels = useCalendarLabels(evaluation);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [openLotId, setOpenLotId] = useState<string | null>(null);
+  const [isNewPlanConfirmOpen, setIsNewPlanConfirmOpen] = useState(false);
   const [selectedLotId, setSelectedLotId] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const translateInsights = useTranslations("calendar.insights");
@@ -137,6 +140,10 @@ export function CalendarStep({ lots, onBack, actions }: CalendarStepProps) {
             {translate("backToMyCalendar")}
           </button>
           {evaluation && <PrintButton label={translatePrint("download")} />}
+          <button type="button" onClick={() => setIsNewPlanConfirmOpen(true)} className="button button--outline">
+            <FilePlus2 aria-hidden size={18} />
+            {translate("newPlan.action")}
+          </button>
           {actions}
         </div>
       </header>
@@ -247,6 +254,19 @@ export function CalendarStep({ lots, onBack, actions }: CalendarStepProps) {
         cropName={labels.cropName}
         whole={labels.whole}
         onClose={() => setOpenLotId(null)}
+      />
+      <Dialog
+        isOpen={isNewPlanConfirmOpen}
+        tone="info"
+        title={translate("newPlan.title")}
+        description={translate("newPlan.description")}
+        confirmLabel={translate("newPlan.confirm")}
+        cancelLabel={translate("newPlan.cancel")}
+        onConfirm={() => {
+          setIsNewPlanConfirmOpen(false);
+          onNewPlan();
+        }}
+        onCancel={() => setIsNewPlanConfirmOpen(false)}
       />
     </div>
   );

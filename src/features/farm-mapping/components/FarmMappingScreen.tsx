@@ -54,6 +54,9 @@ import { loadImageryChoice, saveImageryChoice } from "../infrastructure/imageryC
 import { deepestImageryLevelAt, defaultImageryLevel } from "../infrastructure/imageryDetail";
 import { waybackMaximumZoom, type WaybackRelease } from "../infrastructure/waybackImagery";
 import { StepIndicator } from "./StepIndicator";
+import { emptyRotationPlan } from "@/features/rotation-plan/domain/rotationPlan";
+import { saveRotationPlan } from "@/features/rotation-plan/infrastructure/rotationPlanStorage";
+import { forgetActiveSavedFarm } from "@/features/saved-farms/infrastructure/activeSavedFarmStorage";
 
 const SatelliteMap = dynamic(() => import("./SatelliteMap"), { ssr: false });
 
@@ -310,6 +313,31 @@ export function FarmMappingScreen() {
     setSplit({ lotCount, layout });
   }
 
+  function startNewPlan() {
+    mapRef.current?.removeShapes(state.lots.map((lot) => lot.shapeId));
+    const storage = getBrowserStorage();
+    if (storage) {
+      saveRotationPlan(storage, emptyRotationPlan);
+      forgetActiveSavedFarm(storage);
+    }
+    dispatch({ type: "newPlanRequested" });
+  }
+
+  function assignWholeFarmAsOneLot() {
+    if (!state.farmBoundary) {
+      return;
+    }
+    stopDrawing();
+    const lot = {
+      shapeId: crypto.randomUUID(),
+      geometry: state.farmBoundary.geometry,
+      areaInHectares: state.farmBoundary.areaInHectares,
+    };
+    mapRef.current?.removeShapes(state.lots.map((current) => current.shapeId));
+    mapRef.current?.restoreShapes([{ kind: "lot" as const, shapeId: lot.shapeId, geometry: lot.geometry, color: pickLotColor(1) }]);
+    dispatch({ type: "lotsReplaced", lots: [lot] });
+  }
+
   function startSplit() {
     stopDrawing();
     setIsReplaceConfirmOpen(false);
@@ -438,6 +466,7 @@ export function FarmMappingScreen() {
             onRedrawFarm={() => setIsRedrawConfirmOpen(true)}
             split={split}
             onStartSplit={requestSplit}
+            onUseWholeFarm={assignWholeFarmAsOneLot}
             onChangeSplit={applySplit}
             onFinishSplit={() => setSplit(null)}
             onContinue={() => {
@@ -464,6 +493,7 @@ export function FarmMappingScreen() {
           <CalendarStep
             lots={state.lots}
             onBack={() => dispatch({ type: "myCalendarRequested" })}
+            onNewPlan={startNewPlan}
             actions={<SavePlanButton farmState={state} />}
           />
         )}

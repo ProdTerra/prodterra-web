@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+- "Crear un nuevo plan" in the Recomendado step: after a confirmation it keeps the farm boundary, clears the lots and the rotation, forgets the opened saved farm (so saving creates a new one) and returns to "Divide tu finca en lotes".
+- "Usar toda la finca como un lote" in step 3 when there are no lots yet.
+
 ### Changed
 - Both calendars scale to many lots: with more than 5 lots, "Todos los lotes" groups the grid by crop ("Papa · 30 lotes", split where the number of lots changes), the day detail groups lots by crop with their numbers, and the analysis lists lots with alarms first, merges lots with the same alarms ("Lotes 1, 2, 3") and folds the rest into "Ver los otros N lotes sin alarmas".
 - Removed the month chips row (the arrows and "Inicio del plan" cover it) and the "Fechas de cada lote" list; the analysis now shows the crop color legend.
