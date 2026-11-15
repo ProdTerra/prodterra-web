@@ -14,7 +14,7 @@ import { CropLegend } from "@/features/rotation-plan/components/CropLegend";
 import { cropColorOf, restBlockColor } from "@/features/rotation-plan/domain/cropColors";
 import { statusByMonth } from "../domain/calendar";
 import { laneStatusesForMonth } from "../domain/laneStatus";
-import { buildMonthLayout, type GridBlock } from "../domain/monthGrid";
+import { buildMonthLayout, canShowAllLots, effectiveLotSelection, type GridBlock } from "../domain/monthGrid";
 import { hasAltitudeWarning, toLotPlans, type PlanVariant } from "../domain/evaluationView";
 import { toEvaluationRequest } from "../domain/planRequests";
 import { CalendarToolbar } from "./CalendarToolbar";
@@ -55,7 +55,8 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
   const monthIndex = Math.min(selectedIndex, Math.max(months.length - 1, 0));
   const selectedMonth = months[monthIndex]?.month;
   const gridLots: GridLot[] = lots.map((lot) => ({ id: lot.shapeId, number: lot.number, name: lotName(lot), color: lot.color }));
-  const visibleLots = selectedLotId ? gridLots.filter((lot) => lot.id === selectedLotId) : gridLots;
+  const lotSelection = effectiveLotSelection(gridLots, selectedLotId);
+  const visibleLots = lotSelection ? gridLots.filter((lot) => lot.id === lotSelection) : gridLots;
   const gridBlocks: GridBlock[] = (evaluation?.lots ?? []).flatMap((lotEvaluation) =>
     (lotEvaluation[variant]?.blocks ?? []).map((block, index) => ({
       id: `${lotEvaluation.lotId}-${variant}-${index}`,
@@ -72,7 +73,7 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
   const layoutBlockName = (block: GridBlock) =>
     layout?.isGrouped ? `${gridBlockName(block)} · ${translateGrid("lotCount", { count: block.lotCount ?? 0 })}` : gridBlockName(block);
   const gridBlockColor = (block: GridBlock) => (block.cropKey ? cropColorOf(block.cropKey) : restBlockColor);
-  const climateLot = evaluation?.lots.find((lotEvaluation) => (selectedLotId ? lotEvaluation.lotId === selectedLotId : true) && lotEvaluation.climate?.length);
+  const climateLot = evaluation?.lots.find((lotEvaluation) => (lotSelection ? lotEvaluation.lotId === lotSelection : true) && lotEvaluation.climate?.length);
   const monthClimate = selectedMonth ? (climateLot?.climate?.find((climate) => climate.month === Number(selectedMonth.slice(5, 7))) ?? null) : null;
   const monthOfLot = (lotId: string) =>
     plans?.lots.find((lotPlan) => lotPlan.lotId === lotId)?.months.find((candidate) => candidate.month === selectedMonth);
@@ -161,7 +162,8 @@ export function CalendarStep({ lots, onBack, onNewPlan, actions }: CalendarStepP
             canGoBack={monthIndex > 0}
             canGoForward={monthIndex < months.length - 1}
             lots={gridLots}
-            selectedLotId={selectedLotId}
+            selectedLotId={lotSelection}
+            showsAllLotsOption={canShowAllLots(gridLots.length)}
             onPrevious={() => setSelectedIndex(monthIndex - 1)}
             onNext={() => setSelectedIndex(monthIndex + 1)}
             onGoToStart={() => {

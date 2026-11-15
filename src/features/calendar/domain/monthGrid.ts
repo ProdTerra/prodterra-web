@@ -128,3 +128,14 @@ export function buildMonthLayout(
   const grouped = groupByUse(visibleBlocks, weeksOfMonth(monthKey).flat());
   return { isGrouped: true, lanes: grouped.lanes.map((id) => ({ id })), blocks: grouped.blocks };
 }
+
+export function canShowAllLots(lotCount: number): boolean {
+  return lotCount <= maximumLotLanes;
+}
+
+export function effectiveLotSelection(lots: { id: string }[], selectedLotId: string | null): string | null {
+  if (selectedLotId && lots.some((lot) => lot.id === selectedLotId)) {
+    return selectedLotId;
+  }
+  return canShowAllLots(lots.length) ? null : (lots[0]?.id ?? null);
+}
