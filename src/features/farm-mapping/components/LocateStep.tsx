@@ -1,6 +1,6 @@
 "use client";
 
-import { LocateFixed, MapPin, Search } from "lucide-react";
+import { LocateFixed, MapPin, Search, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
 import { useState, type FormEvent } from "react";
@@ -59,6 +59,12 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
     onMoveMap(place);
   }
 
+  function handleClearSearch() {
+    setQuery("");
+    setResults([]);
+    setSearchStatus("idle");
+  }
+
   return (
     <div className="step-content">
       <h1 className="step-title">{translate("title")}</h1>
@@ -78,6 +84,16 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
           autoComplete="off"
           className="search-form__input"
         />
+        {query && (
+          <button
+            type="button"
+            onClick={handleClearSearch}
+            aria-label={translate("clearSearch")}
+            className="search-form__clear"
+          >
+            <X aria-hidden size={16} />
+          </button>
+        )}
         <button type="submit" className="button button--search" disabled={searchStatus === "searching"}>
           {searchStatus === "searching" ? translate("searching") : translate("searchAction")}
         </button>
