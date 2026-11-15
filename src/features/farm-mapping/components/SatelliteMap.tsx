@@ -34,7 +34,7 @@ export type LotLabel = {
 export type SatelliteMapHandle = {
   setLotLabels: (labels: LotLabel[]) => void;
   fitToArea: (area: Polygon) => void;
-  flyTo: (coordinates: MapCoordinates) => void;
+  flyTo: (coordinates: MapCoordinates, zoom?: number) => void;
   getCenter: () => MapCoordinates | null;
   startDrawing: (kind: ShapeKind) => void;
   closeShape: () => void;
@@ -196,8 +196,8 @@ export default function SatelliteMap({
             .addTo(map),
         );
       },
-      flyTo: ({ longitude, latitude }) =>
-        mapRef.current?.flyTo({ center: [longitude, latitude], zoom: farmZoom }),
+      flyTo: ({ longitude, latitude }, zoom = farmZoom) =>
+        mapRef.current?.flyTo({ center: [longitude, latitude], zoom }),
       getCenter: () => {
         const center = mapRef.current?.getCenter();
         return center ? { longitude: center.lng, latitude: center.lat } : null;

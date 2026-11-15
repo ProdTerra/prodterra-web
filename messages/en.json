@@ -34,7 +34,11 @@
       "locating": "Finding your location…",
       "locationDenied": "There's no permission to see your location. Search for it by name.",
       "locationUnavailable": "We couldn't find your location. Search for it by name.",
-      "confirm": "My farm is here"
+      "confirm": "My farm is here",
+      "locationApproximateTitle": "Your location is approximate",
+      "locationApproximate": "It may be about {distance} from where you are, because this device has no GPS. Search for your town above or move the map to your farm.",
+      "meters": "{meters} m",
+      "kilometers": "{kilometers} km"
     },
     "boundary": {
       "title": "Mark the edge of your farm",

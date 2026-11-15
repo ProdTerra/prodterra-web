@@ -358,7 +358,7 @@ export function FarmMappingScreen() {
 
         {state.step === "locate" && (
           <LocateStep
-            onMoveMap={(coordinates) => mapRef.current?.flyTo(coordinates)}
+            onMoveMap={(coordinates, zoom) => mapRef.current?.flyTo(coordinates, zoom)}
             onConfirm={handleConfirmLocation}
           />
         )}
