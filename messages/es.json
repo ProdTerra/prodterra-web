@@ -344,15 +344,13 @@
       "close": "Cerrar",
       "removed": "Quitaste {name}.",
       "undo": "Deshacer",
-      "remaining": "Quedan {time} de 24 meses",
-      "planFull": "El plan llega a 24 meses",
       "stripBlock": "Ver {name}",
       "dragBlock": "Arrastrar {name} para cambiar el orden",
       "cropDates": "Siembra {start} · cosecha {end}",
       "restDates": "Del {start} al {end}",
       "cropDurationQuestion": "¿Cuánto tiempo pasa de la siembra a la cosecha?",
       "restDurationQuestion": "¿Cuánto tiempo descansa la tierra?",
-      "monthCount": "{months, plural, one {# mes} other {# meses}}"
+      "stripCaption": "Tu lote en los próximos 24 meses"
     },
     "myCalendar": {
       "title": "Tu calendario",

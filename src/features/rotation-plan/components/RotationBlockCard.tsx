@@ -53,7 +53,7 @@ export function RotationBlockCard(props: RotationBlockCardProps) {
       data-dragging={isDragging || undefined}
       style={{
         ["--block-color" as string]: color,
-        transform: CSS.Transform.toString(transform),
+        transform: CSS.Translate.toString(transform),
         transition: transition,
       }}
     >

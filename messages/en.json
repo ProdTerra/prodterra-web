@@ -344,15 +344,13 @@
       "close": "Close",
       "removed": "You removed {name}.",
       "undo": "Undo",
-      "remaining": "{time} left of 24 months",
-      "planFull": "The plan reaches 24 months",
       "stripBlock": "Show {name}",
       "dragBlock": "Drag {name} to change the order",
       "cropDates": "Sowing {start} · harvest {end}",
       "restDates": "From {start} to {end}",
       "cropDurationQuestion": "How long from sowing to harvest?",
       "restDurationQuestion": "How long does the land rest?",
-      "monthCount": "{months, plural, one {# month} other {# months}}"
+      "stripCaption": "Your lot over the next 24 months"
     },
     "myCalendar": {
       "title": "Your calendar",

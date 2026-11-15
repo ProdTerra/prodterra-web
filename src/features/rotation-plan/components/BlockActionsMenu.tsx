@@ -16,9 +16,12 @@ type BlockActionsMenuProps = {
   onRemove: () => void;
 };
 
+const menuHeightWithFooter = 340;
+
 export function BlockActionsMenu(props: BlockActionsMenuProps) {
   const translate = useTranslations("rotationPlan.rotation");
   const [isOpen, setIsOpen] = useState(false);
+  const [opensUp, setOpensUp] = useState(false);
   const menuId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
   const close = useCallback(() => setIsOpen(false), []);
@@ -39,13 +42,17 @@ export function BlockActionsMenu(props: BlockActionsMenuProps) {
         aria-expanded={isOpen}
         aria-controls={menuId}
         aria-label={translate("blockActions", { name: props.name })}
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={(event) => {
+          const spaceBelow = window.innerHeight - event.currentTarget.getBoundingClientRect().bottom;
+          setOpensUp(spaceBelow < menuHeightWithFooter);
+          setIsOpen((open) => !open);
+        }}
         className="icon-button"
       >
         <EllipsisVertical aria-hidden size={20} />
       </button>
       {isOpen && (
-        <div id={menuId} role="menu" className="block-menu__panel">
+        <div id={menuId} role="menu" className="block-menu__panel" data-opens-up={opensUp || undefined}>
           {actions.map(({ label, icon: Icon, isEnabled, run }) => (
             <button
               key={label}
