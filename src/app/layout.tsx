@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
+import { AuthDialog } from "@/features/account/components/AuthDialog";
+import { SessionProvider } from "@/features/account/components/SessionProvider";
 import "./globals.css";
+import "./account.css";
 
 const instrumentSans = Instrument_Sans({
   variable: "--font-instrument-sans",
@@ -23,7 +26,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang={locale} className={`${instrumentSans.variable} h-full antialiased`}>
       <body className="min-h-full">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <SessionProvider>
+            {children}
+            <AuthDialog />
+          </SessionProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

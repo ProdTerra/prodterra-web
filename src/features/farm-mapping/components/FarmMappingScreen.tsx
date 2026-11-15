@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { Dialog } from "@/shared/components/Dialog";
+import { AccountMenu } from "@/features/account/components/AccountMenu";
 import { CalendarStep } from "@/features/calendar/components/CalendarStep";
 import { FarmerCalendarStep } from "@/features/rotation-plan/components/FarmerCalendarStep";
 import { PlanStep } from "@/features/rotation-plan/components/PlanStep";
@@ -347,7 +348,10 @@ export function FarmMappingScreen() {
       <section className="farm-mapping__panel" data-step={state.step}>
         <header className="panel-header">
           <span className="brand">ProdTerra</span>
-          <LanguageSwitcher />
+          <div className="panel-header__actions">
+            <LanguageSwitcher />
+            <AccountMenu />
+          </div>
         </header>
         <StepIndicator currentStep={state.step} />
 
