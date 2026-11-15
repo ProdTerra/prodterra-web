@@ -192,7 +192,8 @@
       "latest": "La más reciente",
       "noOthers": "No hay otras fotos de este lugar.",
       "close": "Cerrar",
-      "noMoreDetail": "Foto de {date}: no tiene más detalle"
+      "noMoreDetail": "Foto de {date}: no tiene más detalle",
+      "noMoreDetailHere": "Esta zona no tiene más detalle: la foto se ve ampliada"
     }
   },
   "calendar": {

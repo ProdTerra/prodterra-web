@@ -51,6 +51,7 @@ import type {
 import { ImageryPicker } from "./ImageryPicker";
 import { PanelSheetHandle } from "./PanelSheetHandle";
 import { loadImageryChoice, saveImageryChoice } from "../infrastructure/imageryChoiceStorage";
+import { deepestImageryLevelAt, defaultImageryLevel } from "../infrastructure/imageryDetail";
 import { waybackMaximumZoom, type WaybackRelease } from "../infrastructure/waybackImagery";
 import { StepIndicator } from "./StepIndicator";
 
@@ -108,6 +109,8 @@ function readInitialMapView(): MapView {
   return (storage && loadMapView(storage)) ?? cartagoHighlandsView;
 }
 
+const detailCheckZoom = 16;
+
 export function FarmMappingScreen() {
   const translate = useTranslations("farmMapping");
   const format = useFormatter();
@@ -133,6 +136,7 @@ export function FarmMappingScreen() {
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
   const [imageryRelease, setImageryRelease] = useState<WaybackRelease | null>(null);
   const [mapZoom, setMapZoom] = useState(initialMapView.zoom);
+  const [deepestLevel, setDeepestLevel] = useState(defaultImageryLevel);
   const screenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -190,6 +194,12 @@ export function FarmMappingScreen() {
   function handleMapViewChanged(view: MapView) {
     setMapCenter({ longitude: view.longitude, latitude: view.latitude });
     setMapZoom(view.zoom);
+    if (view.zoom >= detailCheckZoom) {
+      void deepestImageryLevelAt(view).then((level) => {
+        setDeepestLevel(level);
+        mapRef.current?.setImageryDetailLevel(level);
+      });
+    }
     const storage = getBrowserStorage();
     if (storage) {
       saveMapView(storage, view);
@@ -484,6 +494,11 @@ export function FarmMappingScreen() {
           {isMapReady && imageryRelease && mapZoom > waybackMaximumZoom && (
             <p role="status" className="imagery-detail-notice">
               {translate("imagery.noMoreDetail", { date: format.dateTime(new Date(`${imageryRelease.date}T00:00:00Z`), { month: "short", year: "numeric", timeZone: "UTC" }) })}
+            </p>
+          )}
+          {isMapReady && !imageryRelease && mapZoom > deepestLevel && (
+            <p role="status" className="imagery-detail-notice">
+              {translate("imagery.noMoreDetailHere")}
             </p>
           )}
           {isMapReady && (

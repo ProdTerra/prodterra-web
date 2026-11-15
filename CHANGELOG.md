@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Fixed
+- The map uses the deepest satellite detail available at each place worldwide (checked with the Esri tilemap; for example level 19 in Costa Rica, 21 in Madrid) instead of requesting missing levels that left blank areas and 404 errors; beyond that level the photo is enlarged and the map says "Esta zona no tiene más detalle". The base imagery is now an app-managed layer, so older photos and language changes keep working.
 - Lot card photos retry up to 3 times when the imagery service fails for a moment, and show a soft loading shimmer meanwhile; only then they fall back to the colored shape.
 - When an older photo is zoomed past its detail, the map says so ("Foto de …: no tiene más detalle").
 - Older satellite photos no longer log "Failed to fetch" at the closest zoom: Wayback has no level 19 photos, so the map enlarges the level 18 photo instead.
