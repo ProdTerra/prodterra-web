@@ -353,7 +353,12 @@
       "axisStart": "Start",
       "axisYears": "{years, plural, one {# year} other {# years}}",
       "axisMonths": "{months} months",
-      "imageryCredit": "Satellite photos © Esri and contributors"
+      "imageryCredit": "Satellite photos © Esri and contributors",
+      "searchCrop": "Search crop",
+      "suggestedCrops": "On your farm",
+      "allCrops": "All crops",
+      "noCropFound": "We did not find “{query}”. Try another name.",
+      "otherCrop": "Another crop"
     },
     "myCalendar": {
       "title": "Your calendar",
