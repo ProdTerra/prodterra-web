@@ -1408,7 +1408,7 @@ body {
 }
 
 .calendar-step__header .step-hint {
-  max-width: 48ch;
+  max-width: 70ch;
   margin-top: 0.5rem;
 }
 
@@ -2027,8 +2027,7 @@ body {
 }
 
 .start-date .step-hint,
-.rotation-step .step-hint,
-.farmer-calendar .step-hint {
+.rotation-step .step-hint {
   max-width: 48ch;
   margin-top: 0.5rem;
 }
@@ -3891,4 +3890,9 @@ body {
   min-height: 2.25rem;
   margin-left: 2rem;
   font-size: 0.875rem;
+}
+
+.farmer-calendar .step-hint {
+  max-width: 70ch;
+  margin-top: 0.5rem;
 }
