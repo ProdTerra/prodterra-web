@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Fixed
+- Older satellite photos no longer log "Failed to fetch" at the closest zoom: Wayback has no level 19 photos, so the map enlarges the level 18 photo instead.
+
 ### Added
 - "Otra foto" on the map: lists the dates when the satellite photo of that place changed (Esri World Imagery Wayback) and switches the map to an older photo, useful when clouds cover the farm; the choice is remembered in the browser.
 - Phones: in steps 1 to 3 the panel has a handle; swipe it up to cover most of the map for comfortable reading, swipe down or tap to see the full map again. The map resizes with its container.

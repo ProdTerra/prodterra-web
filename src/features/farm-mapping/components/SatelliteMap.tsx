@@ -63,6 +63,7 @@ const mapWorkerUrl = "/vendor/maplibre-gl-worker.mjs";
 setWorkerUrl(mapWorkerUrl);
 const farmZoom = 17;
 const imagerySourceId = "wayback-imagery";
+const waybackMaximumZoom = 18;
 
 function applyImagery(map: MapLibreMap, tileUrl: string | null): void {
   if (!map.isStyleLoaded()) {
@@ -78,7 +79,7 @@ function applyImagery(map: MapLibreMap, tileUrl: string | null): void {
   if (!tileUrl) {
     return;
   }
-  map.addSource(imagerySourceId, { type: "raster", tiles: [tileUrl], tileSize: 256, maxzoom: 19 });
+  map.addSource(imagerySourceId, { type: "raster", tiles: [tileUrl], tileSize: 256, maxzoom: waybackMaximumZoom });
   const firstLabelLayer = map.getStyle().layers.find((layer) => layer.type === "symbol");
   map.addLayer({ id: imagerySourceId, type: "raster", source: imagerySourceId }, firstLabelLayer?.id);
 }
