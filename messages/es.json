@@ -301,8 +301,6 @@
       "addRest": "Agregar descanso",
       "cropPickerLabel": "¿Qué cultivo vas a sembrar?",
       "cancelPicker": "Cancelar",
-      "noRoomTitle": "El plan de este lote está lleno",
-      "noRoom": "Ya llega a los 24 meses. Acorta o quita algo para agregar más.",
       "durationLabel": "Duración de {name} en {unit}",
       "shorter": "Restar uno ({unit})",
       "longer": "Sumar uno ({unit})",
@@ -332,7 +330,7 @@
         "weeks": "semanas",
         "months": "meses"
       },
-      "limitReached": "Llegó al máximo: el plan del lote dura hasta 24 meses.",
+      "limitReached": "Cada cultivo o descanso dura como máximo 2 años.",
       "useUsual": "Usar {duration}",
       "blockActions": "Opciones de {name}",
       "moveUp": "Subir",
@@ -351,8 +349,10 @@
       "restDates": "Del {start} al {end}",
       "cropDurationQuestion": "¿Cuánto tiempo pasa de la siembra a la cosecha?",
       "restDurationQuestion": "¿Cuánto tiempo descansa la tierra?",
-      "stripCaption": "Tu lote en los próximos 24 meses",
-      "axisMark": "{months, select, 0 {Inicio} 6 {6 meses} 12 {1 año} 18 {18 meses} 24 {2 años} other {{months} meses}}"
+      "stripCaption": "Tu lote mes a mes",
+      "axisStart": "Inicio",
+      "axisYears": "{years, plural, one {# año} other {# años}}",
+      "axisMonths": "{months} meses"
     },
     "myCalendar": {
       "title": "Tu calendario",

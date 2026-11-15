@@ -36,10 +36,11 @@ describe("rotationPlanReducer", () => {
     expect(rotationOf(removed, "a").blocks.map((block) => block.id)).toEqual(["b1"]);
   });
 
-  it("does not add a block when the plan has no room left", () => {
-    const full = apply([{ type: "blockDurationChanged", lotId: "a", blockId: "b1", durationInDays: 702 }], potatoThenRest);
-    const attempt = apply([{ type: "blockAdded", lotId: "a", blockId: "b3", block: { kind: "rest" } }], full);
-    expect(rotationOf(attempt, "a").blocks).toHaveLength(2);
+  it("keeps adding blocks after the plan passes two years", () => {
+    const long = apply([{ type: "blockDurationChanged", lotId: "a", blockId: "b1", durationInDays: 730 }], potatoThenRest);
+    const added = apply([{ type: "blockAdded", lotId: "a", blockId: "b3", block: { kind: "rest" } }], long);
+    expect(rotationOf(added, "a").blocks).toHaveLength(3);
+    expect(rotationOf(added, "a").blocks[2].durationInDays).toBe(28);
   });
 
   it("copies one lot's answers to every lot with fresh block ids", () => {
