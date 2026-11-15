@@ -31,6 +31,10 @@ function fallbackColor(cropKey: string): string {
   return cropPalette[hash % cropPalette.length];
 }
 
+export function cropColorOf(cropKey: string): string {
+  return colorByCrop[cropKey] ?? fallbackColor(cropKey);
+}
+
 export function assignCropColors(rotations: LotRotation[]): Map<string, string> {
   const colors = new Map<string, string>();
   for (const block of rotations.flatMap((rotation) => rotation.blocks)) {

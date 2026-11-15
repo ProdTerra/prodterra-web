@@ -89,7 +89,8 @@
       "splitEqually": "Split into equal parts",
       "farmFull": "The whole farm is already in lots. Delete a lot if you want to mark it differently.",
       "continue": "Continue",
-      "lotLimit": "You already marked {maximum} lots, the most the calendar supports."
+      "lotLimit": "You already marked {maximum} lots, the most the calendar supports.",
+      "wholeFarm": "Use the whole farm as one lot"
     },
     "area": {
       "squareMeters": "{value} m²",
@@ -198,7 +199,7 @@
   },
   "calendar": {
     "title": "Your plan and the recommended one",
-    "hint": "Each day is colored using NASA climate data for your farm. Tap a lot to compare both plans.",
+    "hint": "See month by month your plan or the recommended one, the typical climate of your farm and what to do on each lot.",
     "loading": "Building the plan with NASA data…",
     "failedTitle": "We couldn't build the calendar",
     "failed": "Check your internet connection and try again.",
@@ -272,6 +273,76 @@
         "shorterThanReference": "{crop} lasts {weeks} weeks; its reference cycle is {referenceWeeks} weeks.",
         "altitudeOutOfRange": "{crop} doesn't usually grow at this lot's elevation."
       }
+    },
+    "grid": {
+      "sowing": "Sowing",
+      "harvest": "Harvest",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "planStart": "Plan start",
+      "lotFilter": "Show",
+      "allLots": "All lots",
+      "pickDay": "Tap a day to see what happens on each lot.",
+      "dayOfBlock": "{name}: day {day} of {total}",
+      "free": "No plan that day",
+      "sowingToday": "Sowing on this day",
+      "harvestToday": "Harvest on this day",
+      "lotCount": "{count, plural, one {# lot} other {# lots}}",
+      "lotNumbers": "Lots {numbers}{more, plural, =0 {} other { and # more}}"
+    },
+    "insights": {
+      "climateTitle": "Typical climate in {month}",
+      "climateNote": "Average of past years for your farm (NASA POWER). It is not a forecast.",
+      "temperature": "Between {min} and {max} °C",
+      "frostNights": "Possible frost at night",
+      "rain": "About {value} mm in the month",
+      "rainLevel": {
+        "dry": "Dry month",
+        "normal": "Normal rain",
+        "wet": "Rainy month"
+      },
+      "humidity": "{value} % humidity",
+      "humidityLevel": {
+        "low": "Dry air",
+        "normal": "Normal humidity",
+        "high": "High humidity: helps fungi"
+      },
+      "sun": "{value} kWh/m² of sun per day",
+      "lotsTitle": "Your lots in {month}",
+      "status": {
+        "ok": "Good",
+        "watch": "Watch",
+        "risk": "Risk"
+      },
+      "compare": "Compare both plans",
+      "free": "No crop",
+      "rest": "Rest",
+      "action": {
+        "frost": "Protect the crop from cold",
+        "temperature": "Check that the crop can stand this month",
+        "drought": "Irrigate about {value} L/m² or wait for the rains",
+        "irrigation": "Irrigate about {value} L/m² this month",
+        "waterExcess": "Check the lot drainage",
+        "pest": "Watch for {pest}"
+      },
+      "cause": {
+        "frost": "Nights down to {value} °C",
+        "temperature": "Average of {value} °C, outside what it stands",
+        "drought": "Without irrigation it lacks water this month",
+        "irrigation": "The month's rain is not enough",
+        "waterExcess": "About {value} L/m² too much rain",
+        "pest": "This month's weather favors it"
+      },
+      "showQuietLots": "Show the other {count} lots without alarms",
+      "hideQuietLots": "Hide the lots without alarms",
+      "lotGroup": "Lots {numbers}"
+    },
+    "newPlan": {
+      "action": "Create a new plan",
+      "title": "Start a new plan on this farm?",
+      "description": "Your farm boundary is kept. You will split it into lots and build the rotation from scratch. To keep this plan, save it first in My farms.",
+      "confirm": "Create new plan",
+      "cancel": "Cancel"
     }
   },
   "rotationPlan": {

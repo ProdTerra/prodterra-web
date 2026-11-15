@@ -180,4 +180,14 @@ describe("moving through the rotation steps", () => {
     const oldDraft = { ...planStep, step: "crops" as unknown as "plan" };
     expect(farmMappingReducer(initialFarmMappingState, { type: "draftRestored", draft: oldDraft }).step).toBe("plan");
   });
+
+  it("starts a new plan on the same farm: keeps the boundary and clears the lots", () => {
+    const withLot = farmMappingReducer(stateWithBoundary, { type: "lotsReplaced", lots: [{ shapeId: "lot-a", geometry, areaInHectares: 2.4 }] });
+    const analysis = { ...withLot, step: "analysis" as const };
+    const fresh = farmMappingReducer(analysis, { type: "newPlanRequested" });
+    expect(fresh.step).toBe("lots");
+    expect(fresh.farmBoundary).toEqual(stateWithBoundary.farmBoundary);
+    expect(fresh.lots).toEqual([]);
+    expect(fresh.lastLotNumber).toBe(0);
+  });
 });

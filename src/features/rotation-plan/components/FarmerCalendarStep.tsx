@@ -3,7 +3,10 @@
 import { ArrowLeft, RotateCcw, Satellite } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { MonthStrip } from "@/features/calendar/components/MonthStrip";
+import { CalendarToolbar } from "@/features/calendar/components/CalendarToolbar";
+import { DayDetail } from "@/features/calendar/components/DayDetail";
+import { PlanMonthGrid, type GridLot } from "@/features/calendar/components/PlanMonthGrid";
+import { buildMonthLayout, type GridBlock } from "@/features/calendar/domain/monthGrid";
 import type { Lot } from "@/features/farm-mapping/application/farmMappingState";
 import { lotDisplayName } from "@/features/farm-mapping/application/lotDisplayName";
 import { Notice } from "@/shared/components/Notice";
@@ -14,8 +17,6 @@ import { localToday } from "../domain/planDates";
 import { isLotRotationComplete, rotationOf } from "../domain/rotationPlan";
 import { dayUsesForMonth, planMonths, scheduleBlocks, type DayUse, type ScheduledBlock } from "../domain/rotationSchedule";
 import { CropLegend } from "./CropLegend";
-import { LotDatesSummary } from "./LotDatesSummary";
-import { RotationDayGrid } from "./RotationDayGrid";
 import { useCropNames } from "./useCropNames";
 import { usePlanFormat } from "./usePlanFormat";
 import { useSavedRotationPlan } from "./useRotationPlan";
@@ -30,11 +31,14 @@ export function FarmerCalendarStep({ lots, onEditPlan, onAnalyze }: FarmerCalend
   const translate = useTranslations("rotationPlan.myCalendar");
   const translateLots = useTranslations("farmMapping.lots");
   const translatePrint = useTranslations("print");
+  const translateGrid = useTranslations("calendar.grid");
   const plan = useSavedRotationPlan(lots.map((lot) => lot.shapeId));
   const cropNames = useCropNames();
   const format = usePlanFormat();
   const [today] = useState(() => localToday(new Date()));
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedLotId, setSelectedLotId] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const startDate = plan.startDate;
   const rotations = lots.map((lot) => rotationOf(plan, lot.shapeId));
   const isPlanReady = startDate !== null && rotations.every(isLotRotationComplete);
@@ -58,7 +62,25 @@ export function FarmerCalendarStep({ lots, onEditPlan, onAnalyze }: FarmerCalend
   const hasRest = rotations.some((rotation) => rotation.blocks.some((block) => block.kind === "rest"));
   const dayUseName = (use: DayUse) => (use.kind === "crop" ? cropNames.cropName(use.cropKey) : translate("rest"));
   const blockName = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropNames.cropName(block.cropKey) : translate("rest"));
-  const blockColor = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropColors.get(block.cropKey) ?? restBlockColor : restBlockColor);
+  const gridLots: GridLot[] = lots.map((lot) => ({ id: lot.shapeId, number: lot.number, name: lotName(lot), color: lot.color }));
+  const visibleLots = selectedLotId ? gridLots.filter((lot) => lot.id === selectedLotId) : gridLots;
+  const gridBlocks: GridBlock[] = lots.flatMap((lot) =>
+    (schedules.get(lot.shapeId) ?? []).map(({ block, startDate: blockStart, endDate }) => ({
+      id: block.id,
+      lotId: lot.shapeId,
+      kind: block.kind,
+      cropKey: block.kind === "crop" ? block.cropKey : null,
+      startDate: blockStart,
+      endDate,
+    })),
+  );
+  const gridBlockName = (block: GridBlock) => (block.cropKey ? cropNames.cropName(block.cropKey) : translate("rest"));
+  const gridBlockColor = (block: GridBlock) => (block.cropKey ? cropColors.get(block.cropKey) ?? restBlockColor : restBlockColor);
+  const monthIndex = Math.min(selectedIndex, months.length - 1);
+  const layout = buildMonthLayout(visibleLots, gridBlocks, selectedMonth);
+  const layoutIsGrouped = Boolean(layout?.isGrouped);
+  const layoutBlockName = (block: GridBlock) =>
+    layout.isGrouped ? `${gridBlockName(block)} · ${translateGrid("lotCount", { count: block.lotCount ?? 0 })}` : gridBlockName(block);
 
   const reportLots: ReportLot[] = lots.map((lot) => {
     const schedule = schedules.get(lot.shapeId) ?? [];
@@ -114,33 +136,45 @@ export function FarmerCalendarStep({ lots, onEditPlan, onAnalyze }: FarmerCalend
         </Notice>
       )}
 
-      <MonthStrip
-        months={months}
-        selectedIndex={Math.min(selectedIndex, months.length - 1)}
-        monthName={format.monthTitle}
-        shortMonthName={format.shortMonth}
-        onSelect={setSelectedIndex}
+      <CalendarToolbar
+        monthTitle={format.monthTitle(selectedMonth)}
+        canGoBack={monthIndex > 0}
+        canGoForward={monthIndex < months.length - 1}
+        lots={gridLots}
+        selectedLotId={selectedLotId}
+        onPrevious={() => setSelectedIndex(monthIndex - 1)}
+        onNext={() => setSelectedIndex(monthIndex + 1)}
+        onGoToStart={() => {
+          setSelectedIndex(0);
+          setSelectedDate(startDate);
+        }}
+        onSelectLot={setSelectedLotId}
       />
 
-      <div className="calendar-step__body">
-        <div className="calendar-step__grid">
-          <RotationDayGrid
-            lots={lots}
-            schedules={schedules}
-            monthKey={selectedMonth}
-            monthTitle={format.monthTitle(selectedMonth)}
-            today={today}
-            cropColors={cropColors}
-            lotName={lotName}
-            dayUseName={dayUseName}
-            list={format.list}
-          />
-          <CropLegend
-            crops={[...cropColors].map(([cropKey, color]) => ({ cropKey, color, name: cropNames.cropName(cropKey) }))}
-            hasRest={hasRest}
-          />
+      <div className="calendar-layout">
+        <PlanMonthGrid
+          monthKey={selectedMonth}
+          lanes={layout.lanes}
+          blocks={layout.blocks}
+          today={today}
+          selectedDate={selectedDate}
+          isSingleLot={visibleLots.length === 1}
+          showsMarkers={!layoutIsGrouped}
+          blockName={layoutBlockName}
+          blockColor={gridBlockColor}
+          onSelectDate={setSelectedDate}
+        />
+        <div className="calendar-side">
+          <div className="calendar-card">
+            <DayDetail date={selectedDate} lots={visibleLots} blocks={gridBlocks} blockName={gridBlockName} blockColor={gridBlockColor} />
+          </div>
+          <div className="calendar-card">
+            <CropLegend
+              crops={[...cropColors].map(([cropKey, color]) => ({ cropKey, color, name: cropNames.cropName(cropKey) }))}
+              hasRest={hasRest}
+            />
+          </div>
         </div>
-        <LotDatesSummary lots={lots} schedules={schedules} lotName={lotName} blockName={blockName} blockColor={blockColor} />
       </div>
 
       <div className="plan-footer plan-footer--sticky">

@@ -1,4 +1,4 @@
-import { Check, CircleStop, Columns3, Plus, RotateCcw, Undo2 } from "lucide-react";
+import { Check, CircleStop, Columns3, Plus, RotateCcw, Square, Undo2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
 import type { DrawnShape, Lot } from "../application/farmMappingState";
@@ -24,6 +24,7 @@ type LotsStepProps = {
   split: { lotCount: number; layout: SplitLayout } | null;
   onStartSplit: () => void;
   onChangeSplit: (lotCount: number, layout: SplitLayout) => void;
+  onUseWholeFarm: () => void;
   onFinishSplit: () => void;
   onContinue: () => void;
 };
@@ -43,6 +44,7 @@ export function LotsStep({
   split,
   onStartSplit,
   onChangeSplit,
+  onUseWholeFarm,
   onFinishSplit,
   onContinue,
 }: LotsStepProps) {
@@ -146,6 +148,12 @@ export function LotsStep({
               <Columns3 aria-hidden size={18} />
               {translate("splitEqually")}
             </button>
+            {lots.length === 0 && (
+              <button type="button" onClick={onUseWholeFarm} className="button button--outline">
+                <Square aria-hidden size={18} />
+                {translate("wholeFarm")}
+              </button>
+            )}
             <button type="button" onClick={onRedrawFarm} className="button button--danger-outline">
               <RotateCcw aria-hidden size={18} />
               {translate("redrawFarm")}
