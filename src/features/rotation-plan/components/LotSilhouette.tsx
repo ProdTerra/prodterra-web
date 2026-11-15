@@ -3,7 +3,7 @@
 import type { Polygon } from "geojson";
 import { useId, useState } from "react";
 import { satelliteSnapshotUrl } from "@/features/farm-mapping/infrastructure/satelliteSnapshot";
-import { silhouetteBounds, toSilhouettePoints } from "../domain/lotSilhouette";
+import { snapshotFraming, toSilhouettePoints } from "../domain/lotSilhouette";
 
 const boxSize = 64;
 const padding = 6;
@@ -12,9 +12,13 @@ const snapshotPixels = 256;
 export function LotSilhouette({ geometry, color }: { geometry: Polygon; color: string }) {
   const maskId = useId();
   const [hasSnapshotFailed, setHasSnapshotFailed] = useState(false);
-  const points = toSilhouettePoints(geometry, boxSize, padding)
-    .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
-    .join(" ");
+  const framing = snapshotFraming(geometry, boxSize, padding, snapshotPixels);
+  const toPoints = (drawingPadding: number) =>
+    toSilhouettePoints(geometry, boxSize, drawingPadding)
+      .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
+      .join(" ");
+  const points = toPoints(padding);
+  const framedPoints = toPoints(framing.padding);
 
   if (hasSnapshotFailed) {
     return (
@@ -28,7 +32,7 @@ export function LotSilhouette({ geometry, color }: { geometry: Polygon; color: s
     <span aria-hidden className="lot-silhouette lot-silhouette--satellite">
       {/* eslint-disable-next-line @next/next/no-img-element -- Esri export images are not served through next/image. */}
       <img
-        src={satelliteSnapshotUrl(silhouetteBounds(geometry, boxSize, padding), snapshotPixels)}
+        src={satelliteSnapshotUrl(framing.bounds, framing.sizeInPixels)}
         alt=""
         loading="lazy"
         decoding="async"
@@ -37,10 +41,10 @@ export function LotSilhouette({ geometry, color }: { geometry: Polygon; color: s
       <svg viewBox={`0 0 ${boxSize} ${boxSize}`}>
         <mask id={maskId}>
           <rect width={boxSize} height={boxSize} fill="white" />
-          <polygon points={points} fill="black" />
+          <polygon points={framedPoints} fill="black" />
         </mask>
         <rect width={boxSize} height={boxSize} fill="rgb(22 26 21)" fillOpacity={0.5} mask={`url(#${maskId})`} />
-        <polygon points={points} fill="none" stroke={color} strokeWidth={1.5} strokeLinejoin="round" />
+        <polygon points={framedPoints} fill="none" stroke={color} strokeWidth={1.5} strokeLinejoin="round" />
       </svg>
     </span>
   );

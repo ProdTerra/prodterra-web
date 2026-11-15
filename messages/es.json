@@ -34,7 +34,11 @@
       "locating": "Buscando tu ubicación…",
       "locationDenied": "No hay permiso para ver tu ubicación. Búscala por nombre.",
       "locationUnavailable": "No pudimos encontrar tu ubicación. Búscala por nombre.",
-      "confirm": "Mi finca está aquí"
+      "confirm": "Mi finca está aquí",
+      "locationApproximateTitle": "Tu ubicación es aproximada",
+      "locationApproximate": "Puede estar a unos {distance} de donde estás, porque este equipo no tiene GPS. Busca tu pueblo arriba o mueve el mapa hasta tu finca.",
+      "meters": "{meters} m",
+      "kilometers": "{kilometers} km"
     },
     "boundary": {
       "title": "Marca el borde de tu finca",

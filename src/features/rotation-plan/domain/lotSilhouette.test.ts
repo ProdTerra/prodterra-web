@@ -1,6 +1,6 @@
 import type { Polygon } from "geojson";
 import { describe, expect, it } from "vitest";
-import { silhouetteBounds, toSilhouettePoints } from "./lotSilhouette";
+import { silhouetteBounds, snapshotFraming, toSilhouettePoints } from "./lotSilhouette";
 
 const wideLot: Polygon = {
   type: "Polygon",
@@ -46,5 +46,35 @@ describe("silhouetteBounds", () => {
     expect(longitudeSpan).toBeCloseTo((0.004 * 100) / 92, 8);
     expect((bounds.west + bounds.east) / 2).toBeCloseTo(-83.892, 8);
     expect((bounds.south + bounds.north) / 2).toBeCloseTo(9.9185, 8);
+  });
+});
+
+const smallLot: Polygon = {
+  type: "Polygon",
+  coordinates: [
+    [
+      [-83.892, 9.918],
+      [-83.8918, 9.918],
+      [-83.8918, 9.9182],
+      [-83.892, 9.9182],
+      [-83.892, 9.918],
+    ],
+  ],
+};
+
+describe("snapshotFraming", () => {
+  it("keeps the requested detail within what the satellite service can return", () => {
+    for (const lot of [wideLot, smallLot]) {
+      const framing = snapshotFraming(lot, 64, 6, 256);
+      expect((framing.bounds.north - framing.bounds.south) / framing.sizeInPixels).toBeGreaterThanOrEqual(3.2e-6);
+      expect(framing.sizeInPixels).toBeGreaterThanOrEqual(128);
+    }
+  });
+
+  it("leaves a normal lot framed as drawn and widens the view around a tiny lot", () => {
+    expect(snapshotFraming(wideLot, 64, 6, 256)).toEqual({ bounds: silhouetteBounds(wideLot, 64, 6), sizeInPixels: 256, padding: 6 });
+    const tiny = snapshotFraming(smallLot, 64, 6, 256);
+    expect(tiny.padding).toBeGreaterThan(6);
+    expect(tiny.bounds.north - tiny.bounds.south).toBeCloseTo(128 * 3.2e-6, 10);
   });
 });

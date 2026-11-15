@@ -4,17 +4,18 @@ import { LocateFixed, MapPin, Search, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
 import { useState, type FormEvent } from "react";
+import { isApproximateLocation, zoomForAccuracy } from "../domain/locationAccuracy";
 import { requestCurrentPosition } from "../infrastructure/currentPosition";
 import { searchPlaces, type PlaceResult } from "../infrastructure/placeSearch";
 import type { MapCoordinates } from "./SatelliteMap";
 
 type LocateStepProps = {
-  onMoveMap: (coordinates: MapCoordinates) => void;
+  onMoveMap: (coordinates: MapCoordinates, zoom?: number) => void;
   onConfirm: () => void;
 };
 
 type SearchStatus = "idle" | "searching" | "empty" | "failed" | "found";
-type LocatingStatus = "idle" | "locating" | "denied" | "unavailable";
+type LocatingStatus = "idle" | "locating" | "denied" | "unavailable" | "approximate";
 
 export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
   const translate = useTranslations("farmMapping.locate");
@@ -23,6 +24,7 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
   const [results, setResults] = useState<PlaceResult[]>([]);
   const [searchStatus, setSearchStatus] = useState<SearchStatus>("idle");
   const [locatingStatus, setLocatingStatus] = useState<LocatingStatus>("idle");
+  const [accuracyInMeters, setAccuracyInMeters] = useState(0);
 
   async function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -45,8 +47,10 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
     setLocatingStatus("locating");
     const position = await requestCurrentPosition();
     if (position.found) {
-      setLocatingStatus("idle");
-      onMoveMap(position);
+      const isApproximate = isApproximateLocation(position.accuracyInMeters);
+      setAccuracyInMeters(position.accuracyInMeters);
+      setLocatingStatus(isApproximate ? "approximate" : "idle");
+      onMoveMap(position, zoomForAccuracy(position.accuracyInMeters));
       return;
     }
     setLocatingStatus(position.failure);
@@ -125,6 +129,16 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
       </button>
       {locatingStatus === "denied" && <Notice tone="error">{translate("locationDenied")}</Notice>}
       {locatingStatus === "unavailable" && <Notice tone="error">{translate("locationUnavailable")}</Notice>}
+      {locatingStatus === "approximate" && (
+        <Notice tone="warning" title={translate("locationApproximateTitle")}>
+          {translate("locationApproximate", {
+            distance:
+              accuracyInMeters < 1000
+                ? translate("meters", { meters: Math.round(accuracyInMeters / 10) * 10 })
+                : translate("kilometers", { kilometers: Math.round(accuracyInMeters / 1000) }),
+          })}
+        </Notice>
+      )}
 
       <div className="step-actions">
         <button type="button" onClick={onConfirm} className="button button--primary">

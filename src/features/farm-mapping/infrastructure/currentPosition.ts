@@ -1,7 +1,7 @@
 export type PositionFailure = "denied" | "unavailable";
 
 export type CurrentPositionResult =
-  | { found: true; longitude: number; latitude: number }
+  | { found: true; longitude: number; latitude: number; accuracyInMeters: number }
   | { found: false; failure: PositionFailure };
 
 const positionTimeoutInMilliseconds = 10_000;
@@ -17,6 +17,7 @@ export function requestCurrentPosition(): Promise<CurrentPositionResult> {
           found: true,
           longitude: position.coords.longitude,
           latitude: position.coords.latitude,
+          accuracyInMeters: position.coords.accuracy,
         }),
       (error) =>
         resolve({
