@@ -350,7 +350,8 @@
       "restDates": "From {start} to {end}",
       "cropDurationQuestion": "How long from sowing to harvest?",
       "restDurationQuestion": "How long does the land rest?",
-      "stripCaption": "Your lot over the next 24 months"
+      "stripCaption": "Your lot over the next 24 months",
+      "axisMark": "{months, select, 0 {Start} 6 {6 months} 12 {1 year} 18 {18 months} 24 {2 years} other {{months} months}}"
     },
     "myCalendar": {
       "title": "Your calendar",

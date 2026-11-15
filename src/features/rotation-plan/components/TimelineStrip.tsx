@@ -53,7 +53,8 @@ export function TimelineStrip({ startDate, schedule, selectedBlockId, blockName,
       <div aria-hidden className="timeline-strip__axis">
         {ticks.map((months) => (
           <span key={months} style={{ left: `${(months / totalMonths) * 100}%` }}>
-            {format.dateTime(monthTick(startDate, months), { month: "short", year: "2-digit", timeZone: "UTC" })}
+            <strong>{translate("axisMark", { months })}</strong>
+            {format.dateTime(monthTick(startDate, months), { month: "short", year: "numeric", timeZone: "UTC" })}
           </span>
         ))}
       </div>
