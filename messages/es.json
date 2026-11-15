@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "ProdTerra",
+    "description": "Planifica las siembras de tu finca con datos satelitales de la NASA."
+  },
+  "languageSwitcher": {
+    "label": "Idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "farmMapping": {
+    "mapLabel": "Mapa satelital de tu finca",
+    "steps": {
+      "label": "Pasos para registrar tu finca",
+      "locate": "Ubica tu finca",
+      "boundary": "Marca el borde",
+      "lots": "Divide en lotes"
+    },
+    "locate": {
+      "title": "¿Dónde está tu finca?",
+      "hint": "Busca tu pueblo o usa tu ubicación. Después mueve el mapa hasta ver tu terreno en el centro.",
+      "searchLabel": "Buscar un lugar",
+      "searchPlaceholder": "Ej.: Tierra Blanca, Cartago",
+      "searchAction": "Buscar",
+      "searching": "Buscando…",
+      "noResults": "No encontramos ese lugar. Prueba con el nombre del pueblo o del distrito.",
+      "searchFailed": "No se pudo buscar. Revisa tu conexión e inténtalo otra vez.",
+      "resultsLabel": "Lugares encontrados",
+      "useMyLocation": "Usar mi ubicación",
+      "locating": "Buscando tu ubicación…",
+      "locationDenied": "No hay permiso para ver tu ubicación. Búscala por nombre.",
+      "locationUnavailable": "No pudimos encontrar tu ubicación. Búscala por nombre.",
+      "confirm": "Mi finca está aquí"
+    },
+    "boundary": {
+      "title": "Marca el borde de tu finca",
+      "hint": "Toca cada esquina del terreno, una por una. Cuando las tengas todas, toca «Cerrar finca».",
+      "start": "Empezar a marcar",
+      "drawingHint": "Toca cada esquina de tu finca.",
+      "undo": "Quitar último punto",
+      "cancel": "Cancelar",
+      "changeLocation": "Cambiar ubicación",
+      "close": "Cerrar finca",
+      "closeRequirement": "Marca al menos 3 esquinas para poder cerrar la finca."
+    },
+    "lots": {
+      "title": "Divide tu finca en lotes",
+      "hint": "Marca cada parte donde siembras algo distinto. Un lote no puede salirse de la finca ni montarse sobre otro.",
+      "farmArea": "Tu finca mide",
+      "unassigned": "sin lote: {area}",
+      "lotCount": "{count, plural, =0 {Sin lotes} one {# lote} other {# lotes}}",
+      "addLot": "Marcar un lote",
+      "finishLots": "Terminar de marcar",
+      "drawingHint": "Toca cada esquina del lote.",
+      "defaultName": "Lote {number}",
+      "nameLabel": "Nombre del lote {number}",
+      "removeLot": "Borrar {name}",
+      "empty": "Todavía no hay lotes. Marca el primero sobre el mapa.",
+      "redrawFarm": "Volver a marcar la finca",
+      "undoPoint": "Quitar último punto",
+      "closeLot": "Cerrar lote",
+      "closeRequirement": "Marca al menos 3 esquinas para poder cerrar el lote.",
+      "redrawDialog": {
+        "title": "¿Volver a marcar la finca?",
+        "description": "Se borrarán el borde de la finca y {count, plural, =0 {}one {el lote que marcaste} other {los # lotes que marcaste}}. Esta acción no se puede deshacer.",
+        "confirm": "Borrar y volver a marcar",
+        "cancel": "Conservar mi finca"
+      },
+      "rejection": {
+        "outsideFarmTitle": "El lote se sale de la finca",
+        "outsideFarm": "Marca el lote dentro de la línea amarilla, que es el borde de tu finca.",
+        "overlapsLotTitle": "El lote se monta sobre otro",
+        "overlapsLot": "Este lote ocupa parte de {lotName}. Márcalo en un espacio libre de la finca.",
+        "dismiss": "Entendido"
+      }
+    },
+    "area": {
+      "squareMeters": "{value} m²",
+      "hectares": "{value} ha"
+    },
+    "position": {
+      "label": "Posición del centro del mapa",
+      "latitude": "Latitud",
+      "longitude": "Longitud",
+      "elevation": "Altitud",
+      "meters": "{value} m",
+      "loading": "Calculando…",
+      "unavailable": "Sin dato",
+      "source": "Altitud: NASADEM (NASA)"
+    }
+  }
+}
