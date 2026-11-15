@@ -78,7 +78,7 @@ export function LocateStep({ onMoveMap, onConfirm }: LocateStepProps) {
           autoComplete="off"
           className="search-form__input"
         />
-        <button type="submit" className="button button--quiet" disabled={searchStatus === "searching"}>
+        <button type="submit" className="button button--search" disabled={searchStatus === "searching"}>
           {searchStatus === "searching" ? translate("searching") : translate("searchAction")}
         </button>
       </form>

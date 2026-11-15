@@ -54,7 +54,7 @@
       "title": "Split your farm into lots",
       "hint": "Mark each part where you grow something different. A lot can't go outside the farm or overlap another lot.",
       "farmArea": "Your farm measures",
-      "unassigned": "not in a lot: {area}",
+      "unassigned": "land not in a lot: {area}",
       "lotCount": "{count, plural, =0 {No lots} one {# lot} other {# lots}}",
       "addLot": "Mark a lot",
       "finishLots": "Done marking",
@@ -120,7 +120,7 @@
       "title": "Your farm at a glance",
       "intro": "The key facts about your land, before planning the crops.",
       "loading": "Getting NASA data…",
-      "failed": "Climate data couldn't be loaded. Check that the API is running and try again.",
+      "failed": "We couldn't get NASA data for your farm. Check your internet connection and try again.",
       "retry": "Try again",
       "landTile": "Land",
       "landDetail": "{count, plural, one {# lot} other {# lots}}",
@@ -170,7 +170,8 @@
       "farmElevationRow": "Farm elevation (NASADEM)",
       "gridElevationRow": "Elevation of the area NASA POWER measures (~50 km)",
       "adjustmentRow": "Adjustment to temperatures",
-      "adjustmentExplanation": "The farm is {difference} {direction, select, colder {higher} other {lower}} than that area. Air changes 6.5 °C for every 1,000 m of elevation (U.S. Standard Atmosphere 1976)."
+      "adjustmentExplanation": "The farm is {difference} {direction, select, colder {higher} other {lower}} than that area. Air changes 6.5 °C for every 1,000 m of elevation (U.S. Standard Atmosphere 1976).",
+      "continueBlocked": "To continue we need the farm's climate data."
     },
     "crops": {
       "title": "What do you grow in each lot?",
@@ -196,7 +197,7 @@
       "applyToAll": "Use these answers for every lot",
       "nextLot": "Next lot",
       "catalogLoading": "Loading crops…",
-      "catalogFailed": "Crops couldn't be loaded. Check that the API is running.",
+      "catalogFailed": "We couldn't get the crop list. Check your internet connection and try again.",
       "retry": "Try again",
       "seeCalendar": "See my calendar"
     }
@@ -205,7 +206,7 @@
     "title": "Your calendar",
     "hint": "How each lot looks over the next 12 months. Every day is painted by its status.",
     "loading": "Building the plan with NASA data…",
-    "failed": "The plan couldn't be built. Check that the API is running and try again.",
+    "failed": "We couldn't build the calendar. Check your internet connection and try again.",
     "retry": "Try again",
     "demoNotice": "This calendar uses test data for crop and pest ranges.",
     "previousMonth": "Previous month",

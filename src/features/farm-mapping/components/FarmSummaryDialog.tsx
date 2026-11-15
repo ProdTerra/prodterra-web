@@ -202,8 +202,8 @@ export function FarmSummaryDialog({
           <Notice tone="loading">{translate("loading")}</Notice>
         )}
         {state.status === "failed" && (
-          <Notice tone="error" action={{ label: translate("retry"), onClick: retry }}>
-            {translate("failed")}
+          <Notice tone="error" id="summary-continue-blocked" action={{ label: translate("retry"), onClick: retry }}>
+            {translate("failed")} {translate("continueBlocked")}
           </Notice>
         )}
         {state.status === "ready" && <ClimateOverview profile={state.profile} landTile={landTile} />}
@@ -235,7 +235,13 @@ export function FarmSummaryDialog({
           <button type="button" onClick={onClose} className="button button--outline">
             {translate("back")}
           </button>
-          <button type="button" onClick={onContinue} className="button button--primary">
+          <button
+            type="button"
+            onClick={onContinue}
+            disabled={state.status !== "ready"}
+            aria-describedby={state.status === "failed" ? "summary-continue-blocked" : undefined}
+            className="button button--primary"
+          >
             {translate("continue")}
           </button>
         </div>

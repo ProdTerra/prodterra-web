@@ -1,4 +1,4 @@
-import { Check, Columns3, Plus, Undo2 } from "lucide-react";
+import { Check, CircleStop, Columns3, Plus, RotateCcw, Undo2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Notice } from "@/shared/components/Notice";
 import type { DrawnShape, Lot } from "../application/farmMappingState";
@@ -125,7 +125,8 @@ export function LotsStep({
               <Undo2 aria-hidden size={18} />
               {translate("undoPoint")}
             </button>
-            <button type="button" onClick={onStopDrawing} className="button button--quiet">
+            <button type="button" onClick={onStopDrawing} className="button button--secondary">
+              <CircleStop aria-hidden size={18} />
               {translate("finishLots")}
             </button>
           </>
@@ -145,7 +146,8 @@ export function LotsStep({
               <Columns3 aria-hidden size={18} />
               {translate("splitEqually")}
             </button>
-            <button type="button" onClick={onRedrawFarm} className="button button--quiet">
+            <button type="button" onClick={onRedrawFarm} className="button button--danger-outline">
+              <RotateCcw aria-hidden size={18} />
               {translate("redrawFarm")}
             </button>
             {lots.length > 0 && (

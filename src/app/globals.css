@@ -206,14 +206,6 @@ body {
   background: var(--color-paper);
 }
 
-.button--quiet {
-  padding: 0 0.75rem;
-  color: var(--color-field);
-}
-
-.button--quiet:hover {
-  text-decoration: underline;
-}
 
 .icon-button {
   display: inline-grid;
@@ -658,7 +650,7 @@ body {
 }
 
 .farm-mapping__panel[data-step="lots"] {
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .farm-mapping__panel[data-step="lots"] > .step-content {
@@ -1820,4 +1812,30 @@ body {
   min-height: 2.25rem;
   padding: 0 0.875rem;
   font-size: 0.875rem;
+}
+
+.button--danger-outline {
+  border: 1.5px solid #f0c2bd;
+  background: var(--color-paper);
+  color: var(--status-risk-strong);
+}
+
+.button--danger-outline:hover {
+  border-color: var(--status-risk-strong);
+  background: var(--color-danger-soft);
+}
+
+.button--search {
+  min-height: 2.5rem;
+  margin-right: 0.25rem;
+  padding: 0 1rem;
+  border-radius: 0.625rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: 0.9375rem;
+}
+
+.button:disabled:not(.button--primary) {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

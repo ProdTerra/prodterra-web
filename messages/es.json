@@ -54,7 +54,7 @@
       "title": "Divide tu finca en lotes",
       "hint": "Marca cada parte donde siembras algo distinto. Un lote no puede salirse de la finca ni montarse sobre otro.",
       "farmArea": "Tu finca mide",
-      "unassigned": "sin lote: {area}",
+      "unassigned": "terreno sin lote: {area}",
       "lotCount": "{count, plural, =0 {Sin lotes} one {# lote} other {# lotes}}",
       "addLot": "Marcar un lote",
       "finishLots": "Terminar de marcar",
@@ -120,7 +120,7 @@
       "title": "Resumen de tu finca",
       "intro": "Lo más importante de tu terreno, antes de planear los cultivos.",
       "loading": "Consultando los datos de la NASA…",
-      "failed": "No se pudieron cargar los datos del clima. Revisa que la API esté encendida e inténtalo otra vez.",
+      "failed": "No pudimos traer los datos de la NASA para tu finca. Revisa tu conexión a internet e inténtalo otra vez.",
       "retry": "Intentar otra vez",
       "landTile": "Terreno",
       "landDetail": "{count, plural, one {# lote} other {# lotes}}",
@@ -170,7 +170,8 @@
       "farmElevationRow": "Altura de la finca (NASADEM)",
       "gridElevationRow": "Altura de la zona que mide NASA POWER (~50 km)",
       "adjustmentRow": "Ajuste a las temperaturas",
-      "adjustmentExplanation": "La finca está {difference} más {direction, select, colder {arriba} other {abajo}} que esa zona. El aire cambia 6,5 °C por cada 1.000 m de altura (U.S. Standard Atmosphere 1976)."
+      "adjustmentExplanation": "La finca está {difference} más {direction, select, colder {arriba} other {abajo}} que esa zona. El aire cambia 6,5 °C por cada 1.000 m de altura (U.S. Standard Atmosphere 1976).",
+      "continueBlocked": "Para continuar necesitamos los datos de clima de la finca."
     },
     "crops": {
       "title": "¿Qué siembras en cada lote?",
@@ -196,7 +197,7 @@
       "applyToAll": "Usar estas respuestas en todos los lotes",
       "nextLot": "Siguiente lote",
       "catalogLoading": "Cargando los cultivos…",
-      "catalogFailed": "No se pudieron cargar los cultivos. Revisa que la API esté encendida.",
+      "catalogFailed": "No pudimos traer la lista de cultivos. Revisa tu conexión a internet e inténtalo otra vez.",
       "retry": "Intentar otra vez",
       "seeCalendar": "Ver mi calendario"
     }
@@ -205,7 +206,7 @@
     "title": "Tu calendario",
     "hint": "Cómo se ve cada lote los próximos 12 meses. Cada día está pintado según su estado.",
     "loading": "Armando el plan con datos de la NASA…",
-    "failed": "No se pudo armar el plan. Revisa que la API esté encendida e inténtalo otra vez.",
+    "failed": "No pudimos armar el calendario. Revisa tu conexión a internet e inténtalo otra vez.",
     "retry": "Intentar otra vez",
     "demoNotice": "Este calendario usa datos de prueba para los rangos de los cultivos y las plagas.",
     "previousMonth": "Mes anterior",
