@@ -1,0 +1,9 @@
+export const pageMargin = 24;
+export const footerHeight = 40;
+export const headerHeight = 52;
+export const weekdayRowHeight = 12;
+export const dayNumberHeight = 11;
+export const laneLabelWidth = 84;
+export const maximumLaneHeight = 18;
+export const minimumWeekHeight = 40;
+export const insightsColumnWidth = 190;

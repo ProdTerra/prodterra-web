@@ -88,6 +88,79 @@ const drawings: Record<string, ReactNode> = {
       <path d="M16 11l-4-4 4.5 1L16 4l1.5 4 4.5-1-4 4z" fill={leafGreen} stroke={darkGreen} strokeWidth="1" strokeLinejoin="round" />
     </>
   ),
+  eggplant: (
+    <>
+      <path d="M12 12c-5 3-7 9-4.5 13.5S18 30 22 24c3-4.5 2-9.5-1.5-12.5-2.7-2.3-5.8-1.6-8.5.5z" fill="#6b3a8c" stroke="#45215e" strokeWidth="1.2" />
+      <path d="M11 22c.5 2 2 3.5 4 4" fill="none" stroke="#a679c4" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M11 12.5c2-3 6-4 9.5-1.5-1 2.5-4.5 3.5-9.5 1.5z" fill={leafGreen} stroke={darkGreen} strokeWidth="1" strokeLinejoin="round" />
+      <path d="M17 10.5 20 4" stroke={darkGreen} strokeWidth="1.8" strokeLinecap="round" />
+    </>
+  ),
+  cilantro: (
+    <>
+      <path d="M16 29V15M16 20l-6-6M16 18l6-7M16 24l5-3" stroke="#5d8f37" strokeWidth="1.3" strokeLinecap="round" />
+      <g fill="#6aaa3f" stroke="#3f7a26" strokeWidth="0.9">
+        <path d="M16 15c-2.5-1-3-4-1-5.5 1-.8 2-.8 2 0 2 1.5 1.5 4.5-1 5.5z" />
+        <path d="M10 14c-2.5.5-4.5-1.5-4-4 .3-1.2 1.2-1.6 1.8-1.1 2.3-.4 3.4 2.4 2.2 5.1z" />
+        <path d="M22 11c.2-2.5 2.8-4 5-2.6 1 .6 1.2 1.6.6 2.1-.2 2.4-3.2 3.1-5.6.5z" />
+        <path d="M21 21c1.5-2 4.5-2 5.5.3.5 1.1.1 2-.6 2.1-1.4 1.9-4.3 1.1-4.9-2.4z" />
+      </g>
+    </>
+  ),
+  "sweet-pepper": (
+    <>
+      <path d="M9 13c-3 3-3 9-.5 12.5 2 2.8 5 3 7.5 1.5 2.5 1.5 5.5 1.3 7.5-1.5 2.5-3.5 2.5-9.5-.5-12.5-2-2-5-1.5-7 0-2-1.5-5-2-7 0z" fill="#d93a2e" stroke="#9e231a" strokeWidth="1.2" strokeLinejoin="round" />
+      <path d="M16 13v13" stroke="#9e231a" strokeWidth="1" />
+      <path d="M12.5 15c-1 2.5-1 6 .5 8.5" fill="none" stroke="#f28a7f" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M13 12.5c1-1.5 5-1.5 6 0M16 12V7.5c0-1.5 1.5-2.5 3-2.5" fill="none" stroke={darkGreen} strokeWidth="2" strokeLinecap="round" />
+    </>
+  ),
+  avocado: (
+    <>
+      <path d="M16 4c-3 0-4.5 4-5.5 8-1 4-4.5 6.5-4.5 10.5C6 26.5 10.5 29 16 29s10-2.5 10-6.5c0-4-3.5-6.5-4.5-10.5C20.5 8 19 4 16 4z" fill="#3e6b25" stroke="#284a16" strokeWidth="1.2" />
+      <path d="M16 8c-2 0-3 3-3.7 6-.8 3-3.3 5-3.3 8 0 3 3 4.5 7 4.5s7-1.5 7-4.5c0-3-2.5-5-3.3-8-.7-3-1.7-6-3.7-6z" fill="#cfe08a" />
+      <circle cx="16" cy="20.5" r="4" fill="#8a5a2b" stroke="#5e3b18" strokeWidth="1" />
+      <circle cx="14.8" cy="19.3" r="1" fill="#b27c46" />
+    </>
+  ),
+  cassava: (
+    <>
+      <path d="M6 9c5-1 9 1 13 6s7 10 8 13c-3-1-8-4-12-8S6 12 6 9z" fill="#9b6a3c" stroke="#6b4423" strokeWidth="1.2" strokeLinejoin="round" />
+      <path d="M11 6c4 0 8 3 11 8s4 9 4 11c-2-1-6-5-9-9s-6-8-6-10z" fill="#b8844f" stroke="#6b4423" strokeWidth="1.2" strokeLinejoin="round" />
+      <path d="M13 12l2 1.5M17 15.5l1.8 1.5M20.5 19.5l1.5 1.4" stroke="#6b4423" strokeWidth="1" strokeLinecap="round" />
+      <path d="M9 7.5 6 3M10.5 6.5 11 2.5M8 8 3.5 6" stroke={leafGreen} strokeWidth="1.6" strokeLinecap="round" />
+    </>
+  ),
+  sugarcane: (
+    <>
+      <g stroke="#7a8a2a" strokeWidth="1.1">
+        <rect x="9" y="6" width="5" height="23" rx="1.5" fill="#c5c95a" />
+        <rect x="17" y="9" width="5" height="20" rx="1.5" fill="#b3bb4a" />
+      </g>
+      <path d="M9 13h5M9 20h5M17 15h5M17 22h5" stroke="#7a8a2a" strokeWidth="1.3" />
+      <path d="M11.5 6C9 3 6 2.5 4 3.5M11.5 6c2-3 5-4 7.5-3.5M19.5 9c2.5-3 5.5-3.5 8-2.5" fill="none" stroke={leafGreen} strokeWidth="1.6" strokeLinecap="round" />
+    </>
+  ),
+  coffee: (
+    <>
+      <path d="M5 27C10 20 18 12 28 6" fill="none" stroke="#6b4423" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M9 21c-4-1-6-4-5.5-7 3 0 5.5 2.5 5.5 7zM22 9c1-4 4-6 7-5.5 0 3-2.5 5.5-7 5.5z" fill={leafGreen} stroke={darkGreen} strokeWidth="1" strokeLinejoin="round" />
+      <g fill="#c62f2f" stroke="#8c1c1c" strokeWidth="1">
+        <ellipse cx="14" cy="17.5" rx="3" ry="3.4" />
+        <ellipse cx="18.5" cy="15" rx="3" ry="3.4" />
+        <ellipse cx="16.5" cy="21" rx="3" ry="3.4" />
+      </g>
+      <path d="M13.5 16.5c.5-.5 1-.5 1.5 0M18 14c.5-.5 1-.5 1.5 0M16 20c.5-.5 1-.5 1.5 0" fill="none" stroke="#f08b8b" strokeWidth="0.9" strokeLinecap="round" />
+    </>
+  ),
+  maize: (
+    <>
+      <ellipse cx="17" cy="13" rx="5" ry="9.5" transform="rotate(20 17 13)" fill="#f2c94c" stroke="#b8901d" strokeWidth="1.2" />
+      <path d="M13.5 8.5l7 2.5M12.5 12l7.5 2.7M12 15.8l6.5 2.4M15 5.5l5.5 2" stroke="#d6a72c" strokeWidth="0.9" />
+      <path d="M8 13c2 6 4 12 9 16-5 0-9-3-10.5-8C5.5 17.5 6 15 8 13z" fill={leafGreen} stroke={darkGreen} strokeWidth="1" strokeLinejoin="round" />
+      <path d="M24 17c0 5-2.5 9.5-7 12 1.5-4 3-8 3-12.5 1.5-.5 3 0 4 .5z" fill="#6fae47" stroke={darkGreen} strokeWidth="1" strokeLinejoin="round" />
+    </>
+  ),
 };
 
 export function hasCropIcon(cropKey: string): boolean {

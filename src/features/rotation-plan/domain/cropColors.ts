@@ -24,6 +24,14 @@ const colorByCrop: Record<string, string> = {
   broccoli: "#3f8f4f",
   cauliflower: "#7a4fa3",
   strawberry: "#b8457a",
+  eggplant: "#7a4fa3",
+  cilantro: "#6b8e23",
+  "sweet-pepper": "#e08a2c",
+  avocado: "#3f8f4f",
+  cassava: "#8a6236",
+  sugarcane: "#2b8fc7",
+  coffee: "#b8457a",
+  maize: "#c99a1e",
 };
 
 function fallbackColor(cropKey: string): string {
