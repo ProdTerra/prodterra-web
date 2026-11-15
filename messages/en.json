@@ -155,8 +155,8 @@
       "sunlightStat": "Average sunlight",
       "percentValue": "{value} %",
       "sunlightValue": "{value} kWh/m² a day",
-      "altitudeAdjustment": "Elevation adjustment: NASA measures the climate of a wide area whose average elevation is {gridElevation}, and the farm is at {farmElevation}. According to NASA's standard atmosphere model, air cools about 6.5 °C for every 1,000 m of climb, so {correction} °C {direction, select, colder {is subtracted from} other {is added to}} NASA's temperatures.",
-      "lapseRateSource": "See NASA's model",
+      "altitudeAdjustment": "Elevation adjustment: NASA POWER provides the climate of a wide area whose average elevation is {gridElevation}, and the farm is at {farmElevation}. According to the U.S. Standard Atmosphere 1976 (NASA/NOAA), air cools 6.5 °C for every 1,000 m of climb; it is the same model NASA POWER uses to adjust its data to each site's elevation. That is why {correction} °C {direction, select, colder {is subtracted from} other {is added to}} the temperatures.",
+      "lapseRateSource": "See U.S. Standard Atmosphere 1976",
       "driestDetail": "Driest: {month}, about {value} liters per m²",
       "wettestDetail": "Wettest: {month}, about {value} liters per m²",
       "litersHeader": "Liters per m²"

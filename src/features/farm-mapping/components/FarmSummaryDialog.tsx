@@ -15,7 +15,7 @@ import { useFarmClimateProfile } from "./useFarmClimateProfile";
 
 const nasademUrl = "https://planetarycomputer.microsoft.com/dataset/nasadem";
 const nasaPowerUrl = "https://power.larc.nasa.gov";
-const standardAtmosphereUrl = "https://www.grc.nasa.gov/www/k-12/airplane/atmosmet.html";
+const standardAtmosphereUrl = "https://ntrs.nasa.gov/citations/19770009539";
 const esriWorldImageryUrl = "https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9";
 
 type FarmSummaryDialogProps = {

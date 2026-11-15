@@ -155,8 +155,8 @@
       "sunlightStat": "Sol promedio",
       "percentValue": "{value} %",
       "sunlightValue": "{value} kWh/m² al día",
-      "altitudeAdjustment": "Ajuste por altura: la NASA mide el clima de una zona amplia cuya altura promedio es {gridElevation}, y la finca está a {farmElevation}. Según el modelo de atmósfera estándar de la NASA, el aire se enfría unos 6,5 °C por cada 1.000 m de subida, por eso a las temperaturas de la NASA se les {direction, select, colder {restan} other {suman}} {correction} °C.",
-      "lapseRateSource": "Ver modelo de la NASA",
+      "altitudeAdjustment": "Ajuste por altura: NASA POWER entrega el clima de una zona amplia cuya altura promedio es {gridElevation}, y la finca está a {farmElevation}. Según la U.S. Standard Atmosphere 1976 (NASA/NOAA), el aire se enfría 6,5 °C por cada 1.000 m de subida; es el mismo modelo que NASA POWER usa para ajustar sus datos a la altura de cada sitio. Por eso a las temperaturas se les {direction, select, colder {restan} other {suman}} {correction} °C.",
+      "lapseRateSource": "Ver U.S. Standard Atmosphere 1976",
       "driestDetail": "Más seco: {month}, unos {value} litros por m²",
       "wettestDetail": "Más lluvioso: {month}, unos {value} litros por m²",
       "litersHeader": "Litros por m²"
