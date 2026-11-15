@@ -19,6 +19,7 @@
 - Place search with the ArcGIS geocoder, the split panel with lengthwise, crosswise and grid layouts aligned to the farm's long axis.
 
 ### Changed
+- Step 4 always opens with "¿Desde cuándo quieres planificar?", and a new farm no longer reuses the start date of the previous one.
 - The flow now has six steps: locate, boundary, lots, your rotation, your calendar and recommended. The recommended step evaluates the whole rotation plan.
 
 ### Removed

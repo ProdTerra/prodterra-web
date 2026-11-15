@@ -17,7 +17,7 @@ export function PlanStep({ lots, onEditLots, onContinue }: PlanStepProps) {
   const [plan, dispatch] = useRotationPlan(lots.map((lot) => lot.shapeId));
   const [today] = useState(() => localToday(new Date()));
   const validStartDate = plan.startDate !== null && validateStartDate(plan.startDate, today).isValid ? plan.startDate : null;
-  const [isChoosingStart, setIsChoosingStart] = useState(validStartDate === null);
+  const [isChoosingStart, setIsChoosingStart] = useState(true);
 
   useEffect(() => {
     document.querySelector(".farm-mapping")?.scrollTo({ top: 0 });
