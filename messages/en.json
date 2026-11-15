@@ -145,8 +145,30 @@
     },
     "crops": {
       "title": "What do you grow in each lot?",
-      "hint": "Tell us what each of your {count, plural, one {# lot} other {# lots}} has. We use it to build your calendar.",
-      "editLots": "Change my lots"
+      "hint": "Tap a lot and answer 4 questions. We use them to build your calendar.",
+      "editLots": "Change my lots",
+      "progress": "{done} of {total} lots ready",
+      "allDone": "Done: we have what we need to build your calendar.",
+      "lotsLabel": "Your lots",
+      "answersFor": "Answers for {name}",
+      "statusComplete": "Ready",
+      "statusPending": "Missing information",
+      "currentQuestion": "What is planted now?",
+      "fallow": "Resting",
+      "plantedOnQuestion": "When did you plant it?",
+      "monthLabel": "Planting month",
+      "yearLabel": "Planting year",
+      "monthPlaceholder": "Month",
+      "previousQuestion": "What was there before?",
+      "unknown": "I don't know",
+      "irrigationQuestion": "Does it have irrigation?",
+      "yes": "Yes",
+      "no": "No",
+      "applyToAll": "Use these answers for every lot",
+      "nextLot": "Next lot",
+      "catalogLoading": "Loading crops…",
+      "catalogFailed": "Crops couldn't be loaded. Check that the API is running.",
+      "retry": "Try again"
     }
   }
 }

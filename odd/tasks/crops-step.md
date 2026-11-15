@@ -11,7 +11,7 @@ Branch: feature/crops-step (from feature/split-farm-into-lots). Delivery: ask-on
 ## Tasks
 - T1 [S1] Continue button + farm summary dialog with sources — route: inline — status: done (browser: live NASADEM + NASA POWER data; step indicator and dialog scroll CSS pending visual check after dev server restart)
 - T2 [S3] lot planting rules and state (tests) — route: inline — status: done (10 new tests)
-- T3 [S2, S4] crops step UI with catalog from API, apply to all lots — route: inline — status: pending
+- T3 [S2, S4] crops step UI without map, lot silhouettes, catalog chips from API, apply to all lots — route: inline — status: done (browser desktop + mobile)
 
 ## Log
 - L1 (2026-11-14): "si ya no nos interesa el objetivo, siempre es el mismo y se entiende ese es el objetivo de la app" (answer to the four questions per lot).

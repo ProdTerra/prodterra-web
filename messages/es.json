@@ -145,8 +145,30 @@
     },
     "crops": {
       "title": "¿Qué siembras en cada lote?",
-      "hint": "Cuéntanos qué tiene cada uno de tus {count, plural, one {# lote} other {# lotes}}. Con eso armamos tu calendario.",
-      "editLots": "Cambiar mis lotes"
+      "hint": "Toca un lote y responde 4 preguntas. Con eso armamos tu calendario.",
+      "editLots": "Cambiar mis lotes",
+      "progress": "{done} de {total} lotes listos",
+      "allDone": "Listo: ya tenemos lo necesario para armar tu calendario.",
+      "lotsLabel": "Tus lotes",
+      "answersFor": "Respuestas de {name}",
+      "statusComplete": "Listo",
+      "statusPending": "Falta información",
+      "currentQuestion": "¿Qué tiene sembrado ahora?",
+      "fallow": "En descanso",
+      "plantedOnQuestion": "¿Cuándo lo sembraste?",
+      "monthLabel": "Mes de siembra",
+      "yearLabel": "Año de siembra",
+      "monthPlaceholder": "Mes",
+      "previousQuestion": "¿Qué tenía antes?",
+      "unknown": "No sé",
+      "irrigationQuestion": "¿Tiene riego?",
+      "yes": "Sí",
+      "no": "No",
+      "applyToAll": "Usar estas respuestas en todos los lotes",
+      "nextLot": "Siguiente lote",
+      "catalogLoading": "Cargando los cultivos…",
+      "catalogFailed": "No se pudieron cargar los cultivos. Revisa que la API esté encendida.",
+      "retry": "Intentar otra vez"
     }
   }
 }
