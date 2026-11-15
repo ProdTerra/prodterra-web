@@ -7,6 +7,7 @@ import { amountInUnit, daysForAmount, durationUnits, naturalUnitOf, type Duratio
 
 type DurationFieldProps = {
   name: string;
+  question: string;
   durationInDays: number;
   startDate: string;
   longestInDays: number;
@@ -15,7 +16,7 @@ type DurationFieldProps = {
 
 const digitsOnly = /^\d{1,4}$/;
 
-export function DurationField({ name, durationInDays, startDate, longestInDays, onChange }: DurationFieldProps) {
+export function DurationField({ name, question, durationInDays, startDate, longestInDays, onChange }: DurationFieldProps) {
   const translate = useTranslations("rotationPlan.rotation");
   const inputId = useId();
   const [unit, setUnit] = useState<DurationUnit>(() => naturalUnitOf(durationInDays));
@@ -39,8 +40,9 @@ export function DurationField({ name, durationInDays, startDate, longestInDays, 
 
   return (
     <div className="duration-field">
-      <label htmlFor={inputId} className="visually-hidden">
-        {translate("durationLabel", { name, unit: translate(`units.${unit}`) })}
+      <label htmlFor={inputId} className="duration-field__question">
+        {question}
+        <span className="visually-hidden">{translate("durationLabel", { name, unit: translate(`units.${unit}`) })}</span>
       </label>
       <div className="duration-field__row">
         <div className="duration-field__amount">

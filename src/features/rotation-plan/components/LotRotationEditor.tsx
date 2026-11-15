@@ -1,6 +1,8 @@
+import { closestCenter, DndContext, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
+import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Fragment, useState, type Dispatch } from "react";
+import { useState, type Dispatch } from "react";
 import type { RotationPlanAction } from "../application/rotationPlanState";
 import { restBlockColor } from "../domain/cropColors";
 import { canAddBlock, longestDurationFor, remainingDays } from "../domain/blockLimits";
@@ -10,7 +12,6 @@ import { AddBlockSheet, type AddBlockChoice } from "./AddBlockSheet";
 import { ChoiceChips, type ChoiceOption } from "./ChoiceChips";
 import { RotationBlockCard } from "./RotationBlockCard";
 import { TimelineStrip } from "./TimelineStrip";
-import { useDurationLabels } from "./useDurationLabels";
 import type { useCropNames } from "./useCropNames";
 
 type LotRotationEditorProps = {
@@ -45,9 +46,8 @@ type RemovedBlock = { block: RotationBlock; index: number; name: string };
 
 export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropColors, dispatch }: LotRotationEditorProps) {
   const translate = useTranslations("rotationPlan.rotation");
-  const durationLabels = useDurationLabels();
   const [expandedBlockId, setExpandedBlockId] = useState<string | null>(null);
-  const [insertIndex, setInsertIndex] = useState<number | null>(null);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [removedBlock, setRemovedBlock] = useState<RemovedBlock | null>(null);
   const cropOptions: ChoiceOption[] = cropNames.crops.map((crop) => ({ value: crop.key, label: cropNames.localized(crop) }));
   const { blocks } = rotation;
@@ -57,6 +57,19 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
   const blockName = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropNames.cropName(block.cropKey) : translate("rest"));
   const blockColor = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropColors.get(block.cropKey) ?? restBlockColor : restBlockColor);
   const dayCount = (days: number) => translate("dayCount", { days });
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 6 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  function dropBlock({ active, over }: DragEndEvent) {
+    if (!over || active.id === over.id) {
+      return;
+    }
+    const toIndex = blocks.findIndex((block) => block.id === over.id);
+    run({ type: "blockMovedTo", lotId, blockId: String(active.id), toIndex });
+  }
 
   function run(action: RotationPlanAction) {
     setRemovedBlock(null);
@@ -69,8 +82,8 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
       choice.kind === "rest"
         ? ({ kind: "rest" } as const)
         : ({ kind: "crop", cropKey: choice.cropKey, referenceInDays: cropNames.referenceOf(choice.cropKey) } as const);
-    run({ type: "blockAdded", lotId, blockId, block, index: insertIndex ?? blocks.length });
-    setInsertIndex(null);
+    run({ type: "blockAdded", lotId, blockId, block });
+    setIsPickerOpen(false);
     setExpandedBlockId(blockId);
   }
 
@@ -83,16 +96,6 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
     setExpandedBlockId(blockId);
     document.getElementById(`block-${blockId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
-
-  const insertButton = (index: number, label: string) =>
-    hasRoom && (
-      <li className="rotation-insert">
-        <button type="button" onClick={() => setInsertIndex(index)} aria-label={label} className="rotation-insert__button">
-          <Plus aria-hidden size={16} />
-          <span aria-hidden>{translate("insertHere")}</span>
-        </button>
-      </li>
-    );
 
   return (
     <div className="rotation-editor">
@@ -121,36 +124,37 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
           selectedBlockId={expandedBlockId}
           blockName={blockName}
           blockColor={blockColor}
-          remainingLabel={hasRoom ? translate("remaining", { time: freeDays < 30 ? dayCount(freeDays) : durationLabels.months(freeDays) }) : translate("planFull")}
+          remainingLabel={hasRoom ? translate("remaining", { time: freeDays < 31 ? dayCount(freeDays) : translate("monthCount", { months: Math.floor(freeDays / 30.44) }) }) : translate("planFull")}
           onSelect={selectFromStrip}
         />
-        <ol className="rotation-timeline__blocks">
-          {schedule.map((scheduled, index) => (
-            <Fragment key={scheduled.block.id}>
-              {index === 0 && insertButton(0, translate("insertFirst"))}
-              <RotationBlockCard
-                scheduled={scheduled}
-                name={blockName(scheduled)}
-                color={blockColor(scheduled)}
-                referenceInDays={scheduled.block.kind === "crop" ? cropNames.referenceOf(scheduled.block.cropKey) : null}
-                longestInDays={longestDurationFor(blocks, scheduled.block.id)}
-                isExpanded={expandedBlockId === scheduled.block.id}
-                isFirst={index === 0}
-                isLast={index === blocks.length - 1}
-                canDuplicate={hasRoom}
-                onToggle={() => setExpandedBlockId((current) => (current === scheduled.block.id ? null : scheduled.block.id))}
-                onDurationChange={(durationInDays) => run({ type: "blockDurationChanged", lotId, blockId: scheduled.block.id, durationInDays })}
-                onMoveUp={() => run({ type: "blockMoved", lotId, blockId: scheduled.block.id, direction: "up" })}
-                onMoveDown={() => run({ type: "blockMoved", lotId, blockId: scheduled.block.id, direction: "down" })}
-                onDuplicate={() => run({ type: "blockDuplicated", lotId, blockId: scheduled.block.id, newBlockId: crypto.randomUUID() })}
-                onRemove={() => removeBlock(scheduled, index)}
-              />
-              {index < schedule.length - 1 && insertButton(index + 1, translate("insertAfter", { name: blockName(scheduled) }))}
-            </Fragment>
-          ))}
-        </ol>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={dropBlock}>
+          <SortableContext items={blocks.map((block) => block.id)} strategy={verticalListSortingStrategy}>
+            <ol className="rotation-timeline__blocks">
+              {schedule.map((scheduled, index) => (
+                <RotationBlockCard
+                  key={scheduled.block.id}
+                  scheduled={scheduled}
+                  name={blockName(scheduled)}
+                  color={blockColor(scheduled)}
+                  referenceInDays={scheduled.block.kind === "crop" ? cropNames.referenceOf(scheduled.block.cropKey) : null}
+                  longestInDays={longestDurationFor(blocks, scheduled.block.id)}
+                  isExpanded={expandedBlockId === scheduled.block.id}
+                  isFirst={index === 0}
+                  isLast={index === blocks.length - 1}
+                  canDuplicate={hasRoom}
+                  onToggle={() => setExpandedBlockId((current) => (current === scheduled.block.id ? null : scheduled.block.id))}
+                  onDurationChange={(durationInDays) => run({ type: "blockDurationChanged", lotId, blockId: scheduled.block.id, durationInDays })}
+                  onMoveUp={() => run({ type: "blockMoved", lotId, blockId: scheduled.block.id, direction: "up" })}
+                  onMoveDown={() => run({ type: "blockMoved", lotId, blockId: scheduled.block.id, direction: "down" })}
+                  onDuplicate={() => run({ type: "blockDuplicated", lotId, blockId: scheduled.block.id, newBlockId: crypto.randomUUID() })}
+                  onRemove={() => removeBlock(scheduled, index)}
+                />
+              ))}
+            </ol>
+          </SortableContext>
+        </DndContext>
         {hasRoom && (
-          <button type="button" onClick={() => setInsertIndex(blocks.length)} className="button button--outline rotation-timeline__add">
+          <button type="button" onClick={() => setIsPickerOpen(true)} className="button button--outline rotation-timeline__add">
             <Plus aria-hidden size={18} />
             {translate(blocks.length === 0 ? "addFirst" : "addNext")}
           </button>
@@ -173,13 +177,13 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
       </section>
 
       <AddBlockSheet
-        isOpen={insertIndex !== null}
+        isOpen={isPickerOpen}
         crops={cropNames.crops.map((crop) => {
           const usual = cropNames.referenceOf(crop.key);
           return { key: crop.key, name: cropNames.localized(crop), usualDays: usual ? dayCount(usual) : null };
         })}
         onChoose={addChosenBlock}
-        onClose={() => setInsertIndex(null)}
+        onClose={() => setIsPickerOpen(false)}
       />
     </div>
   );

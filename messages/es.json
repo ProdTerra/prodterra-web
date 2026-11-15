@@ -325,7 +325,6 @@
       "catalogFailed": "Revisa tu conexión a internet e inténtalo otra vez.",
       "retry": "Intentar otra vez",
       "dayCount": "{days, plural, one {# día} other {# días}}",
-      "blockSummary": "{duration} · {start} a {end}",
       "unitLabel": "Contar en",
       "units": {
         "days": "días",
@@ -339,9 +338,6 @@
       "moveDown": "Bajar",
       "duplicate": "Duplicar",
       "remove": "Quitar",
-      "insertHere": "Agregar aquí",
-      "insertFirst": "Agregar al inicio",
-      "insertAfter": "Agregar después de {name}",
       "addFirst": "Agregar cultivo o descanso",
       "addNext": "Agregar lo que sigue",
       "sheetTitle": "¿Qué sigue?",
@@ -350,7 +346,13 @@
       "undo": "Deshacer",
       "remaining": "Quedan {time} de 24 meses",
       "planFull": "El plan llega a 24 meses",
-      "stripBlock": "Ver {name}"
+      "stripBlock": "Ver {name}",
+      "dragBlock": "Arrastrar {name} para cambiar el orden",
+      "cropDates": "Siembra {start} · cosecha {end}",
+      "restDates": "Del {start} al {end}",
+      "cropDurationQuestion": "¿Cuánto tiempo pasa de la siembra a la cosecha?",
+      "restDurationQuestion": "¿Cuánto tiempo descansa la tierra?",
+      "monthCount": "{months, plural, one {# mes} other {# meses}}"
     },
     "myCalendar": {
       "title": "Tu calendario",

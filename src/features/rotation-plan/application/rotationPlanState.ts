@@ -22,6 +22,7 @@ export type RotationPlanAction =
   | { type: "irrigationChosen"; lotId: string; hasIrrigation: boolean }
   | { type: "blockAdded"; lotId: string; blockId: string; block: NewBlock; index?: number }
   | { type: "blockMoved"; lotId: string; blockId: string; direction: "up" | "down" }
+  | { type: "blockMovedTo"; lotId: string; blockId: string; toIndex: number }
   | { type: "blockDuplicated"; lotId: string; blockId: string; newBlockId: string }
   | { type: "blockRestored"; lotId: string; block: RotationBlock; index: number }
   | { type: "blockDurationChanged"; lotId: string; blockId: string; durationInDays: number }
@@ -66,6 +67,15 @@ function moveBlock(plan: RotationPlan, lotId: string, blockId: string, direction
   const reordered = [...blocks];
   [reordered[index], reordered[target]] = [reordered[target], reordered[index]];
   return updateLot(plan, lotId, { blocks: reordered });
+}
+
+function moveBlockTo(plan: RotationPlan, lotId: string, blockId: string, toIndex: number): RotationPlan {
+  const blocks = rotationOf(plan, lotId).blocks;
+  const moving = blocks.find((block) => block.id === blockId);
+  if (!moving) {
+    return plan;
+  }
+  return updateLot(plan, lotId, { blocks: insertAt(blocks.filter((block) => block.id !== blockId), moving, toIndex) });
 }
 
 function duplicateBlock(plan: RotationPlan, lotId: string, blockId: string, newBlockId: string): RotationPlan {
@@ -115,6 +125,8 @@ export function rotationPlanReducer(plan: RotationPlan, action: RotationPlanActi
       return addBlock(plan, action.lotId, action.blockId, action.block, action.index);
     case "blockMoved":
       return moveBlock(plan, action.lotId, action.blockId, action.direction);
+    case "blockMovedTo":
+      return moveBlockTo(plan, action.lotId, action.blockId, action.toIndex);
     case "blockDuplicated":
       return duplicateBlock(plan, action.lotId, action.blockId, action.newBlockId);
     case "blockRestored":

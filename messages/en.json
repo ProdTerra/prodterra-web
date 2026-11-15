@@ -325,7 +325,6 @@
       "catalogFailed": "Check your internet connection and try again.",
       "retry": "Try again",
       "dayCount": "{days, plural, one {# day} other {# days}}",
-      "blockSummary": "{duration} · {start} to {end}",
       "unitLabel": "Count in",
       "units": {
         "days": "days",
@@ -339,9 +338,6 @@
       "moveDown": "Move down",
       "duplicate": "Duplicate",
       "remove": "Remove",
-      "insertHere": "Add here",
-      "insertFirst": "Add at the start",
-      "insertAfter": "Add after {name}",
       "addFirst": "Add a crop or a rest",
       "addNext": "Add what comes next",
       "sheetTitle": "What comes next?",
@@ -350,7 +346,13 @@
       "undo": "Undo",
       "remaining": "{time} left of 24 months",
       "planFull": "The plan reaches 24 months",
-      "stripBlock": "Show {name}"
+      "stripBlock": "Show {name}",
+      "dragBlock": "Drag {name} to change the order",
+      "cropDates": "Sowing {start} · harvest {end}",
+      "restDates": "From {start} to {end}",
+      "cropDurationQuestion": "How long from sowing to harvest?",
+      "restDurationQuestion": "How long does the land rest?",
+      "monthCount": "{months, plural, one {# month} other {# months}}"
     },
     "myCalendar": {
       "title": "Your calendar",
