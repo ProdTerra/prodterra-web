@@ -2521,6 +2521,39 @@ body {
   background: repeating-linear-gradient(90deg, transparent 0 6px, rgb(22 26 21 / 0.06) 6px 7px);
 }
 
+.timeline-strip__track {
+  position: relative;
+}
+
+.timeline-strip__ticks {
+  position: absolute;
+  inset: 0 0 -0.375rem;
+  pointer-events: none;
+}
+
+.timeline-strip__ticks span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed rgb(22 26 21 / 0.4);
+}
+
+.timeline-strip__ticks span::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -1.5px;
+  width: 2px;
+  height: 0.375rem;
+  border-radius: 1px;
+  background: var(--color-stone);
+}
+
+.timeline-strip__ticks span:first-child,
+.timeline-strip__ticks span:last-child {
+  display: none;
+}
+
 .timeline-strip__axis {
   position: relative;
   height: 2.25rem;
@@ -2624,7 +2657,8 @@ body {
     display: none;
   }
 
-  .timeline-strip__axis span:nth-child(even) {
+  .timeline-strip__axis span:nth-child(even),
+  .timeline-strip__ticks span:nth-child(even) {
     display: none;
   }
 

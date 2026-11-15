@@ -31,24 +31,31 @@ export function TimelineStrip({ startDate, schedule, selectedBlockId, blockName,
   return (
     <figure className="timeline-strip">
       <figcaption className="timeline-strip__caption">{translate("stripCaption")}</figcaption>
-      <div className="timeline-strip__bar">
-        {schedule.map((scheduled) => (
-          <button
-            key={scheduled.block.id}
-            type="button"
-            aria-label={translate("stripBlock", { name: blockName(scheduled) })}
-            aria-pressed={scheduled.block.id === selectedBlockId}
-            onClick={() => onSelect(scheduled.block.id)}
-            className="timeline-strip__segment"
-            data-kind={scheduled.block.kind}
-            style={{ ["--block-color" as string]: blockColor(scheduled), flexGrow: scheduled.block.durationInDays }}
-          >
-            <span aria-hidden>{blockName(scheduled)}</span>
-          </button>
-        ))}
-        {usedDays < maximumPlanDays && (
-          <span aria-hidden className="timeline-strip__free" style={{ flexGrow: maximumPlanDays - usedDays }} />
-        )}
+      <div className="timeline-strip__track">
+        <div className="timeline-strip__bar">
+          {schedule.map((scheduled) => (
+            <button
+              key={scheduled.block.id}
+              type="button"
+              aria-label={translate("stripBlock", { name: blockName(scheduled) })}
+              aria-pressed={scheduled.block.id === selectedBlockId}
+              onClick={() => onSelect(scheduled.block.id)}
+              className="timeline-strip__segment"
+              data-kind={scheduled.block.kind}
+              style={{ ["--block-color" as string]: blockColor(scheduled), flexGrow: scheduled.block.durationInDays }}
+            >
+              <span aria-hidden>{blockName(scheduled)}</span>
+            </button>
+          ))}
+          {usedDays < maximumPlanDays && (
+            <span aria-hidden className="timeline-strip__free" style={{ flexGrow: maximumPlanDays - usedDays }} />
+          )}
+        </div>
+        <div aria-hidden className="timeline-strip__ticks">
+          {ticks.map((months) => (
+            <span key={months} style={{ left: `${(months / totalMonths) * 100}%` }} />
+          ))}
+        </div>
       </div>
       <div aria-hidden className="timeline-strip__axis">
         {ticks.map((months) => (
