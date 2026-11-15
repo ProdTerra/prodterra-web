@@ -1,13 +1,15 @@
+import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { Dispatch } from "react";
+import { Fragment, useState, type Dispatch } from "react";
 import type { RotationPlanAction } from "../application/rotationPlanState";
 import { restBlockColor } from "../domain/cropColors";
-import { canAddBlock, maximumPlanDays, totalDays } from "../domain/blockLimits";
-import type { LotRotation, PreviousUse } from "../domain/rotationPlan";
-import { scheduleBlocks } from "../domain/rotationSchedule";
-import { AddBlockControls } from "./AddBlockControls";
+import { canAddBlock, longestDurationFor, remainingDays } from "../domain/blockLimits";
+import type { LotRotation, PreviousUse, RotationBlock } from "../domain/rotationPlan";
+import { scheduleBlocks, type ScheduledBlock } from "../domain/rotationSchedule";
+import { AddBlockSheet, type AddBlockChoice } from "./AddBlockSheet";
 import { ChoiceChips, type ChoiceOption } from "./ChoiceChips";
 import { RotationBlockCard } from "./RotationBlockCard";
+import { TimelineStrip } from "./TimelineStrip";
 import { useDurationLabels } from "./useDurationLabels";
 import type { useCropNames } from "./useCropNames";
 
@@ -39,12 +41,58 @@ function previousUseValue(previousUse: PreviousUse | null): string | null {
   return previousUse.kind === "crop" ? previousUse.cropKey : previousUse.kind;
 }
 
+type RemovedBlock = { block: RotationBlock; index: number; name: string };
+
 export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropColors, dispatch }: LotRotationEditorProps) {
   const translate = useTranslations("rotationPlan.rotation");
   const durationLabels = useDurationLabels();
+  const [expandedBlockId, setExpandedBlockId] = useState<string | null>(null);
+  const [insertIndex, setInsertIndex] = useState<number | null>(null);
+  const [removedBlock, setRemovedBlock] = useState<RemovedBlock | null>(null);
   const cropOptions: ChoiceOption[] = cropNames.crops.map((crop) => ({ value: crop.key, label: cropNames.localized(crop) }));
-  const schedule = scheduleBlocks(startDate, rotation.blocks);
-  const usedDays = totalDays(rotation.blocks);
+  const { blocks } = rotation;
+  const schedule = scheduleBlocks(startDate, blocks);
+  const hasRoom = canAddBlock(blocks);
+  const freeDays = remainingDays(blocks);
+  const blockName = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropNames.cropName(block.cropKey) : translate("rest"));
+  const blockColor = ({ block }: ScheduledBlock) => (block.kind === "crop" ? cropColors.get(block.cropKey) ?? restBlockColor : restBlockColor);
+  const dayCount = (days: number) => translate("dayCount", { days });
+
+  function run(action: RotationPlanAction) {
+    setRemovedBlock(null);
+    dispatch(action);
+  }
+
+  function addChosenBlock(choice: AddBlockChoice) {
+    const blockId = crypto.randomUUID();
+    const block =
+      choice.kind === "rest"
+        ? ({ kind: "rest" } as const)
+        : ({ kind: "crop", cropKey: choice.cropKey, referenceInDays: cropNames.referenceOf(choice.cropKey) } as const);
+    run({ type: "blockAdded", lotId, blockId, block, index: insertIndex ?? blocks.length });
+    setInsertIndex(null);
+    setExpandedBlockId(blockId);
+  }
+
+  function removeBlock(scheduled: ScheduledBlock, index: number) {
+    dispatch({ type: "blockRemoved", lotId, blockId: scheduled.block.id });
+    setRemovedBlock({ block: scheduled.block, index, name: blockName(scheduled) });
+  }
+
+  function selectFromStrip(blockId: string) {
+    setExpandedBlockId(blockId);
+    document.getElementById(`block-${blockId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  const insertButton = (index: number, label: string) =>
+    hasRoom && (
+      <li className="rotation-insert">
+        <button type="button" onClick={() => setInsertIndex(index)} aria-label={label} className="rotation-insert__button">
+          <Plus aria-hidden size={16} />
+          <span aria-hidden>{translate("insertHere")}</span>
+        </button>
+      </li>
+    );
 
   return (
     <div className="rotation-editor">
@@ -52,7 +100,7 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
         label={translate("previousQuestion")}
         options={[...cropOptions, { value: restValue, label: translate("rest") }, { value: unknownValue, label: translate("unknown") }]}
         selectedValue={previousUseValue(rotation.previousUse)}
-        onSelect={(value) => dispatch({ type: "previousUseChosen", lotId, previousUse: toPreviousUse(value) })}
+        onSelect={(value) => run({ type: "previousUseChosen", lotId, previousUse: toPreviousUse(value) })}
       />
       <ChoiceChips
         label={translate("irrigationQuestion")}
@@ -61,59 +109,78 @@ export function LotRotationEditor({ lotId, rotation, startDate, cropNames, cropC
           { value: noValue, label: translate("no") },
         ]}
         selectedValue={rotation.hasIrrigation === null ? null : rotation.hasIrrigation ? yesValue : noValue}
-        onSelect={(value) => dispatch({ type: "irrigationChosen", lotId, hasIrrigation: value === yesValue })}
+        onSelect={(value) => run({ type: "irrigationChosen", lotId, hasIrrigation: value === yesValue })}
       />
 
       <section className="rotation-timeline" aria-labelledby={`${lotId}-timeline`}>
-        <h3 id={`${lotId}-timeline`} className="question__label">
+        <h3 id={`${lotId}-timeline`} className="question__label rotation-timeline__title">
           {translate("timelineTitle")}
         </h3>
-        <p className="field-hint">{translate("timelineHint")}</p>
-        {rotation.blocks.length === 0 ? (
-          <p className="rotation-timeline__empty">{translate("timelineEmpty")}</p>
-        ) : (
-          <ol className="rotation-timeline__blocks">
-            {schedule.map((scheduled) => {
-              const { block } = scheduled;
-              const isCrop = block.kind === "crop";
-              return (
-                <RotationBlockCard
-                  key={block.id}
-                  scheduled={scheduled}
-                  blocks={rotation.blocks}
-                  name={isCrop ? cropNames.cropName(block.cropKey) : translate("rest")}
-                  color={isCrop ? cropColors.get(block.cropKey) ?? restBlockColor : restBlockColor}
-                  referenceInDays={isCrop ? cropNames.referenceOf(block.cropKey) : null}
-                  onDurationChange={(durationInDays) => dispatch({ type: "blockDurationChanged", lotId, blockId: block.id, durationInDays })}
-                  onReset={(referenceInDays) => dispatch({ type: "blockDurationReset", lotId, blockId: block.id, referenceInDays })}
-                  onRemove={() => dispatch({ type: "blockRemoved", lotId, blockId: block.id })}
-                />
-              );
-            })}
-          </ol>
-        )}
-        <div className="plan-room">
-          <span className="plan-room__bar" aria-hidden>
-            <span style={{ width: `${Math.min(100, (usedDays / maximumPlanDays) * 100)}%` }} />
-          </span>
-          <span className="field-hint">
-            {usedDays === 0 ? translate("roomEmpty") : translate("roomUsed", { used: durationLabels.months(usedDays) })}
-          </span>
-        </div>
-        <AddBlockControls
-          cropOptions={cropOptions}
-          hasRoom={canAddBlock(rotation.blocks)}
-          onAddCrop={(cropKey) =>
-            dispatch({
-              type: "blockAdded",
-              lotId,
-              blockId: crypto.randomUUID(),
-              block: { kind: "crop", cropKey, referenceInDays: cropNames.referenceOf(cropKey) },
-            })
-          }
-          onAddRest={() => dispatch({ type: "blockAdded", lotId, blockId: crypto.randomUUID(), block: { kind: "rest" } })}
+        <TimelineStrip
+          schedule={schedule}
+          selectedBlockId={expandedBlockId}
+          blockName={blockName}
+          blockColor={blockColor}
+          remainingLabel={hasRoom ? translate("remaining", { time: freeDays < 30 ? dayCount(freeDays) : durationLabels.months(freeDays) }) : translate("planFull")}
+          onSelect={selectFromStrip}
         />
+        <ol className="rotation-timeline__blocks">
+          {schedule.map((scheduled, index) => (
+            <Fragment key={scheduled.block.id}>
+              {index === 0 && insertButton(0, translate("insertFirst"))}
+              <RotationBlockCard
+                scheduled={scheduled}
+                name={blockName(scheduled)}
+                color={blockColor(scheduled)}
+                referenceInDays={scheduled.block.kind === "crop" ? cropNames.referenceOf(scheduled.block.cropKey) : null}
+                longestInDays={longestDurationFor(blocks, scheduled.block.id)}
+                isExpanded={expandedBlockId === scheduled.block.id}
+                isFirst={index === 0}
+                isLast={index === blocks.length - 1}
+                canDuplicate={hasRoom}
+                onToggle={() => setExpandedBlockId((current) => (current === scheduled.block.id ? null : scheduled.block.id))}
+                onDurationChange={(durationInDays) => run({ type: "blockDurationChanged", lotId, blockId: scheduled.block.id, durationInDays })}
+                onMoveUp={() => run({ type: "blockMoved", lotId, blockId: scheduled.block.id, direction: "up" })}
+                onMoveDown={() => run({ type: "blockMoved", lotId, blockId: scheduled.block.id, direction: "down" })}
+                onDuplicate={() => run({ type: "blockDuplicated", lotId, blockId: scheduled.block.id, newBlockId: crypto.randomUUID() })}
+                onRemove={() => removeBlock(scheduled, index)}
+              />
+              {index < schedule.length - 1 && insertButton(index + 1, translate("insertAfter", { name: blockName(scheduled) }))}
+            </Fragment>
+          ))}
+        </ol>
+        {hasRoom && (
+          <button type="button" onClick={() => setInsertIndex(blocks.length)} className="button button--outline rotation-timeline__add">
+            <Plus aria-hidden size={18} />
+            {translate(blocks.length === 0 ? "addFirst" : "addNext")}
+          </button>
+        )}
+        {removedBlock && (
+          <div role="status" className="undo-bar">
+            <span>{translate("removed", { name: removedBlock.name })}</span>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch({ type: "blockRestored", lotId, block: removedBlock.block, index: removedBlock.index });
+                setRemovedBlock(null);
+              }}
+              className="button button--secondary button--small"
+            >
+              {translate("undo")}
+            </button>
+          </div>
+        )}
       </section>
+
+      <AddBlockSheet
+        isOpen={insertIndex !== null}
+        crops={cropNames.crops.map((crop) => {
+          const usual = cropNames.referenceOf(crop.key);
+          return { key: crop.key, name: cropNames.localized(crop), usualDays: usual ? dayCount(usual) : null };
+        })}
+        onChoose={addChosenBlock}
+        onClose={() => setInsertIndex(null)}
+      />
     </div>
   );
 }
