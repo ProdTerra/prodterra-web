@@ -22,3 +22,5 @@ export function assignCropColors(rotations: LotRotation[]): Map<string, string> 
   }
   return colors;
 }
+
+export const restBlockColor = "#8b8f86";

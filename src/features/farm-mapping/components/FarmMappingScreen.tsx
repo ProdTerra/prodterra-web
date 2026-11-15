@@ -5,7 +5,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { Dialog } from "@/shared/components/Dialog";
 import { CalendarStep } from "@/features/calendar/components/CalendarStep";
-import { CropsStep } from "@/features/lot-plantings/components/CropsStep";
+import { FarmerCalendarStep } from "@/features/rotation-plan/components/FarmerCalendarStep";
+import { PlanStep } from "@/features/rotation-plan/components/PlanStep";
 import { LanguageSwitcher } from "@/shared/components/LanguageSwitcher";
 import {
   farmMappingReducer,
@@ -50,6 +51,8 @@ import { StepIndicator } from "./StepIndicator";
 const SatelliteMap = dynamic(() => import("./SatelliteMap"), { ssr: false });
 
 const defaultSplitLotCount = 4;
+
+const formSteps = new Set<FarmMappingState["step"]>(["plan", "myCalendar", "analysis"]);
 
 const cartagoHighlandsView: MapView = {
   longitude: -83.892,
@@ -120,6 +123,11 @@ export function FarmMappingScreen() {
   const [initialMapView] = useState(readInitialMapView);
   const [mapCenter, setMapCenter] = useState<MapCoordinates>(initialMapView);
   const [isMapReady, setIsMapReady] = useState(false);
+  const screenRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    screenRef.current?.scrollTo({ top: 0 });
+  }, [state.step]);
 
   useEffect(() => {
     if (isMapReady) {
@@ -324,7 +332,7 @@ export function FarmMappingScreen() {
     };
   }
 
-  const isCropsStep = state.step === "crops" || state.step === "calendar";
+  const isFormStep = formSteps.has(state.step);
   const rejectionMessage = state.rejection
     ? describeRejection(state.rejection)
     : null;
@@ -335,7 +343,7 @@ export function FarmMappingScreen() {
   }
 
   return (
-    <div className="farm-mapping" data-layout={isCropsStep ? "form" : "map"}>
+    <div ref={screenRef} className="farm-mapping" data-layout={isFormStep ? "form" : "map"}>
       <section className="farm-mapping__panel" data-step={state.step}>
         <header className="panel-header">
           <span className="brand">ProdTerra</span>
@@ -385,19 +393,26 @@ export function FarmMappingScreen() {
             }}
           />
         )}
-        {state.step === "calendar" && (
-          <CalendarStep lots={state.lots} onEditCrops={() => dispatch({ type: "cropsEditRequested" })} />
-        )}
-        {state.step === "crops" && (
-          <CropsStep
+        {state.step === "plan" && (
+          <PlanStep
             lots={state.lots}
             onEditLots={() => dispatch({ type: "lotsEditRequested" })}
-            onContinue={() => dispatch({ type: "cropsConfirmed" })}
+            onContinue={() => dispatch({ type: "planConfirmed" })}
           />
+        )}
+        {state.step === "myCalendar" && (
+          <FarmerCalendarStep
+            lots={state.lots}
+            onEditPlan={() => dispatch({ type: "planEditRequested" })}
+            onAnalyze={() => dispatch({ type: "analysisRequested" })}
+          />
+        )}
+        {state.step === "analysis" && (
+          <CalendarStep lots={state.lots} onBack={() => dispatch({ type: "myCalendarRequested" })} />
         )}
       </section>
 
-      {!isCropsStep && (
+      {!isFormStep && (
         <div
           className="farm-mapping__map"
           data-drawing={drawingKind ?? undefined}

@@ -120,7 +120,7 @@ body {
 
 .step-indicator {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0.5rem;
 }
 
@@ -1925,4 +1925,529 @@ body {
 .button:disabled:not(.button--primary) {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.field-hint {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--color-stone);
+}
+
+.start-date,
+.rotation-step,
+.farmer-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.start-date .step-hint,
+.rotation-step .step-hint,
+.farmer-calendar .step-hint {
+  max-width: 48ch;
+  margin-top: 0.5rem;
+}
+
+.start-date__body {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .start-date__body {
+    grid-template-columns: minmax(0, 1fr) 24rem;
+    gap: 2.5rem;
+  }
+}
+
+.start-date__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.start-date__chosen {
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background: var(--color-paper);
+  border-left: 4px solid var(--color-field);
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+.start-date__chosen strong {
+  display: block;
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--color-field);
+}
+
+.start-date__chosen strong::first-letter {
+  text-transform: uppercase;
+}
+
+.start-date__range {
+  max-width: 44ch;
+  font-size: 0.875rem;
+  color: var(--color-stone);
+}
+
+.start-date__calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.month-calendar {
+  padding: 1rem;
+  border-radius: 1.25rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+}
+
+.month-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.month-calendar__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.month-calendar__title::first-letter {
+  text-transform: uppercase;
+}
+
+.month-calendar__weekdays,
+.month-calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+}
+
+.month-calendar__weekdays span {
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--color-stone);
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.month-calendar__day {
+  min-height: 2.75rem;
+  border-radius: 0.625rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.month-calendar__day:hover {
+  background: var(--color-mineral);
+}
+
+.month-calendar__day[aria-current="date"] {
+  box-shadow: inset 0 0 0 1.5px var(--color-ink);
+}
+
+.month-calendar__day[aria-pressed="true"] {
+  background: var(--color-field);
+  color: var(--color-paper);
+  font-weight: 700;
+}
+
+.month-calendar__day[aria-disabled="true"] {
+  color: #b2b6ac;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+.month-calendar__day[aria-disabled="true"]:hover {
+  background: none;
+}
+
+.plan-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.plan-footer--sticky {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin-inline: -1rem;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  background: var(--color-mineral);
+  border-top: 1px solid var(--color-line);
+  box-shadow: 0 -6px 16px rgb(22 26 21 / 0.06);
+}
+
+@media (min-width: 900px) {
+  .plan-footer--sticky {
+    margin-inline: -2.5rem;
+    padding-inline: 2.5rem;
+  }
+}
+
+.plan-footer__status {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 14rem;
+  font-weight: 600;
+}
+
+.plan-footer__status span {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-stone);
+}
+
+.plan-footer__status[data-complete] {
+  color: var(--color-field);
+}
+
+.plan-footer .button--primary:disabled {
+  background: #c3c7bd;
+  color: var(--color-paper);
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+@media (max-width: 520px) {
+  .plan-footer > .button {
+    flex: 1 1 auto;
+    padding-inline: 1rem;
+  }
+}
+
+.rotation-step__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.start-pill {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.625rem;
+  padding: 0.375rem 0.375rem 0.375rem 0.875rem;
+  border-radius: 999px;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  font-weight: 600;
+}
+
+.start-pill .button--small {
+  border-radius: 999px;
+}
+
+.rotation-step__back {
+  align-self: flex-start;
+}
+
+.rotation-step__lot-actions {
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.lot-card__status span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.lot-card__status svg {
+  flex: none;
+  align-self: flex-start;
+  margin-top: 0.1875rem;
+}
+
+.rotation-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rotation-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.rotation-timeline .question__label {
+  margin-bottom: 0;
+}
+
+.rotation-timeline__empty {
+  padding: 1rem;
+  border: 1.5px dashed var(--color-line);
+  border-radius: 0.875rem;
+  color: var(--color-stone);
+}
+
+.rotation-timeline__blocks {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rotation-timeline__blocks::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  bottom: 1rem;
+  left: calc(1rem - 1px);
+  width: 2px;
+  background: var(--color-line);
+}
+
+.rotation-block {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.rotation-block__marker {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-top: 0.75rem;
+  border-radius: 999px;
+  background: var(--block-color);
+  color: var(--color-paper);
+  box-shadow: 0 0 0 3px var(--color-paper);
+}
+
+.rotation-block__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.75rem 0.75rem 0.875rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--color-line);
+  border-left: 4px solid var(--block-color);
+  background: var(--color-paper);
+}
+
+.rotation-block[data-kind="rest"] .rotation-block__body {
+  background: repeating-linear-gradient(135deg, #f6f6f3 0 8px, var(--color-paper) 8px 16px);
+}
+
+.rotation-block__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rotation-block__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.625rem;
+  padding-top: 0.5rem;
+}
+
+.rotation-block__title h4 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.rotation-block__badge {
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: var(--color-mineral);
+  color: var(--color-stone);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.rotation-block__badge[data-changed] {
+  background: #fdf0c4;
+  color: #6b5200;
+}
+
+.rotation-block__dates {
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.rotation-block__duration {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.875rem;
+}
+
+.rotation-block__duration .stepper {
+  background: var(--color-paper);
+}
+
+.rotation-block__weeks {
+  min-width: 6.5rem;
+  font-weight: 600;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.rotation-block__months {
+  font-size: 0.875rem;
+  color: var(--color-stone);
+}
+
+.plan-room {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.plan-room__bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-mineral);
+  overflow: hidden;
+}
+
+.plan-room__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-field);
+}
+
+.add-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.crop-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  background: var(--color-mineral);
+}
+
+.crop-picker__cancel {
+  align-self: flex-start;
+}
+
+.day-cell[data-use] {
+  background: var(--use-color, transparent);
+}
+
+.day-cell[data-use="rest"] {
+  background: repeating-linear-gradient(135deg, #c9ccc3 0 3px, #e6e8e2 3px 6px);
+}
+
+.day-cell[data-use="empty"] {
+  background: var(--color-mineral);
+}
+
+.crop-legend li {
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--color-ink);
+}
+
+.crop-legend__swatch {
+  display: inline-block;
+  flex: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 3px;
+  background: var(--use-color);
+}
+
+.crop-legend__swatch[data-use="rest"] {
+  background: repeating-linear-gradient(135deg, #c9ccc3 0 3px, #e6e8e2 3px 6px);
+}
+
+.lot-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+}
+
+.lot-dates__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.lot-dates__lot h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+  font-weight: 600;
+}
+
+.lot-dates__lot ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.lot-dates__lot li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 520px) {
+  .step-indicator li:not([data-state="current"]) .step-indicator__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .step-indicator li[data-state="current"] {
+    grid-column: span 1;
+    white-space: nowrap;
+  }
+}
+
+.farm-mapping[data-layout="form"] .farm-mapping__panel:has(.farmer-calendar) {
+  max-width: 80rem;
+}
+
+.farmer-calendar .calendar-step__body {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.farmer-calendar .lot-dates {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+}
+
+.farmer-calendar .lot-dates__title {
+  grid-column: 1 / -1;
 }
