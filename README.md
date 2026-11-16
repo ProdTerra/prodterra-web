@@ -1,66 +1,54 @@
-# ProdTerra web
+# ProdTerra
 
-ProdTerra helps farmers plan crop rotations with NASA data. The farmer marks the farm on satellite imagery, splits it into lots, builds a rotation per lot and compares it with a recommended rotation based on the farm's climate. Built for the NASA Space Apps Challenge 2026 ("Field Shift").
+**ProdTerra** helps small and medium farmers decide what to plant, in which lot and when. The farmer marks the farm on a satellite map, splits it into lots and builds a crop rotation. ProdTerra checks it against the typical climate from NASA data, warns about frost, drought, excess rain, pests and diseases, and recommends a better rotation for each lot.
 
-Spanish and English. The API lives in a separate repository: `prodterra-api`.
+ProdTerra was built by team ProdTerra for the [NASA Space Apps Challenge 2026](https://www.spaceappschallenge.org/2026/find-a-team/prodterra/), "Field Shift" challenge.
 
-## The flow
+- Live app: [app.prodterra.earth](https://app.prodterra.earth)
+- API: [prodterra-api](https://github.com/ProdTerra/prodterra-api)
 
-| Step | What the farmer does |
+## Features
+
+- Find the farm on satellite imagery and draw its edge and lots, or split it into equal lots.
+- Plan each lot as a list of crops and rests, with drag and drop.
+- See the plan as a month calendar, and the recommended plan with the climate and alarms of each month.
+- Download both calendars as a PDF.
+- Works in Spanish and English, on phones and desktops, anywhere in the world.
+- No account needed to plan. An account (email or Google) is only needed to save farms.
+
+## Data
+
+| Data | Source |
 |---|---|
-| 1. Ubica tu finca | Search a place (ArcGIS geocoding) or use the device location. |
-| 2. Marca el borde | Draw the farm boundary (0.01 ha to 1,000 ha). |
-| 3. Divide en lotes | Draw lots or split the farm into equal lots (lengthwise, crosswise or grid). A summary shows land, elevation (NASADEM) and climate (NASA POWER). |
-| 4. Tu rotación | Pick the start date, then per lot: previous use, irrigation and a list of crop and rest blocks. Each crop starts with its reference cycle; the farmer can change it. |
-| 5. Tu calendario | The farmer's plan day by day, without climate data. |
-| 6. Recomendado | The farmer's plan and a recommended rotation, colored by NASA climate risk, with monthly alarms and a per-lot comparison. |
+| Typical monthly climate | NASA POWER |
+| Elevation | NASADEM (NASA), through Microsoft Planetary Computer |
+| Satellite imagery and place search | Esri World Imagery and ArcGIS |
+| Crops, pests and diseases | ProdTerra team catalog |
 
-An account is optional. It is only needed to save a farm ("Guardar mi plan") and to see it later under "Mis fincas". The farmer can sign in with Google or with email and password, and recover the password by email: the link opens `/reset-password`. Both calendars can be downloaded as PDF.
+## Tech stack
 
-## Run locally
+Next.js · React · TypeScript · next-intl · MapLibre GL · react-pdf · Vitest · deployed on Vercel.
 
-Requirements: Node.js 22 or newer and the API running on `http://localhost:4000`.
+## Quick start
+
+Requires Node.js 22 or newer and the [API](https://github.com/ProdTerra/prodterra-api) running on `http://localhost:4000`.
 
 ```bash
 npm install
-cp .env.example .env.local   # then add the ArcGIS key
+cp .env.example .env.local   # add the ArcGIS key
 npm run dev                  # http://localhost:3000
 ```
 
-### Environment
+## Documentation
 
-| Variable | Purpose |
+| Document | Contents |
 |---|---|
-| `NEXT_PUBLIC_ARCGIS_API_KEY` | ArcGIS Location Platform key with Basemaps and Geocoding privileges. Add every site that uses it as an allowed referrer. |
-| `NEXT_PUBLIC_API_URL` | ProdTerra API base URL. Defaults to `http://localhost:4000`. |
+| [Getting started](docs/getting-started.md) | Setup, environment variables, scripts and tests. |
+| [User flow](docs/user-flow.md) | The six steps of the planner, accounts and PDF export. |
+| [Architecture](docs/architecture.md) | Feature folders, layers and browser storage. |
+| [Data sources](docs/data-sources.md) | Where each piece of data comes from and how it is used. |
+| [Deployment and releases](docs/deployment.md) | Hosting, branches, versioning and release steps. |
 
-### Scripts
+## License
 
-| Command | What it does |
-|---|---|
-| `npm run dev` | Development server (also copies the MapLibre worker to `public/vendor`). |
-| `npm test` | Unit tests with Vitest. |
-| `npm run typecheck` | TypeScript check. |
-| `npm run lint` | ESLint. |
-| `npm run build` | Production build. |
-
-## Code layout
-
-Each feature under `src/features` is split into `domain` (pure rules), `application` (state), `infrastructure` (API clients and browser storage) and `components` (React).
-
-| Feature | Responsibility |
-|---|---|
-| `farm-mapping` | Map, boundary, lots, equal split and the farm summary. |
-| `rotation-plan` | Start date, per-lot rotation timeline and the farmer calendar. |
-| `calendar` | Analysis step: farmer plan vs recommended, alarms and comparison. |
-| `account` | Session in the header, login and registration dialog. |
-| `saved-farms` | "Guardar mi plan" and the "Mis fincas" page. |
-
-Browser storage keys: `prodterra.farmDraft`, `prodterra.mapView`, `prodterra.rotationPlan`, `prodterra.activeSavedFarm`.
-
-## Data sources
-
-- Satellite imagery and place search: Esri World Imagery and ArcGIS geocoding.
-- Elevation: NASADEM through Microsoft Planetary Computer.
-- Climate: NASA POWER monthly climatology, adjusted to the lot elevation with the U.S. Standard Atmosphere 1976 lapse rate.
-- Crop cycles: MAG/SEPSA Infoagro cost models (Costa Rica). Lettuce and chayote still use development values.
+All rights reserved by team ProdTerra. No license is granted to reuse this code.
