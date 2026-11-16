@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.1 - 2026-11-15
 
 ### Changed
 - Shorter README that presents the project and the NASA Space Apps Challenge 2026 entry; the technical documentation moved to `docs/`.
